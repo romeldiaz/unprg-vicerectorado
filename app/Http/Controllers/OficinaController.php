@@ -7,21 +7,21 @@ use App\Oficina;
 
 class OficinaController extends Controller
 {
-
-    public function test(){
-      return 'Hola test';
+    public function __construct(){
+      $this->middleware('auth');
     }
-
+    
     public function index()
     {
-        $oficinas = Oficina::all();
-        return view('oficinas.index', ['oficinas'=>$oficinas]);
+        return redirect('oficinas/create');
     }
 
     public function create()
     {
       $oficinas = Oficina::all();
-      return view('oficinas.create');
+      return view('oficinas.index', [
+        'oficinas'=>$oficinas
+      ]);
     }
 
     public function store(Request $request)
@@ -40,7 +40,11 @@ class OficinaController extends Controller
     public function edit($id)
     {
         $oficina = Oficina::findOrFail($id);
-        return  view('oficinas.update', ['oficina'=>$oficina]);
+        $oficinas = Oficina::all();
+        return view('oficinas.index', [
+          'oficina'=>$oficina,
+          'oficinas'=>$oficinas
+        ]);
     }
 
     public function update(Request $request, $id)

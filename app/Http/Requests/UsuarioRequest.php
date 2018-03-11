@@ -24,22 +24,23 @@ class UsuarioRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre'=>'required',
+            'nombres'=>'required',
             'paterno'=>'required',
             'materno'=>'required',
-            'cuenta'=>'required',
-            'clave'=>'required',
+            'cuenta' => 'required|string|max:50|unique:usuario',
+            'password'=>'required',
             'oficina_id' => 'required',
         ];
     }
 
     public function messages(){
       return[
-        'nombre.required' => 'Nombre requrido',
-        'paterno.required' => 'Apellido paterno requrido',
-        'materno.required' => 'Apellido materno requrido',
-        'cuenta.required' => 'Cuenta requrida',
-        'clave.required' => 'Contraseña requrida',
+        'nombres.required' => 'Nombres requerido',
+        'paterno.required' => 'Apellido paterno requerido',
+        'materno.required' => 'Apellido materno requerido',
+        'cuenta.required' => 'Cuenta requerida',
+        'cuenta.unique' => 'La cuenta ya existe',
+        'password.required' => 'Contraseña requrida',
         'oficina_id.required' => 'Seleccione una oficina'
       ];
     }

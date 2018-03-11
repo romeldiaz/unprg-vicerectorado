@@ -40,7 +40,7 @@ function checkOficina(oficina_id){
 
       }else{
           $("input[name=jefe]").prop('disabled', true);
-          $("input[name=jefe]").prop('checked', true);
+          $("input[name=jefe]").prop('checked', false);
       }
     }
   });

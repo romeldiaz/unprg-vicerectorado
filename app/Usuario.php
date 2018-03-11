@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $table = 'usuario';
+    public $timestamps = false;
 
     public static function checkOficina($oficina_id){
       return Usuario::where('oficina_id', '=', $oficina_id)

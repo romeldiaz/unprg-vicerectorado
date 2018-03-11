@@ -1,7 +1,7 @@
-@extends('layouts.master')
+@extends('layouts.dashPanel')
 
 @section('content')
-
+@include('partials.myMessage')
 {{ Form::open(['url'=>'actividades'])}}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
@@ -24,7 +24,7 @@
   <div class="tab-pane fade show active pt-3  " id="div-actividad" role="tabpanel" aria-labelledby="actividad-tab">
     <div class="row">
       <div class="col-12">
-        {{ Form::hidden('id',0) }}
+        {{ Form::hidden('id',0, ['id'=>'id']) }}
         <div class="form-group">
           {!! Form::label('nombre', 'Nombre', ['class'=>'control-label control-label-sm']) !!}
           {!!Form::text('nombre', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Nombre'])!!}
@@ -54,8 +54,14 @@
     <div class="row">
       <div class="col col-sm-6">
         <div class="form-row">
+          <?php
+            $oficinas_options[0] = 'todas';
+            foreach ($oficinas as $key => $oficina) {
+              $oficinas_options[$oficina->id] = $oficina->nombre;
+            }
+           ?>
           <div class="col col-sm-3">
-            {{ Form::select('search_type',['u'=>'Usuarios', 'o'=>'Oficinas'], 'u', ['class'=>'form-control', 'id'=>'search_type'])}}
+            {{ Form::select('search_by_oficinas',$oficinas_options, '0', ['class'=>'form-control', 'id'=>'search_by_oficinas'])}}
           </div>
           <div class="col col-sm-9">
             {{ Form::text('search_word', null, ['class'=>'form-control', 'placeholder'=>'buscar', 'id'=>'search_word']) }}
@@ -68,17 +74,11 @@
                   <tr>
                     <th>N°</th>
                     <th>Resultados</th>
-                    <th></th>
+                    <th><a href="javascript: seleccionar_varios(0)" class="btn btn-sm btn-secondary"><span id="span_0" class="icon-plus"></span></a></th>
                   </tr>
                 </thead>
                 <tbody id="search_results">
-                  @foreach($usuarios as $key => $usuario)
-                  <tr>
-                    <td>{{$usuario->id}}</td>
-                    <td>{{$usuario->nombre}}</td>
-                    <td><input type="checkbox" id="cbx_search_{{$usuario->id}}" name="responsables" value="{{$usuario->id}}"></td>
-                  </tr>
-                  @endforeach
+
                 </tbody>
               </table>
           </div>
@@ -93,7 +93,6 @@
             <tr>
               <th>N</th>
               <th>Nombre</th>
-              <th>tipo</th>
               <th></th>
             </tr>
           </thead>
@@ -101,9 +100,6 @@
 
           </tbody>
         </table>
-        <div id="div_asignados">
-
-        </div>
       </div>
     </div>
   </div>

@@ -21,10 +21,13 @@ class ActividadRequest extends FormRequest
      *
      * @return array
      */
+
+
     public function rules()
     {
+
         return [
-            'nombre' => 'required'
+            'nombre' => 'required',
         ];
     }
 
