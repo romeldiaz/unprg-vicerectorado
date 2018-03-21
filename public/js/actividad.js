@@ -1,11 +1,16 @@
 var responsables = [];
 var resultados = [];
 var url_controller = ''
+var token;
 $(document).ready(function(){
+  token = $('meta[name="csrf-token"]').attr('content');
 
-
-    if($("#id").val()!=0){//solo en modo update
-      url_controller = '../actividad_js';
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+  /*
+    if($("#id").val()==0){//solo en modo update
+      url_controller = '../post_js';
 
       search_usuario_by_oficina(0, function(state){
         console.log('resultados ok')
@@ -17,9 +22,18 @@ $(document).ready(function(){
       });
 
     }else{
-      url_controller = 'actividad_js';
+      url_controller = 'post_js';
       search_usuario_by_oficina(0, function(){});
     }
+    */
+
+    url_controller = 'post_js';
+    search_usuario_by_nombre('');
+
+    cargar_responsables(function(state){
+      console.log('Responsables cargados!')
+    });
+
 
 
     $("#search_by_oficinas").change(function(){
@@ -33,11 +47,13 @@ $(document).ready(function(){
 
 });
 
-
+function ver_info_user(user_id){
+  alert('User: '+user_id);
+}
 
 function search_usuario_by_oficina(oficina_id, callback){
     var op = 'select_usuario_by_oficina';
-    var token = $("input[name=_token]").val();
+
     var page = $("input[name=page]").val();
     var data = {oficina_id, op};
     var url = 'actividad_js';
@@ -65,11 +81,7 @@ function search_usuario_by_oficina(oficina_id, callback){
 function search_usuario_by_nombre(usuario_nombre){
   var op = "search_usuario_by_nombre";
   var oficina_id = $("#search_by_oficinas").val();
-  var token = $("input[name=_token]").val();
-  var page = $("input[name=page]").val();
   var data = {op, oficina_id, usuario_nombre};
-  var url = 'actividad_js';
-
 
   myPost(url_controller, token, data, function(response, state){
     if(state=='ok'){
@@ -176,7 +188,7 @@ function quitar_de_responsables(usuario_id){
 }
 
 function cargar_responsables(callback){
-  var actividad_id = $("#id").val();
+  var actividad_id = $('input[name=actividad_id]').val();
   var op = 'consultar_responsables';
   var token = $("input[name=_token]").val();
   var page = $("input[name=page]").val();
@@ -185,18 +197,18 @@ function cargar_responsables(callback){
 
   myPost(url_controller, token, data, function(response, state){
     if(state=='ok'){
+      console.log(response);
       responsables = response;
       var html = '';
       for(var i in responsables){
-
         span_check(responsables[i].id);
         html += '<tr>';
           html += '<td><input size="1" readonly="" style="border-width:0" type="text" name="usuarios[]" value="'+responsables[i].id+'"></td>';
-          html += '<td>'+responsables[i].nombre+'</td>';
+          html += '<td>'+responsables[i].nombres+'</td>';
           html += '<td><a href="javascript: quitar_de_responsables('+responsables[i].id+')" class="btn btn-sm btn-info">Borrar</td>';
         html += '</tr>';
       }
-      console.log(responsables);
+
       $("#responsables_selected").html(html);
       callback(state);
     }

@@ -1,60 +1,40 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-
-Route::get('login', 'AuthController@index')->name('login');
-Route::post('login',   'AuthController@login');
-Route::group(array('before'=>'auth'), function (){
-  Route::get('/', 'DashboardController@index');
-  Route::get('logout', 'AuthController@logout');
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/test', function(){
+  return view('partials.modalUserInfo');
 });
 
+Auth::routes();
 
-Route::resource('perfil', 'PerfilController');
+Route::get('/home', 'HomeController@index')->name('home');
 
-
-
-Route::get('dashboard', 'DashboardController@index');
-Route::get('dashboard/tareas', 'DashboardController@tareas');
-//Route::get('dashboard/perfil', 'DashboardController@perfil');
-Route::get('dashboard/misMetas', 'DashboardController@misMetas');
-
+Route::post('oficinas/post_js', 'OficinaController@post_js');
 Route::resource('oficinas', 'OficinaController');
 
-Route::resource('usuarios', 'UsuarioController');
-Route::post('usuarios/checkOficina', 'UsuarioController@postCheckOficina');//de la vista create
+Route::post('users/post_js', 'UserController@post_js');
+Route::resource('users', 'UserController');
 
-
-
-Route::post('actividades/actividad_js', 'ActividadController@actividad_js');
-Route::get('actividades/{actividad_id}/metas/create', 'MetaController@create');
-Route::get('actividades/{actividad_id}/metas/{meta_id}/edit', 'MetaController@edit');
-Route::delete('actividades/{actividad_id}/metas/{meta_id}/destroy', 'MetaController@destroy');
+Route::post('actividades/post_js', 'ActividadController@post_js');
+Route::get('misActividades', 'ActividadController@misActividades');
+Route::get('actividades/all', 'ActividadController@showAll');
+Route::get('actividades/my', 'ActividadController@showMy');
 Route::resource('actividades', 'ActividadController');
 
-Route::get('monitoreos/{op}', 'MonitoreoController@index');
-Route::post('monitoreos/create', 'MonitoreoController@create');
-Route::post('monitoreos/edit', 'MonitoreoController@edit');
-Route::resource('monitoreos', 'MonitoreoController',
-                ['except' => ['index', 'create', 'edit']]);
+Route::resource('responsables', 'ResponsableController');
 
-Route::resource('documentos', 'DocumentoController');
-
-Route::post('metas/meta_js', 'MetaController@meta_js');
-//Route::get('metas/actividad/id', 'MetaController@index');//condicionar metodo defaul index para que acepte un id de actividad
-Route::resource('metas', 'MetaController');
-
-
-
-
-
-
-
-/*Manejo de archivos*/
-Route::post('file/uploadPhoto/{id}', 'FileController@uploadPhoto');
-Route::get('file/downloadPhoto/{nombre}', 'FileController@downloadPhoto');
-
-
-Route::get('gastos/create/{meta_id}', 'GastoController@create');
-Route::get('gastos/edit/{meta_id}/{gastos_id}/', 'GastoController@edit');
-Route::resource('gastos', 'GastoController');
+Route::get('javascript', 'JavascriptController@index');
+Route::post('javascript', 'JavascriptController@funciones');

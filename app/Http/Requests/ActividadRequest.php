@@ -21,19 +21,16 @@ class ActividadRequest extends FormRequest
      *
      * @return array
      */
-
-
     public function rules()
     {
-
         return [
             'nombre' => 'required',
+            'monitor_id' => 'required'
         ];
     }
 
     public function messages(){
       return [
-          'nombre.required' => 'Nombre requerido'
       ];
     }
 }

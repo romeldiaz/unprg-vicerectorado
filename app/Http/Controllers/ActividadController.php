@@ -1,87 +1,113 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Actividad;
 use App\Http\Requests\ActividadRequest;
-use App\User;
+use Illuminate\Http\Request;
+
+use App\Actividad;
 use App\Oficina;
+use App\User;
 use App\Responsable;
-use App\Meta;
-use DB;
 use Carbon\Carbon;
+use View;
+use Auth;
 
 class ActividadController extends Controller
 {
 
     public function index()
     {
-        //dependiendo del usuario se mostraran los uua
-        $actividades = Actividad::where('status',true)->get();
-        return view('actividades.index',['actividades'=>$actividades]);
+      return redirect('actividades/all');
+    }
+
+    public function showAll(){
+      //Muestra las actividades a las que a sido asignado como responsable
+      $actividades = Responsable::where('user_id', Auth::user()->id)
+                      ->join('actividades', 'actividades.id', '=', 'responsables.actividad_id')
+                      ->select('actividades.*')
+                      ->get();
+      return view('actividades.showAll', compact('actividades'));
+    }
+
+    public function showMy(){
+      //las actividades creadas por el usuario
+      $actividades = Actividad::where('creador_id', Auth::user()->id)->get();
+      return view('actividades.showMy', compact('actividades'));
     }
 
     public function create()
     {
-        $usuarios = User::all();
-        $oficinas = Oficina::all();
-        return view('actividades.create', [
-          'usuarios'=>$usuarios,
-          'oficinas'=>$oficinas
-        ]);
+        //usuarios de la misma oficina quien crea la actividad
+        $monitores = User::where('oficina_id', Auth::user()->oficina_id)->get();
+        return view('actividades.create', compact('monitores'));
     }
 
     public function store(ActividadRequest $request)
     {
-        Actividad::myStore($request);
-        return redirect('actividades');
+        $datos = $request->all();
+        $datos['creador_id']= Auth::user()->id;
+        $datos['estado'] = 'creada';
+        Actividad::create($datos);
+        return redirect('actividades/my');
     }
 
     public function show($id)
     {
-        $actividad = Actividad::findOrFail($id);
-        $metas = Meta::where('actividad_id',$id)->get();
-        $responsables = Responsable::where('actividad_id',$id)
-        ->join('usuario', 'responsable.usuario_id', '=', 'usuario.id')
-        ->select('usuario.*')
-        ->get();
-        return view('actividades.show',[
-          'actividad'=>$actividad,
-          'responsables'=>$responsables,
-          'metas'=>$metas
-        ]);
+        $oficinas = Oficina::all();
+        $actividad = Actividad::findOrfail($id);
+        $creador = User::findOrfail($actividad->creador_id);
+        $monitor = User::findOrfail($actividad->monitor_id);
+        $responsables = Responsable::where('actividad_id', $id)
+                        ->join('users', 'users.id', '=', 'responsables.user_id')
+                        ->select('users.*')
+                        ->get();
+
+        //calcular tiempo restantes
+        $tmp = $actividad->fecha_fin_esperada;
+        $myYear = substr($tmp,0, 4);
+        $myMonth = substr($tmp, 5, 2);
+        $myDay = substr($tmp, 8, 2);
+        $fin = Carbon::createFromDate($myYear,$myMonth,$myDay);
+        $hoy = Carbon::now();
+        $plazo = $hoy->diffInDays($fin, false); // = fin-hoy
+
+        return view('actividades.show', compact('oficinas', 'actividad', 'responsables', 'creador', 'monitor','plazo'));
+    }
+
+    public function misActividades(){//muestra solo las actividades creadas por el usuario logeado
+      $monitores = User::where('oficina_id', Auth::user()->oficina_id)->get();
+      $actividades = Actividad::where('creador_id', Auth::user()->id)->get();
+      //return $actividades;
+      $users = User::all();
+      return view('actividades.index', compact('actividades', 'users', 'monitores'));
     }
 
 
     public function edit($id)
     {
-        $usuarios = User::all();
-        $oficinas = Oficina::all();
-        $actividad = Actividad::find($id);
-        return view('actividades.update', [
-          'usuarios'=>$usuarios,
-          'oficinas'=>$oficinas,
-          'actividad'=>$actividad
-        ]);
+      $actividad = Actividad::findOrfail($id);
+      $monitores = User::where('oficina_id', Auth::user()->oficina_id)->get();
+      return view('actividades.edit', compact('actividad', 'monitores'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ActividadRequest $request, $id)
     {
-      Actividad::myUpdate($request, $id);
-      return redirect('actividades');
+      $actividad = Actividad::findOrfail($id);
+      $datos = $request->all();
+      $datos['creador_id']= Auth::user()->id;
+      $datos['estado'] = 'creada';
+      $actividad->update($datos);
+      return redirect('actividades/my');
     }
-
 
     public function destroy($id)
     {
-        $actividad = Actividad::findOrFail($id);
-        $actividad->status = false;
-        $actividad->save();
-        return redirect('actividades');
+      $actividad = Actividad::findOrfail($id);
+      $actividad->delete();
+      return redirect('actividades/my');
     }
 
-    public function actividad_js(Request $request){
+    public function post_js(Request $request){
       switch ($request->op) {
         case 'select_usuario_by_oficina':
             if($request->oficina_id==0){
@@ -94,19 +120,18 @@ class ActividadController extends Controller
 
         case 'search_usuario_by_nombre':
             if($request->oficina_id==0){
-              $usuarios = Usuario::where('nombre', 'like', '%'.$request->usuario_nombre.'%')->get();
+              $usuarios = User::where('nombres', 'like', '%'.$request->usuario_nombre.'%')->get();
             }else{
-              $todos = Usuario::where('oficina_id', $request->oficina_id);
-              $usuarios = $todos->where('nombre', 'like', '%'.$request->usuario_nombre.'%')->get();
+              $todos = User::where('oficina_id', $request->oficina_id);
+              $usuarios = $todos->where('nombres', 'like', '%'.$request->usuario_nombre.'%')->get();
             }
             return $usuarios;
             break;
 
         case 'consultar_responsables':
-            $responsables = Responsable::where('estado', '=', true)
-            ->where('actividad_id', '=', $request->actividad_id)
-            ->join('usuario', 'responsable.usuario_id', '=', 'usuario.id')
-            ->select('usuario.*')
+            $responsables = Responsable::where('actividad_id', $request->actividad_id)
+            ->join('users', 'responsables.user_id', '=', 'users.id')
+            ->select('users.*')
             ->get();
             return $responsables;
             break;
@@ -114,7 +139,6 @@ class ActividadController extends Controller
         default:
           break;
       }
-
-
     }
+
 }

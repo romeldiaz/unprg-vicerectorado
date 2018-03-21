@@ -7,10 +7,6 @@ use App\Oficina;
 
 class OficinaController extends Controller
 {
-    public function __construct(){
-      $this->middleware('auth');
-    }
-    
     public function index()
     {
         return redirect('oficinas/create');
@@ -18,17 +14,15 @@ class OficinaController extends Controller
 
     public function create()
     {
-      $oficinas = Oficina::all();
-      return view('oficinas.index', [
-        'oficinas'=>$oficinas
-      ]);
+        $oficinas = Oficina::all();
+        return view('oficinas.index', [
+          'oficinas'=>$oficinas
+        ]);
     }
 
     public function store(Request $request)
     {
-        $oficina = new Oficina;
-        $oficina->nombre = $request->nombre;
-        $oficina->save();
+        Oficina::create($request->all());
         return redirect('oficinas');
     }
 
@@ -39,26 +33,36 @@ class OficinaController extends Controller
 
     public function edit($id)
     {
-        $oficina = Oficina::findOrFail($id);
-        $oficinas = Oficina::all();
-        return view('oficinas.index', [
-          'oficina'=>$oficina,
-          'oficinas'=>$oficinas
-        ]);
+      $oficinas = Oficina::all();
+      $oficina = Oficina::findOrFail($id);
+      return view('oficinas.index', [
+        'oficinas' => $oficinas,
+        'oficina' => $oficina
+      ]);
     }
 
     public function update(Request $request, $id)
     {
-        $oficina = Oficina::find($id);
-        $oficina->nombre = $request->nombre;
-        $oficina->save();
-        return redirect('oficinas');
+      $oficina = Oficina::findOrFail($id);
+      $oficina->update($request->all());
+      return redirect('oficinas');
     }
 
     public function destroy($id)
     {
-        $oficina = Oficina::find($id);
+        $oficina = Oficina::findOrFail($id);
         $oficina->delete();
         return redirect('oficinas');
+    }
+
+    public function post_js(Request $request){
+      if($request->op == 'consultar_oficinas'){
+        return  Oficina::all();
+      }
+
+      if($request->op == 'consultar_oficinas_por_nombre'){
+        return  Oficina::where('nombre', 'like', '%'.$request->nombre.'%')
+                ->get();
+      }
     }
 }
