@@ -55,14 +55,4 @@ class OficinaController extends Controller
         return redirect('oficinas');
     }
 
-    public function post_js(Request $request){
-      if($request->op == 'consultar_oficinas'){
-        return  Oficina::all();
-      }
-
-      if($request->op == 'consultar_oficinas_por_nombre'){
-        return  Oficina::where('nombre', 'like', '%'.$request->nombre.'%')
-                ->get();
-      }
-    }
 }

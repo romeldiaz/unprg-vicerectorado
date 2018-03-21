@@ -22,7 +22,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('oficinas/post_js', 'OficinaController@post_js');
 Route::resource('oficinas', 'OficinaController');
 
 Route::post('users/post_js', 'UserController@post_js');

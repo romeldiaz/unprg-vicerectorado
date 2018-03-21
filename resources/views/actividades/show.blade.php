@@ -184,13 +184,13 @@
             <div class="col col-sm-6">
               <div class="form-row">
                 <?php
-                  $oficinas_options[0] = 'todas';
+                  $oficinas_options[0] = 'Todas';
                   foreach ($oficinas as $key => $oficina) {
                     $oficinas_options[$oficina->id] = $oficina->nombre;
                   }
                  ?>
                 <div class="col col-sm-3">
-                  {{ Form::select('search_by_oficinas',$oficinas_options, '0', ['class'=>'form-control', 'id'=>'search_by_oficinas'])}}
+                  {{ Form::select('search_by_oficinas',$oficinas_options, Auth::user()->oficina_id, ['class'=>'form-control', 'id'=>'search_by_oficinas'])}}
                 </div>
                 <div class="col col-sm-9">
                   {{ Form::text('search_word', null, ['class'=>'form-control', 'placeholder'=>'buscar', 'id'=>'search_word']) }}
@@ -246,5 +246,6 @@
 @endsection
 
 @section('script')
-  <script src="{{ url('js/actividad_show.js') }}"></script>
+  <script src="{{ url('js/actividad.js') }}"></script>
+  <script src="{{ url('js/actividad_responsables.js') }}"></script>
 @endsection

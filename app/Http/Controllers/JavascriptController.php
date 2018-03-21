@@ -12,8 +12,11 @@ class JavascriptController extends Controller
   }
 
   public function funciones(Request $request){
+
       $response  = [];//datos que se devuelven a la vista
+
       switch ($request->op) {//controlador de la operacion que se va a realizar
+        /*----------------------------JS:ACTIVIDAD----------------------------*/
         case 'show_info_user':
           $user = DB::table('users')->where('id',$request->user_id)->get();
           $oficina = DB::table('oficinas')->where('id', $user[0]->oficina_id)->get();
@@ -28,6 +31,15 @@ class JavascriptController extends Controller
             'puntaje'=>['total'=>56]
           ];
           break;
+
+        /*----------------------------JS:ACTIVIDAD----------------------------*/
+        case 'consultar_oficinas_por_nombre':
+          $response = DB::table('oficinas')
+                      ->whereNull('deleted_at')
+                      ->where('nombre', 'like', '%'.$request->nombre.'%')->get();
+          break;
+
+
         default:
           break;
       }
