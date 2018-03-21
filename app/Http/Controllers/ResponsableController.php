@@ -27,7 +27,10 @@ class ResponsableController extends Controller
 
         if(isset($request->usuarios)){
           foreach ($request->usuarios as $user_id) {
-            $tmp = Responsable::withTrashed()->where('user_id', $user_id)->get()->last();
+            $tmp = Responsable::where('actividad_id', $request->actividad_id)
+                                ->withTrashed()->where('user_id', $user_id)
+                                ->get()->last();
+            //echo $tmp ."<br>";
             if(empty($tmp)){
               $new = new Responsable;
               $new->user_id = $user_id;

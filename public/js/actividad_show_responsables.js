@@ -8,11 +8,13 @@ $(document).ready(function(){
     })
 
     url_controller = 'post_js';
-    search_usuario_by_nombre('');
+
 
     cargar_responsables(function(state){
       console.log('Responsables cargados!')
+      search_usuario_by_nombre('');
     });
+
 
 
 
@@ -128,7 +130,7 @@ function ver_seleccionados(){//acutaliza la tabla visula de responsables
   for(var i in responsables){
     num++;
     html += '<tr>';
-      html += '<td><input size="1" readonly style="border-width:0" type="text" name="usuarios[]" value="'+responsables[i].id+'"></td>';
+      html += '<td><input size="1" readonly style="border-width:0; background-color: transparent" type="text" name="usuarios[]" value="'+responsables[i].id+'"></td>';
       html += '<td>'+responsables[i].nombres+'</td>';
       html += '<td class="text-right"><a href="javascript: quitar_de_responsables('+responsables[i].id+')" class="btn btn-sm btn-light"><span class="icon-cross"></span></td>';
     html += '</tr>';

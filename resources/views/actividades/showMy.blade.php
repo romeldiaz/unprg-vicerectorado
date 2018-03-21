@@ -56,5 +56,5 @@
 @endsection
 
 @section('script')
-  <script src="{{ url('js/actividad.js') }}"></script>
+
 @endsection
