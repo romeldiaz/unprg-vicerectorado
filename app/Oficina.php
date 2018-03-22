@@ -14,5 +14,12 @@ class Oficina extends Model
     public $timestamps = false;
 
     //protected $fillable = ['nombre'];
-    protected $guarded = ['id'];
+	protected $guarded = ['id'];
+	
+	
+	// Added
+	public function users()
+	{
+		return $this->hasMany(User::class);
+	}
 }

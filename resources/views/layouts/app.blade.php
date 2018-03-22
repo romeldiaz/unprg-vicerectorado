@@ -12,7 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style_iconos.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/style_iconos.css') }}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{url('css/style.css')}}">
 </head>
 <body>
     <div id="app">
@@ -63,6 +64,37 @@
 
         <main class="py-4">
           <div class="container-fluid">
+			  @if (session('info'))
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							{{ session('info') }}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			@endif @if (count($errors))
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<ul class="m-0">
+								@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+								@endforeach
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			@endif
             @yield('content')
           </div>
 

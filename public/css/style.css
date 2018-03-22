@@ -1,0 +1,16 @@
+.table tbody td, .table tbody th, .table thead th {
+	vertical-align: middle;
+}
+
+tbody tr:first-child .presupuesto {
+	border-top: 0 !important;
+}
+
+.custom-select {
+	padding-top: .25rem;
+	padding-bottom: .25rem;
+}
+
+.table-fixed {
+	table-layout: fixed;
+}

@@ -22,11 +22,12 @@ class ActividadController extends Controller
 
     public function showAll(){
       //Muestra las actividades a las que a sido asignado como responsable
-      $actividades = Responsable::where('user_id', Auth::user()->id)
-                      ->join('actividades', 'actividades.id', '=', 'responsables.actividad_id')
-                      ->select('actividades.*')
-                      ->get();
-      return view('actividades.showAll', compact('actividades'));
+    //   $actividades = Responsable::where('user_id', Auth::user()->id)
+    //                   ->join('actividades', 'actividades.id', '=', 'responsables.actividad_id')
+    //                   ->select('actividades.*')
+	// 				  ->get();
+		$actividades = User::find(Auth::user()->id)->actividades;
+      	return view('actividades.showAll', compact('actividades'));
     }
 
     public function showMy(){

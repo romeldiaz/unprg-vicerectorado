@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    use SoftDeletes; //habilita borrado suave (borrado por software)
+	use SoftDeletes; //habilita borrado suave (borrado por software)
     protected $dates = ['deleted_at'];
 
     protected $table = 'users';
@@ -28,5 +28,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+	public function oficina()
+	{
+		return $this->belongsTo(Oficina::class);
+	}
 
+	public function actividades()
+	{
+		return $this->belongsToMany(Actividad::class, 'responsables');
+	}
+
+	public function responsables()
+	{
+		return $this->hasMany(Responsable::class);
+	}
 }

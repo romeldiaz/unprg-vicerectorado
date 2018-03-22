@@ -13,7 +13,17 @@ class Responsable extends Model
     protected $table = 'responsables';
     public $timestamps = false;
 
-    protected $fillable = [
-        'usuario_id', 'actividad_id', 'jefe'
-    ];
+    protected $fillable = [];
+	
+
+	// Added
+	public function metas()
+	{
+		return $this->belongsToMany(Meta::class);
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
 }

@@ -54,5 +54,4 @@ class OficinaController extends Controller
         $oficina->delete();
         return redirect('oficinas');
     }
-
 }

@@ -18,5 +18,28 @@ class Actividad extends Model
         'nombre', 'estado', 'presupuesto', 'fecha_inicio', 'fecha_fin_esperada',
         'fecha_fin', 'numero_resolucion', 'fecha_resolucion', 'fecha_acta', 'descripcion_acta', 'creador_id', 'monitor_id'
     ];
-    protected $guarded = ['id'];
+	protected $guarded = ['id'];
+	
+
+	// Added
+
+	public function metas()
+	{
+		return $this->hasMany(Meta::class);
+	}
+
+	public function users()
+	{
+		return $this->belongsToMany(User::class, 'responsables');
+	}
+
+	public function responsables()
+	{
+		return $this->hasMany(Responsable::class);
+	}
+
+	public function creador()
+	{
+		return $this->belongsTo(User::class, 'creador_id');
+	}
 }

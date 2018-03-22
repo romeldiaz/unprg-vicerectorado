@@ -24,7 +24,6 @@ class ResponsableController extends Controller
         foreach ($olds as $key => $responsable) {
           $responsable->delete();
         }
-
         if(isset($request->usuarios)){
           foreach ($request->usuarios as $user_id) {
             $tmp = Responsable::where('actividad_id', $request->actividad_id)
