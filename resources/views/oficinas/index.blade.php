@@ -1,10 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
-  Gestion de  oficinas
-
   <div class="row">
     <div class="col col-sm-12 col-md-4 mb-5">
+      @include('partials.myAlertErrors')
       @if(isset($oficina))
         @include('oficinas.edit')
       @else
@@ -12,49 +11,76 @@
       @endif
     </div>
     <div class="col col-sm-12 col-md-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">Buscar</div>
+
+      <div class="box">
+        <div class="box-header with-border">
+          <div class="box-title">
+            Oficinas
+            <a href="{{ url('oficinas/create') }}" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></a>
+          </div>
+          <div class="box-tools">
+            @if(isset($oficina))
+              {{ Form::open(['action'=>['OficinaController@edit', $oficina->id], 'method'=>'GET'])}}
+            @else
+              {{ Form::open(['action'=>'OficinaController@create', 'method'=>'GET'])}}
+            @endif
+            <div class="input-group input-group-sm" style="width: 150px;">
+              {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+            {{ Form::close() }}
+          </div>
         </div>
-        <input type="text" id="search_word" class="form-control form-control-sm" placeholder="Nombre de Oficina">
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>N°</th>
+                <th>Nombre</th>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody id="table-body-oficinas">
+                @foreach($oficinas as $key => $oficina)
+                  <tr>
+                    <td>{{ $oficina->id }}</td>
+                    <td>{{ $oficina->nombre }}</td>
+                    <td>
+                      <div class="text-right">
+                        <div class="btn-group">
+                          {{ Form::open(['action'=>['OficinaController@destroy', $oficina->id], 'method'=>'DELETE']) }}
+                          <a href="{{ url('oficinas/'.$oficina->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
+                          <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>
+                          {{ Form::close() }}
+                        </div>
+                      </div>
+
+                    </td>
+                  </tr>
+                @endforeach
+            </tbody>
+          </table>
+        </div>
+        <div class="box-footer clearfix">
+          <div id="mypag" hidden>
+            @if($oficinas->total()!=0)
+              {{ 'Mostrando del '.$oficinas->firstItem().' al  '.$oficinas->lastItem().' de '.$oficinas->total().' registros'}}
+              {{ $oficinas->links() }}
+            @else
+              No hay registros
+            @endif
+          </div>
+        </div>
       </div>
 
-
-      <table class="table table-sm">
-        <thead>
-            <tr>
-            <th>N°</th>
-            <th>Nombre</th>
-            <td>
-              <div class="d-flex flex-row-reverse">
-                {{ Link_to('oficinas', 'Nueva', ['class'=>'btn btn-sm btn-info']) }}
-              </div>
-            </td>
-          </tr>
-        </thead>
-        <tbody id="table-body-oficinas">
-            @foreach($oficinas as $key => $oficina)
-              <tr>
-                <td>{{ $oficina->id }}</td>
-                <td>{{ $oficina->nombre }}</td>
-                <td>
-                  <div class="d-flex flex-row-reverse">
-                    {{ Form::open(['action'=>['OficinaController@destroy', $oficina->id], 'method'=>'DELETE']) }}
-                      <button type="submit" class="btn btn-sm btn-secondary">Eliminar</button>
-                    {{ Form::close() }}
-
-                    {{ link_to_action('OficinaController@edit', 'Editar', $oficina->id, ['class'=>'btn btn-sm btn-success mr-1'])}}
-                  </div>
-                </td>
-              </tr>
-            @endforeach
-        </tbody>
-      </table>
     </div>
   </div>
 
 @endsection
 
 @section('script')
+  <script src="{{ url('js/comun.js') }}"></script>
   <script src="{{ url('js/oficina.js') }}"></script>
 @endsection

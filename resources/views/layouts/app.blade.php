@@ -12,8 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/style_iconos.css') }}" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="{{url('css/style.css')}}">
+    <link href="{{ asset('css/style_iconos.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -26,18 +25,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-						<li class="nav-item active">
-							<a class="nav-link" href="{{route('users.index')}}">Usuarios <span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="{{route('actividades.index')}}">Actividades</a>
-						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="{{route('metas.index')}}">Metas</a>
-						</li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -72,37 +63,6 @@
 
         <main class="py-4">
           <div class="container-fluid">
-			  @if (session('info'))
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="alert alert-success alert-dismissible fade show" role="alert">
-							{{ session('info') }}
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			@endif @if (count($errors))
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="alert alert-danger alert-dismissible fade show" role="alert">
-							<ul class="m-0">
-								@foreach ($errors->all() as $error)
-								<li>{{ $error }}</li>
-								@endforeach
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			@endif
             @yield('content')
           </div>
 

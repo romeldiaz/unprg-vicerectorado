@@ -17,14 +17,12 @@ class UserController extends Controller
       return redirect('users/create');
     }
 
-    public function create()
+    public function create(Request $request)
     {
+      $users = User::search($request->get('search'))->orderBy('id', 'asc')->paginate(10);
       $oficinas = Oficina::all();
-      $users = User::all();
-      return view('users.index', [
-        'oficinas'=>$oficinas,
-        'users'=>$users
-      ]);
+
+      return view('users.index', compact('users', 'oficinas'));
     }
 
     public function store(Request $request)
@@ -52,11 +50,11 @@ class UserController extends Controller
 
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
       $user = User::findOrFail($id);//datos del usuarios update
       $oficinas = Oficina::all();
-      $users = User::all();
+      $users = User::search($request->get('search'))->orderBy('id', 'asc')->paginate(10);
       return view('users.index', [
         'user'=> $user,
         'users'=>$users,

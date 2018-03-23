@@ -13,13 +13,14 @@ class Oficina extends Model
     protected $table = 'oficinas';
     public $timestamps = false;
 
-    //protected $fillable = ['nombre'];
-	protected $guarded = ['id'];
-	
-	
-	// Added
-	public function users()
-	{
-		return $this->hasMany(User::class);
-	}
+    protected $fillable = ['nombre'];
+    //protected $guarded = ['id'];
+
+    public function scopeSearch($query, $search){
+      $search = preg_replace('[\s+]','', $search);//quitar espacios
+      $search = strtolower($search);//convertir todo a minusculas
+      if($search != ""){
+        $query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
+      }
+    }
 }

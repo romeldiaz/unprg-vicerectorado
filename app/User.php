@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-	use SoftDeletes; //habilita borrado suave (borrado por software)
+    use SoftDeletes; //habilita borrado suave (borrado por software)
     protected $dates = ['deleted_at'];
 
     protected $table = 'users';
@@ -28,18 +28,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-	public function oficina()
-	{
-		return $this->belongsTo(Oficina::class);
-	}
 
-	public function actividades()
-	{
-		return $this->belongsToMany(Actividad::class, 'responsables');
-	}
+    public function scopeSearch($query, $search){
+      $search = preg_replace('[\s+]','', $search);//quitar espacios
+      $search = strtolower($search);//convertir todo a minusculas
+      if($search != ""){
+        $query->where(\DB::raw("LOWER(CONCAT(nombres, paterno, materno))"), "LIKE", "%$search%")
+        ->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
+      }
+    }
 
-	public function responsables()
-	{
-		return $this->hasMany(Responsable::class);
-	}
 }

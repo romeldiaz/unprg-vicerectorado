@@ -19,7 +19,7 @@ class Actividad extends Model
         'fecha_fin', 'numero_resolucion', 'fecha_resolucion', 'fecha_acta', 'descripcion_acta', 'creador_id', 'monitor_id'
     ];
 	protected $guarded = ['id'];
-	
+
 
 	// Added
 
@@ -42,4 +42,12 @@ class Actividad extends Model
 	{
 		return $this->belongsTo(User::class, 'creador_id');
 	}
+
+  public function scopeSearch($query, $search){
+    $search = preg_replace('[\s+]','', $search);//quitar espacios
+    $search = strtolower($search);//convertir todo a minusculas
+    if($search != ""){
+      $query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
+    }
+  }
 }

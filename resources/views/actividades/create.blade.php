@@ -1,17 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
 <div class="row">
-  <div class="col-2">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action" href="{{ url('actividades/all') }}">Todas</a>
-      <a class="list-group-item list-group-item-action active" href="{{ url('actividades/my') }}">Mis Actividades</a>
-    </div>
-    <div class="alert alert-warning mt-3" role="alert">
-      Genial! - Estas a punto de crear una nueva actividad, se nota que te gusta mucho trabajar.
-    </div>
-  </div>
-  <div class="col-10">
+  <div class="col col-sm-12">
     @include('partials.myAlertErrors')
     {{ Form::open(['action'=>['ActividadController@store'], 'method'=>'POST'])}}
       <div class="row">

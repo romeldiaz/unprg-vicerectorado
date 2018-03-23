@@ -17,23 +17,29 @@ class ActividadController extends Controller
 
     public function index()
     {
-      return redirect('actividades/all');
+      return redirect('actividades/asignaciones');
     }
 
-    public function showAll(){
+    public function asignaciones(Request $request){
       //Muestra las actividades a las que a sido asignado como responsable
-    //   $actividades = Responsable::where('user_id', Auth::user()->id)
-    //                   ->join('actividades', 'actividades.id', '=', 'responsables.actividad_id')
-    //                   ->select('actividades.*')
-	// 				  ->get();
-		$actividades = User::find(Auth::user()->id)->actividades;
-      	return view('actividades.showAll', compact('actividades'));
+      $actividades = Actividad::search($request->get('search'))->where('responsables.user_id', Auth::user()->id)
+                      ->join('responsables', 'actividades.id', '=', 'responsables.actividad_id')
+                      ->select('actividades.*')
+                      ->paginate(5);
+
+      return view('actividades.asignaciones', compact('actividades'));
     }
 
-    public function showMy(){
+    public function creaciones(Request $request){
       //las actividades creadas por el usuario
-      $actividades = Actividad::where('creador_id', Auth::user()->id)->get();
-      return view('actividades.showMy', compact('actividades'));
+      $actividades = Actividad::search($request->get('search'))->where('creador_id', Auth::user()->id)->paginate(5);
+      return view('actividades.creaciones', compact('actividades'));
+    }
+
+    public function monitoreos(Request $request){
+      //las actividades creadas por el usuario
+      $actividades = Actividad::search($request->get('search'))->where('monitor_id', Auth::user()->id)->paginate(5);
+      return view('actividades.monitoreos', compact('actividades'));
     }
 
     public function create()
@@ -49,7 +55,7 @@ class ActividadController extends Controller
         $datos['creador_id']= Auth::user()->id;
         $datos['estado'] = 'creada';
         Actividad::create($datos);
-        return redirect('actividades/my');
+        return redirect('actividades/creaciones');
     }
 
     public function show($id)
@@ -65,12 +71,16 @@ class ActividadController extends Controller
 
         //calcular tiempo restantes
         $tmp = $actividad->fecha_fin_esperada;
-        $myYear = substr($tmp,0, 4);
-        $myMonth = substr($tmp, 5, 2);
-        $myDay = substr($tmp, 8, 2);
-        $fin = Carbon::createFromDate($myYear,$myMonth,$myDay);
-        $hoy = Carbon::now();
-        $plazo = $hoy->diffInDays($fin, false); // = fin-hoy
+        if(!empty($tmp)){
+          $myYear = substr($tmp,0, 4);
+          $myMonth = substr($tmp, 5, 2);
+          $myDay = substr($tmp, 8, 2);
+          $fin = Carbon::createFromDate($myYear,$myMonth,$myDay);
+          $hoy = Carbon::now();
+          $plazo = $hoy->diffInDays($fin, false); // = fin-hoy
+        }else{
+          $plazo = null;
+        }
 
         return view('actividades.show', compact('oficinas', 'actividad', 'responsables', 'creador', 'monitor','plazo'));
     }
@@ -98,14 +108,14 @@ class ActividadController extends Controller
       $datos['creador_id']= Auth::user()->id;
       $datos['estado'] = 'creada';
       $actividad->update($datos);
-      return redirect('actividades/my');
+      return redirect('actividades/creaciones');
     }
 
     public function destroy($id)
     {
       $actividad = Actividad::findOrfail($id);
       $actividad->delete();
-      return redirect('actividades/my');
+      return redirect('actividades/creaciones');
     }
 
     public function post_js(Request $request){

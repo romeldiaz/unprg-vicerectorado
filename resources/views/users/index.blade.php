@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
 
@@ -12,55 +12,88 @@
     @endif
   </div>
   <div class="col col-sm-12 col-md-8">
-    <table class="table table-hover table-sm">
-      <thead>
-        <tr>
-          <th>N°</th>
-          <th>Nombres</th>
-          <th>Paterno</th>
-          <th>Materno</th>
-          <th>Cuenta</th>
-          <th>Jefe</th>
-          <th>Oficina ID</th>
-          <th>
-            <div class="d-flex flex-row-reverse">
-              {{ link_to('users', 'Crear', ['class'=>'btn btn-sm btn-info']) }}
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php $num=0; ?>
-        @foreach($users as $key => $user)
-        <?php $num++; ?>
-        <tr>
-          <td>{{$user->id}}</td>
-          <td>{{$user->nombres}}</td>
-          <td>{{$user->paterno}}</td>
-          <td>{{$user->materno}}</td>
-          <td>{{$user->cuenta}}</td>
-          <td>{{$user->jefe}}</td>
-          <td>{{$user->oficina_id}}</td>
-          <td>
-            <div class="d-flex flex-row-reverse">
-              <div class="form-inline">
-                {{ link_to_action('UserController@edit', 'Editar', $user->id, ['class'=>'btn btn-sm btn-success mr-1']) }}
+    <div class="box">
 
-                {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}
-                    {{ Form::submit('Borrar', ['class'=>'btn btn-sm btn-secondary']) }}
-                {{ Form::close()}}
-              </div>
+      <div class="box-header with-border">
+        <div class="box-title">
+          Usuarios
+          <a href="#" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i></a>
+        </div>
+        <div class="box-tools">
+
+          @if(isset($user))
+            {{ Form::open(['action'=>['UserController@edit', $user->id], 'method'=>'GET'])}}
+          @else
+            {{ Form::open(['action'=>'UserController@create', 'method'=>'GET'])}}
+          @endif
+          <div class="input-group input-group-sm" style="width: 150px;">
+            {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
+            <div class="input-group-btn">
+              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
             </div>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
+          </div>
+          {{ Form::close() }}
+        </div>
+      </div>
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nombres</th>
+              <th>Paterno</th>
+              <th>Materno</th>
+              <th>Cuenta</th>
+              <th>Jefe</th>
+              <th>Oficina ID</th>
+              <th>
+
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $num=0; ?>
+            @foreach($users as $key => $user)
+            <?php $num++; ?>
+            <tr>
+              <td>{{$user->id}}</td>
+              <td>{{$user->nombres}}</td>
+              <td>{{$user->paterno}}</td>
+              <td>{{$user->materno}}</td>
+              <td>{{$user->cuenta}}</td>
+              <td>{{$user->jefe}}</td>
+              <td>{{$user->oficina_id}}</td>
+              <td>
+                {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}
+                  <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
+                  <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>
+                {{ Form::close()}}
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+
+      <div class="box-footer clearfix">
+        <div id="mypag" hidden>
+          @if($users->total()!=0)
+            {{ 'Mostrando del '.$users->firstItem().' al  '.$users->lastItem().' de '.$users->total().' registros'}}
+            {{ $users->links('',['class'=>'clearfix']) }}
+          @else
+            No hay registros
+          @endif
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
 @endsection
 
 @section('script')
+  <script src="{{ url('js/comun.js') }}"></script>
   <script src="{{ url('js/user.js') }}"></script>
 @endsection

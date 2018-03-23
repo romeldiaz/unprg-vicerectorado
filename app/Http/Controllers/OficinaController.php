@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\OficinaRequest;
 use App\Oficina;
+
 
 class OficinaController extends Controller
 {
@@ -12,15 +14,13 @@ class OficinaController extends Controller
         return redirect('oficinas/create');
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $oficinas = Oficina::all();
-        return view('oficinas.index', [
-          'oficinas'=>$oficinas
-        ]);
+        $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'asc')->paginate(5);
+        return view('oficinas.index', compact('oficinas'));
     }
 
-    public function store(Request $request)
+    public function store(OficinaRequest $request)
     {
         Oficina::create($request->all());
         return redirect('oficinas');
@@ -31,17 +31,14 @@ class OficinaController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-      $oficinas = Oficina::all();
       $oficina = Oficina::findOrFail($id);
-      return view('oficinas.index', [
-        'oficinas' => $oficinas,
-        'oficina' => $oficina
-      ]);
+      $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'asc')->paginate(5);
+      return view('oficinas.index', compact('oficinas', 'oficina'));
     }
 
-    public function update(Request $request, $id)
+    public function update(OficinaRequest $request, $id)
     {
       $oficina = Oficina::findOrFail($id);
       $oficina->update($request->all());
@@ -54,4 +51,5 @@ class OficinaController extends Controller
         $oficina->delete();
         return redirect('oficinas');
     }
+
 }
