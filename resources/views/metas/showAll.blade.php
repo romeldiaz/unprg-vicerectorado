@@ -41,7 +41,7 @@
           <td>
             <div class="d-flex flex-row-reverse">
               <div class="form-inline">
-				{{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }}
+				{{--  {{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }}  --}}
 				{{--  {{ route('meta.show', $meta->id)}}  --}}
               </div>
             </div>

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\MetaRequest;
+use App\Http\Requests\MetaStoreRequest;
+use App\Http\Requests\MetaUpdateRequest;
 
 use App\Meta;
 use App\Actividad;
@@ -20,7 +21,7 @@ class MetaController extends Controller
      */
     public function index()
     {
-		return redirect('metas/all');
+		return redirect()->route('metas.all');
 	}
 	
 	public function showAll(){
@@ -55,15 +56,16 @@ class MetaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MetaRequest $request)
+    public function store(MetaStoreRequest $request)
     {
 		$meta = Meta::create($request->all());
-		$meta = Meta::find($meta->id);
+
+		// $meta = Meta::find($meta->id);
 		
 		// $actividad = Actividad::where('id', $meta->actividad->id);
 
 		// Responsables
-		$meta->responsables()->attach($request->get('responsables'));
+		// $meta->responsables()->attach($request->get('responsables'));
 		
 		return redirect()->route('metas.edit', $meta->id)
 						->with('info', 'Meta creada con éxito');
@@ -77,9 +79,10 @@ class MetaController extends Controller
      */
     public function show($id)
     {
-        $meta = Meta::findOrFail($id);
+        // $meta = Meta::findOrFail($id);
 		
-		return view ('metas.show', compact('meta'));
+		// return view ('metas.show', compact('meta')); 
+		return 'HOLA';
     }
 
     /**
@@ -103,7 +106,7 @@ class MetaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MetaRequest $request, $id)
+    public function update(MetaUpdateRequest $request, $id)
     {
         $meta = Meta::find($id);
 		
@@ -125,6 +128,6 @@ class MetaController extends Controller
     {
         Actividad::find($id)->delete();
 		
-		return back()->with('info-delete', 'Eliminado correctamente'); 
+		return back()->with('info-delete', 'Eliminado correctamente');
 	}
 }

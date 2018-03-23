@@ -35,9 +35,9 @@
 					<td>
 						<div class="d-flex flex-row-reverse">
 							<div class="form-inline">
-								{{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }} {{ link_to_action('MetaController@edit',
-								'Editar', $meta->id, ['class'=>'btn btn-sm btn-success mr-1']) }} {{ Form::open(['action'=>['MetaController@destroy',
-								$meta->id], 'method'=>'DELETE'])}} {{ Form::submit('Borrar', ['class'=>'btn btn-sm btn-secondary']) }} {{ Form::close()}}
+								{{--  {{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }}   --}}
+								{{ link_to_action('MetaController@edit', 'Editar', $meta->id, ['class'=>'btn btn-sm btn-success mr-1']) }} {{ Form::open(['action'=>['MetaController@destroy', $meta->id], 'method'=>'DELETE'])}} 
+								{{ Form::submit('Borrar', ['class'=>'btn btn-sm btn-secondary']) }} {{ Form::close()}}
 							</div>
 						</div>
 					</td>

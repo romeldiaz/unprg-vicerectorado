@@ -25,8 +25,9 @@ Route::post('actividades/post_js', 'ActividadController@post_js');
 Route::get('misActividades', 'ActividadController@misActividades');
 Route::get('actividades/all', 'ActividadController@showAll');
 Route::get('actividades/my', 'ActividadController@showMy');
-Route::resource('actividades', 'ActividadController');
+Route::resource('actividades', 	'ActividadController');
 Route::resource('responsables', 'ResponsableController');
+Route::resource('gastos', 		'GastoController');
 Route::get('javascript', 'JavascriptController@index');
 Route::post('javascript', 'JavascriptController@funciones');
 
@@ -36,11 +37,6 @@ Route::post('javascript', 'JavascriptController@funciones');
 
 Route::get('metas/all', 	'MetaController@showAll')	->name('metas.all');
 Route::get('metas/my', 		'MetaController@showMy')	->name('metas.my');
+Route::resource('metas', 		'MetaController');
 // Route::get('actividades/{actividad}/metas/create', 		'MetaController@create')->name('metas.create');
 // Route::get('actividades/{actividad}/metas/edit/{meta}', 'MetaController@edit')	->name('metas.edit');
-Route::resource('metas', 'MetaController', ['except' => [
-	// 'index', 
-	// 'create', 
-	// 'edit',
-	// 'show'
-]]);

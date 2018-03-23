@@ -26,10 +26,18 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+						<li class="nav-item active">
+							<a class="nav-link" href="{{route('users.index')}}">Usuarios <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="{{route('actividades.index')}}">Actividades</a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="{{route('metas.index')}}">Metas</a>
+						</li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Meta extends Model
 {
 	use SoftDeletes; //habilita borrado suave (borrado por software)
-	protected $dates = ['deleted_at', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin'];
+	protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class Meta extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin', 'producto', 'presupuesto', 'estado', 'actividad_id'
+        'nombre', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin', 'producto', 'presupuesto', 'estado', 'actividad_id', 'creador_id'
 	];
 	
 	protected $table = 'metas';

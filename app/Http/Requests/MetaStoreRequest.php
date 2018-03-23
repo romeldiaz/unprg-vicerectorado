@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MetaRequest extends FormRequest
+class MetaStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,14 +26,14 @@ class MetaRequest extends FormRequest
         return [
 			'nombre' 				=> 'required|max:255',
 			'fecha_inicio_esperada' => 'required|date',
-			'fecha_inicio' 			=> 'date',
+			'fecha_inicio' 			=> 'nullable|date',
 			'fecha_fin_esperada' 	=> 'required|date',
-			'fecha_fin' 			=> 'date',
+			'fecha_fin' 			=> 'nullable|date',
 			'producto' 				=> 'required|max:255',
 			'presupuesto' 			=> 'required|numeric',
 			'estado' 				=> 'required|in:I,F',
 			'actividad_id' 			=> 'required|integer',
-			'responsables'			=> 'required|array'
+			'creador_id'			=> 'required|integer'
         ];
     }
 }
