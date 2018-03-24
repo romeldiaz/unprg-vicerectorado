@@ -204,7 +204,7 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{ url('perfil') }}" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ route('logout') }}" class="btn btn-default btn-flat"
@@ -266,22 +266,24 @@ desired effect
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
+        <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="{{ url('users') }}"><i class="fa fa-link"></i> <span>Usuarios</span></a></li>
-        <li><a href="{{ url('oficinas') }}"}}><i class="fa fa-link"></i> <span>Oficinas</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Actividades</span>
+        <li class="@yield('sidebar_page_usuarios', '')"><a href="{{ url('users') }}"><i class="fa fa-user"></i> <span>Usuarios</span></a></li>
+        <li class="@yield('sidebar_page_oficina', '')"><a href="{{ url('oficinas') }}"}}><i class="fa fa-institution"></i> <span>Oficinas</span></a></li>
+        <li class="@yield('sidebar-page-actividades', 'treeview')">
+          <a href="#"><i class="fa fa-magic"></i> <span>Actividades</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ url('actividades/asignaciones') }}">Asignaciones</a></li>
-            <li><a href="{{ url('actividades/creaciones') }}">Creaciones</a></li>
-            <li><a href="{{ url('actividades/monitoreos')}}">Monitoreos</a></li>
+            <li class="@yield('sidebar-page-actividades-asignaciones', '')"><a href="{{ url('actividades/asignaciones') }}"><i class="fa fa-circle-o"></i> <span>Asignaciones</span></a></li>
+            <li class="@yield('sidebar-page-actividades-creaciones', '')"><a href="{{ url('actividades/creaciones') }}"><i class="fa fa-circle-o"></i> <span>Creaciones</span></a></li>
+            <li class="@yield('sidebar-page-actividades-monitoreos', '')"><a href="{{ url('actividades/monitoreos')}}"><i class="fa fa-circle-o"></i> <span>Monitoreos</span></a></li>
           </ul>
         </li>
+
+        <li class="@yield('sidebar_page_config', '')"><a href="#"}}><i class="fa fa-link"></i> <span>Config</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

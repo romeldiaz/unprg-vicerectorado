@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+@section('sidebar-page-actividades', 'active treeview')
+@section('sidebar-page-actividades-asignaciones', 'active')
+
 @section('content')
 <div class="row">
   <div class="col col-sm-12">

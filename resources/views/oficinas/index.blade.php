@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('sidebar_page_oficina', 'active')
+
 @section('content')
   <div class="row">
     <div class="col col-sm-12 col-md-4 mb-5">

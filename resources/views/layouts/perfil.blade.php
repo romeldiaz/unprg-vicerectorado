@@ -1,5 +1,5 @@
 @extends('layouts.main')
 
 @section('content')
-holla
+  @include('partials.menuPerfil')
 @endsection

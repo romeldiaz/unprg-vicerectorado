@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+@section('sidebar-page-actividades', 'active treeview')
+@section('sidebar-page-actividades-creaciones', 'active')
+
 @section('content')
 <div class="row">
   <div class="col col-sm-12">
@@ -43,8 +46,8 @@
               <td>{{$actividad->fecha_inicio}}</td>
               <td>{{$actividad->presupuesto}}</td>
               <td>{{$actividad->creador_id}}</td>
-              <td>
-                {{ Form::open(['action'=>['ActividadController@destroy', $actividad->id], 'method'=>'DELETE'])}}
+              <td >
+                {{ Form::open(['action'=>['ActividadController@destroy', $actividad->id], 'method'=>'DELETE', 'style'=>'margin:0'])}}
                   <a href="{{ url('actividades/'.$actividad->id) }}" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>
                   <a href="{{ url('actividades/'.$actividad->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
                   <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>

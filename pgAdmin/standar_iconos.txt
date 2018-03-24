@@ -1,0 +1,5 @@
+standar de iconos
+oficinas: fa-institution
+usuarios:  fa-user
+actividades: fa-magic
+asignaciones: fa-chain

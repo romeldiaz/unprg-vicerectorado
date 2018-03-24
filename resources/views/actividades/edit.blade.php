@@ -1,18 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.main')
+
 
 @section('content')
 <div class="row">
-  <div class="col-2">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action" href="{{ url('actividades/all') }}">Asignaciones</a>
-      <a class="list-group-item list-group-item-action active" href="{{ url('actividades/my') }}">Mis Actividades</a>
-    </div>
-
-    <div class="alert alert-warning mt-3" role="alert">
-      Nota: En este formulario puedes editar las actividades que solo tu has creado.
-    </div>
-  </div>
-  <div class="col-10">
+  <div class="col col-sm-12">
     @include('partials.myAlertErrors')
     {{ Form::model($actividad, ['action'=>['ActividadController@update', $actividad->id], 'method'=>'PUT']) }}
       <div class="row">
@@ -62,7 +53,7 @@
 
           <div class="d-flex flex-row-reverse">
             <div class="form-inline mt-2">
-              {{ link_to('actividades/my','Cancelar',['class'=>'btn btn-sm btn-secondary mr-1']) }}
+              {{ link_to('actividades/creaciones','Cancelar',['class'=>'btn btn-sm btn-secondary mr-1']) }}
               {{ Form::submit('Editar', ['class'=>'btn btn-sm btn-success']) }}
             </div>
           </div>

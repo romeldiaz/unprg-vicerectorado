@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('sidebar_page_usuarios', 'active')
+
 @section('content')
 
 <div class="row">
