@@ -2,4 +2,6 @@ standar de iconos
 oficinas: fa-institution
 usuarios:  fa-user
 actividades: fa-magic
-asignaciones: fa-chain
+asignaciones: fa-code-fork
+creaciones: fa-magic
+monitoreos: fa-crosshairs

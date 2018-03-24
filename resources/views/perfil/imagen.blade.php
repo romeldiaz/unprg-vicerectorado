@@ -1,6 +1,7 @@
 @extends('layouts.perfil')
 
 @section('content2')
+@include('partials.myAlertErrors')
 <div class="box box-success">
   <div class="box-header with-border">
     <h3 class="box-title">Imagen</h3>

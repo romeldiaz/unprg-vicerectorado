@@ -18,21 +18,6 @@ class PerfilController extends Controller
       return view('perfil.index', compact('user'));
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
     public function edit()//vista para editar datos del usuario
     {
       $user = User::findOrFail(Auth::user()->id);
@@ -45,10 +30,21 @@ class PerfilController extends Controller
       return view('perfil.imagen', compact('user'));
     }
 
-    public function postImagen()//vista para editar imagen de usuario
+    public function postImagen(Request $request)//vista para editar imagen de usuario
     {
-      $user = User::findOrFail(Auth::user()->id);
-      return view('perfil.imagen', compact('user'));
+      $this->validate($request, ['files'=>'required'], ['files.required'=>'Seleccione una foto para subir']);
+
+      if($request->hasFile('files')){
+        $nombre_original = $request->file('files')[0]->getClientOriginalName();
+        $pos = strrpos($nombre_original, '.');//encuentra la ultima coicidencia
+        $formato = substr($nombre_original, $pos, strlen($nombre_original));//extra el string de formato: .jpg
+        $nombre_nuevo = sha1(Auth::user()->id).$formato;//nombre 'id_ecriptado.formato'
+        $path = $request->file('files')[0]->move('images/profile', $nombre_nuevo);
+        $user = User::findOrFail(Auth::user()->id);
+        $user->imagen = $nombre_nuevo;
+        $user->save();
+      }
+      return redirect('perfil');
     }
 
     public function getPassword(){

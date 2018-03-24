@@ -13,17 +13,18 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+      Schema::create('users', function (Blueprint $table) {
+      $table->increments('id');
 			$table->string('nombres', 100);
 			$table->string('paterno', 50);
 			$table->string('materno', 50);
 			$table->string('cuenta');
 			$table->string('password');
 			$table->rememberToken();
-			$table->boolean('jefe');
+			$table->boolean('jefe')->nullable();
+      $table->string('imagen', 255)->nullable();
 			$table->unsignedInteger('oficina_id');
-			
+
 			// SoftDelete
 			$table->softDeletes();
 

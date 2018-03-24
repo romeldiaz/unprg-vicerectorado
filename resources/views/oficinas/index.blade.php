@@ -84,5 +84,4 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
-  <script src="{{ url('js/oficina.js') }}"></script>
 @endsection

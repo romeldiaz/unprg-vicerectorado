@@ -13,15 +13,16 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
 		factory(App\User::class, 25)->create();
-		
+
 		App\User::create([
-			'nombres' => 'Jefferson',
-			'paterno' => 'Tejada',
-			'materno' => 'Senmache',
-			'cuenta' => 'jefryts',
-			'password' => Hash::make('12345'),
+			'nombres' => 'Romel Hammerlin',
+			'paterno' => 'Diaz',
+			'materno' => 'Ramos',
+			'cuenta' => 'rodira',
+			'password' => Hash::make('123'),
 			'remember_token' => str_random(10),
 			'jefe' => true,
+      'imagen' => 'default.jpg',
 			'oficina_id' => rand(1,10),
 		]);
     }

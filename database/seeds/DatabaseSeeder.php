@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ActividadesTableSeeder::class);
         $this->call(MetasTableSeeder::class);
         $this->call(GastosTableSeeder::class);
+        $this->call(NotificacionesTableSeeder::class);
     }
 }

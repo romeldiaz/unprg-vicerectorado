@@ -24,9 +24,7 @@ Route::get('perfil/imagen', 'PerfilController@getImagen');
 Route::post('perfil/imagen', 'PerfilController@postImagen');
 Route::get('perfil/password', 'PerfilController@getPassword');
 Route::post('perfil/password', 'PerfilController@postPassword');
-
 Route::get('perfil/edit', 'PerfilController@edit');
-
 Route::resource('perfil', 'PerfilController');
 
 Route::post('users/post_js', 'UserController@post_js');

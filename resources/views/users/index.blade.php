@@ -63,7 +63,13 @@
               <td>{{$user->paterno}}</td>
               <td>{{$user->materno}}</td>
               <td>{{$user->cuenta}}</td>
-              <td>{{$user->jefe}}</td>
+              <td>
+                @if($user->jefe)
+                  <i class="text-success glyphicon glyphicon-king"></i>
+                @else
+                  <i class="text-info glyphicon glyphicon-pawn"></i>
+                @endif
+              </td>
               <td>{{$user->oficina_id}}</td>
               <td>
                 {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}

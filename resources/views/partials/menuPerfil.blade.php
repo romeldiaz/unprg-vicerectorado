@@ -2,7 +2,7 @@
   <div class="col col-sm-4">
     <div class="box box-primary">
           <div class="box-body box-profile">
-            <img class="profile-user-img img-responsive img-circle" src="{{ url('dist/img/user2-160x160.jpg') }}" alt="User profile picture">
+            <img class="profile-user-img img-responsive img-circle" src="{{ url('images/profile/'.Auth::user()->imagen) }}" height="300px" style="height: 200px; width:180px;" alt="User profile picture">
 
             <h3 class="profile-username text-center">{{ $user->nombres.' '.$user->paterno.' '.$user->materno }}</h3>
             @if($user->jefe)
