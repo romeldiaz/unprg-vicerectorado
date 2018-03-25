@@ -15,9 +15,9 @@ function show_info_user(user_id){
         var actividades = response.actividades;
         var metas = response.metas;
         var puntaje = response.puntaje;
-        $("#user-nombres").html(user.nombres);
-        $("#user-paterno").html(user.paterno);
-        $("#user-materno").html(user.materno);
+
+        $("#user-fullname").html(user.nombres+" "+user.paterno+" "+user.materno);
+        $("#user-puesto").html(user.jefe?'Jefe':'Usuario');
         $("#user-oficina").html(response.oficina.nombre);
         $("#user-actividades").html(actividades['total']);
         $("#user-metas").html(metas.total);

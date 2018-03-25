@@ -42,6 +42,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('notificaciones');
         Schema::dropIfExists('users');
     }
 }

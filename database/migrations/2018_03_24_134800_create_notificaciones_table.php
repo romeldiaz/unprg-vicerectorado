@@ -18,6 +18,7 @@ class CreateNotificacionesTable extends Migration
             $table->date('fecha');
             $table->string('tipo', 255);
             $table->string('enlace', 255);
+            $table->boolean('read');
             //$table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('user_id');

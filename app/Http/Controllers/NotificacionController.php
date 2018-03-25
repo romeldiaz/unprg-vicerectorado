@@ -14,7 +14,7 @@ class NotificacionController extends Controller
      */
     public function index()
     {
-        //
+        return 'index';
     }
 
     /**
@@ -46,7 +46,7 @@ class NotificacionController extends Controller
      */
     public function show($id)
     {
-        //
+        return 'show';
     }
 
     /**

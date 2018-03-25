@@ -27,6 +27,8 @@ Route::post('perfil/password', 'PerfilController@postPassword');
 Route::get('perfil/edit', 'PerfilController@edit');
 Route::resource('perfil', 'PerfilController');
 
+Route::resource('notificaciones', 'NotificacionController');
+
 Route::post('users/post_js', 'UserController@post_js');
 Route::resource('users', 'UserController');
 

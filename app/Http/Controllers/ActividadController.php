@@ -17,7 +17,7 @@ class ActividadController extends Controller
     public function __construct(){
       $this->middleware('auth');
     }
-    
+
     public function index()
     {
       return redirect('actividades/asignaciones');
@@ -136,10 +136,11 @@ class ActividadController extends Controller
             if($request->oficina_id==0){
               $usuarios = User::where('nombres', 'like', '%'.$request->usuario_nombre.'%')->get();
             }else{
-              $todos = User::where('oficina_id', $request->oficina_id);
-              $usuarios = $todos->where('nombres', 'like', '%'.$request->usuario_nombre.'%')->get();
+              $users = User::search($request->usuario_nombre)
+                ->where('oficina_id', $request->oficina_id)
+                ->orderBy('id', 'asc')->get();
             }
-            return $usuarios;
+            return $users;
             break;
 
         case 'consultar_responsables':

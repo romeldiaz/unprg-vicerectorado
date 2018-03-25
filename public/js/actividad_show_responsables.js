@@ -68,8 +68,8 @@ function search_usuario_by_nombre(usuario_nombre){
       for(var i in resultados){
         html += '<tr>';
           html += '<td>'+resultados[i].id+'</td>';
-          html += '<td>'+resultados[i].nombres+'</td>';
-          html += '<td><a href="javascript: seleccionar_uno('+resultados[i].id+')" class="btn btn-sm btn-secondary"><span id="span_'+resultados[i].id+'" class="'+marcar_responsable(resultados[i])+'"></td>';
+          html += '<td>'+resultados[i].nombres+' '+resultados[i].paterno+' '+resultados[i].materno+'</td>';
+          html += '<td class="text-right"><a href="javascript: seleccionar_uno('+resultados[i].id+')" "><span id="span_'+resultados[i].id+'" class="'+marcar_responsable(resultados[i])+'"></td>';
         html += '</tr>';
       }
       $("#search_results").html(html);
@@ -80,23 +80,22 @@ function search_usuario_by_nombre(usuario_nombre){
 function marcar_responsable(usuario){
   for(var i in responsables){
     if(responsables[i].id===usuario.id){
-      return "icon-checkmark";
-      break;
+      return "fa fa-check-square-o";
     }
   }
-  return "icon-plus";
+  return "fa fa-square-o";
 }
 
 function span_check(id){//marca
-  var span = $("#span_"+id).attr('class','icon-checkmark');;
+  var span = $("#span_"+id).attr('class','fa fa-check-square-o');;
 }
 
 function span_uncheck(id){//desmarca
-  var span = $("#span_"+id).attr('class','icon-plus');;
+  var span = $("#span_"+id).attr('class','fa fa-square-o');;
 }
 
 function seleccionar_varios(usuario_id){
-  if($("#span_"+usuario_id).attr('class')=='icon-plus'){
+  if($("#span_"+usuario_id).attr('class')=='fa fa-square-o'){
     for(var i in resultados){
       agregar_a_responsables(resultados[i]);
       span_check(resultados[i].id);
@@ -113,7 +112,7 @@ function seleccionar_varios(usuario_id){
 }
 
 function seleccionar_uno(usuario_id){
-  if($("#span_"+usuario_id).attr('class')=='icon-plus'){
+  if($("#span_"+usuario_id).attr('class')=='fa fa-square-o'){
     usuario = get_user(usuario_id);
     agregar_a_responsables(usuario);
     span_check(usuario_id);
@@ -131,8 +130,8 @@ function ver_seleccionados(){//acutaliza la tabla visula de responsables
     num++;
     html += '<tr>';
       html += '<td><input size="1" readonly style="border-width:0; background-color: transparent" type="text" name="usuarios[]" value="'+responsables[i].id+'"></td>';
-      html += '<td>'+responsables[i].nombres+'</td>';
-      html += '<td class="text-right"><a href="javascript: quitar_de_responsables('+responsables[i].id+')" class="btn btn-sm btn-light"><span class="icon-cross"></span></td>';
+      html += '<td>'+responsables[i].nombres+' '+responsables[i].paterno+' '+responsables[i].materno+'</td>';
+      html += '<td class="text-right"><a href="javascript: quitar_de_responsables('+responsables[i].id+')"><span class="fa fa-check-square-o"></span></td>';
     html += '</tr>';
   }
   $("#responsables_selected").html(html);
