@@ -45,8 +45,8 @@ Route::post('javascript', 'JavascriptController@funciones');
 
 
 
-Route::get('actividades/asignaciones', 'ActividadController@asignaciones')->name('metas.all');
-Route::get('actividades/creaciones', 'ActividadController@creaciones')->name('metas.my');
+// Route::get('metas/asignaciones', 'ActividadController@asignaciones')->name('metas.all');
+// Route::get('actividades/creaciones', 'ActividadController@creaciones')->name('metas.my');
 Route::resource('metas', 		'MetaController');
 // Route::get('actividades/{actividad}/metas/create', 		'MetaController@create')->name('metas.create');
 // Route::get('actividades/{actividad}/metas/edit/{meta}', 'MetaController@edit')	->name('metas.edit');

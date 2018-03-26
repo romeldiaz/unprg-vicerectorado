@@ -43,11 +43,12 @@ class Actividad extends Model
 		return $this->belongsTo(User::class, 'creador_id');
 	}
 
-  public function scopeSearch($query, $search){
-    $search = preg_replace('[\s+]','', $search);//quitar espacios
-    $search = strtolower($search);//convertir todo a minusculas
-    if($search != ""){
-      $query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
-    }
-  }
+  	public function scopeSearch($query, $search){
+		$search = preg_replace('[\s+]','', $search);//quitar espacios
+		$search = strtolower($search);//convertir todo a minusculas
+		
+		if($search != ""){
+			$query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
+		}
+	}
 }

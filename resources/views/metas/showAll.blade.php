@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
 <div class="row">
@@ -15,16 +15,14 @@
     <table class="table table-hover table-sm">
       <thead>
         <tr>
-          <th>N°</th>
+          <th class="text-center" style="">N°</th>
           <th>Nombre</th>
           <th>Fecha</th>
           <th>Presupuesto</th>
           {{--  <th>By</th>  --}}
-          <th>
-            <div class="d-flex flex-row-reverse">
-              {{ link_to('metas/create', 'Crear', ['class'=>'btn btn-sm btn-info']) }}
-            </div>
-          </th>
+          <th class="text-center" style="width: 150px">
+			{{ link_to('metas/create', 'Crear', ['class'=>'btn btn-sm btn-primary']) }}
+		</th>
         </tr>
       </thead>
       <tbody>
@@ -38,13 +36,8 @@
           <td>{{ date("d/m/Y", strtotime($meta->fecha_inicio))}}</td>
           <td>{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
           {{--  <td>{{$meta->creador_id}}</td>  --}}
-          <td>
-            <div class="d-flex flex-row-reverse">
-              <div class="form-inline">
-				{{--  {{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }}  --}}
-				{{--  {{ route('meta.show', $meta->id)}}  --}}
-              </div>
-            </div>
+          <td class="text-center">
+            <a href="{{route('metas.show', $meta->id)}}" title="Ver" class="btn btn-sm btn-info text-uppercase"><i class="icon-search"></i></a>
           </td>
 		</tr>
 		@endforeach

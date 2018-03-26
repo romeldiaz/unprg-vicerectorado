@@ -276,7 +276,90 @@
       <!-- /.tab-pane -->
 
       <div class="tab-pane" id="metas">
-        Metas
+        <div class="box">
+			<div class="box-header with-border">
+				<div class="box-title">
+					Metas
+					<a href="#" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></a>
+				</div>
+				<div class="box-tools">
+					{{-- @if(isset($user)) {{ Form::open(['action'=>['UserController@edit', $user->id], 'method'=>'GET'])}} @else {{ Form::open(['action'=>'UserController@create',
+					'method'=>'GET'])}} @endif
+					<div class="input-group input-group-sm" style="width: 150px;">
+						{{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
+						<div class="input-group-btn">
+							<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+						</div>
+					</div>
+					{{ Form::close() }} --}}
+				</div>
+			</div>
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-sm table-hover table-fixed">
+					<thead>
+						<tr>
+							<th class="text-center">N°</th>
+							<th class="text-center">Nombre</th>
+							<th class="text-center">Fecha de Inicio</th>
+							<th class="text-center">Fecha Final</th>
+							<th class="text-center">Estado</th>
+							<th class="text-center">Presupuesto</th>
+							<th class="text-center" style="width: 150px"></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach ($actividad->metas as $meta)
+						<tr>
+							<td class="text-center">{{$meta->id}}</td>
+							<td>{{$meta->nombre}}</td>
+							<td class="text-center">{{ date("d/m/Y", strtotime($meta->fecha_inicio))}}</td>
+							<td class="text-center">
+								@if ($meta->estado == 'F') {{ date("d/m/Y", strtotime($meta->fecha_fin))}} @endif
+							</td>
+							<td class="text-center">
+								@if ($meta->estado == 'I')
+								<span class="label label-primary">Iniciado</span> 
+								@endif @if ($meta->estado == 'E')
+								<span class="label label-warning">En proceso</span> 
+								@endif @if ($meta->estado == 'F')
+								<span class="label label-success">Finalizado</span> 
+								@endif
+							</td>
+							<td class="text-right">{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
+							<td class="text-center">
+								<a href="{{route('metas.show', $meta->id)}}" title="Ver" class="btn btn-xs btn-flat btn-info"><i class="fa fa-eye"></i></a>
+								<a class="btn btn-xs btn-flat btn-success" href="{{route('metas.edit', $meta->id)}}"><i class="fa fa-pencil"></i></a>
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="modalEliminarLabel">Eliminar Meta</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+												¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> 
+												{!! Form::open(['route' =>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+												<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						@endforeach
+						<tr>
+							<th class="text-right" colspan="5">Total</th>
+							<td class="text-right pr-3">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
       </div>
       <!-- /.tab-pane -->
     </div>

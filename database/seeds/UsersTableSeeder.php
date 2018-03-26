@@ -22,8 +22,20 @@ class UsersTableSeeder extends Seeder
 			'password' => Hash::make('123'),
 			'remember_token' => str_random(10),
 			'jefe' => true,
-      'imagen' => 'default.jpg',
+			'imagen' => 'default.jpg',
 			'oficina_id' => rand(1,10),
+		]);
+
+		App\User::create([
+			'nombres' 			=> 'Jerfferson',
+			'paterno' 			=> 'Tejada',
+			'materno' 			=> 'Senmache',
+			'cuenta' 			=> 'jefryts',
+			'password' 			=> Hash::make('12345'),
+			'remember_token' 	=> str_random(10),
+			'jefe' 				=> true,
+			'imagen' 			=> 'default.jpg',
+			'oficina_id' 		=> rand(1,10),
 		]);
     }
 }

@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Gasto::class, function (Faker $faker) {
     return [
 		'descripcion' => $faker->sentence(3),
-		'monto' => $faker->randomFloat(2, 1000, 10000),
+		'monto' => $faker->randomFloat(2, 10, 1000),
 		'numero' => $faker->numerify('######'),
 		'fecha' => $faker->date('Y-m-d', 'now + 30 days'),
 		'tipo' => $faker->randomElement(['B', 'S']),

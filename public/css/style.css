@@ -1,4 +1,4 @@
-.table tbody td, .table tbody th, .table thead th {
+/* .table tbody td, .table tbody th, .table thead th {
 	vertical-align: middle;
 }
 
@@ -13,4 +13,8 @@ tbody tr:first-child .presupuesto {
 
 .table-fixed {
 	table-layout: fixed;
+} */
+
+input.datepicker {
+	padding: 6px 12px;
 }

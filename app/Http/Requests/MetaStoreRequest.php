@@ -26,12 +26,9 @@ class MetaStoreRequest extends FormRequest
         return [
 			'nombre' 				=> 'required|max:255',
 			'fecha_inicio_esperada' => 'required|date',
-			'fecha_inicio' 			=> 'nullable|date',
 			'fecha_fin_esperada' 	=> 'required|date',
-			'fecha_fin' 			=> 'nullable|date',
 			'producto' 				=> 'required|max:255',
 			'presupuesto' 			=> 'required|numeric',
-			'estado' 				=> 'required|in:I,F',
 			'actividad_id' 			=> 'required|integer',
 			'creador_id'			=> 'required|integer'
         ];

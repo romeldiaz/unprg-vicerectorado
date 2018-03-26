@@ -30,12 +30,29 @@ class User extends Authenticatable
 
 
     public function scopeSearch($query, $search){
-      $search = preg_replace('[\s+]','', $search);//quitar espacios
-      $search = strtolower($search);//convertir todo a minusculas
-      if($search != ""){
-        $query->where(\DB::raw("LOWER(CONCAT(nombres, paterno, materno))"), "LIKE", "%$search%")
-        ->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
-      }
-    }
+		$search = preg_replace('[\s+]','', $search);//quitar espacios
+		$search = strtolower($search);//convertir todo a minusculas
+		if($search != ""){
+			$query->where(\DB::raw("LOWER(CONCAT(nombres, paterno, materno))"), "LIKE", "%$search%")
+			->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
+		}
+	}
+	
 
+	// Added
+
+	public function actividades()
+	{
+		return $this->belongsToMany(Actividad::class, 'responsables');
+	}
+
+	public function responsables()
+	{
+		return $this->hasMany(Responsable::class);
+	}
+
+	public function oficina()
+	{
+		return $this->belongsTo(Oficina::class);
+	}
 }

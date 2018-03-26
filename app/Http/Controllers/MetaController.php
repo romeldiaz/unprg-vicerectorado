@@ -9,11 +9,22 @@ use App\Http\Requests\MetaUpdateRequest;
 use App\Meta;
 use App\Actividad;
 use App\Responsable;
+use App\Tipo_documento;
 use App\User;
 use Auth;
 
 class MetaController extends Controller
 {
+	/**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+	}
+	
 	/**
      * Display a listing of the resource.
      *
@@ -21,20 +32,20 @@ class MetaController extends Controller
      */
     public function index()
     {
-		return redirect()->route('metas.all');
+		return redirect()->route('metas.create');
 	}
 	
-	public function showAll(){
-		// Muestra las metas a las que a sido asignado como responsable
-		$responsables = Responsable::where('user_id', Auth::user()->id)->get();
-      	return view('metas.showAll', compact('responsables'));
-    }
+	// public function showAll(){
+	// 	// Muestra las metas a las que a sido asignado como responsable
+	// 	$responsables = Responsable::where('user_id', Auth::user()->id)->get();
+    //   	return view('metas.showAll', compact('responsables'));
+    // }
 
-    public function showMy(){
-      	// Muestra las metas creadas por el usuario
-      	$metas = Meta::where('creador_id', Auth::user()->id)->get();
-      	return view('metas.showMy', compact('metas'));
-    }
+    // public function showMy(){
+    //   	// Muestra las metas creadas por el usuario
+    //   	$metas = Meta::where('creador_id', Auth::user()->id)->get();
+    //   	return view('metas.showMy', compact('metas'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -43,10 +54,8 @@ class MetaController extends Controller
      */
     public function create()
     {
-		// $actividad = Actividad::findOrFail($id)->first();
 		$actividades = User::find(Auth::user()->id)->actividades;
-		  
-        // return view('metas.create', compact('actividad'));
+		
         return view('metas.create', compact('actividades'));
     }
 
@@ -79,10 +88,10 @@ class MetaController extends Controller
      */
     public function show($id)
     {
-        // $meta = Meta::findOrFail($id);
+		$meta = Meta::findOrFail($id);
+		$documentos = Tipo_documento::all();
 		
-		// return view ('metas.show', compact('meta')); 
-		return 'HOLA';
+		return view ('metas.show', compact('meta', 'documentos'));
     }
 
     /**

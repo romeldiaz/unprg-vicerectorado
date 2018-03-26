@@ -52,4 +52,9 @@ class Meta extends Model
 	{
 		return $this->belongsTo(User::class, 'creador_id');
 	}
+
+	public function monitor()
+	{
+		return $this->belongsTo(User::class, 'monitor_id');
+	}
 }

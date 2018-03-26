@@ -17,10 +17,17 @@ class Oficina extends Model
     //protected $guarded = ['id'];
 
     public function scopeSearch($query, $search){
-      $search = preg_replace('[\s+]','', $search);//quitar espacios
-      $search = strtolower($search);//convertir todo a minusculas
-      if($search != ""){
-        $query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
-      }
-    }
+		$search = preg_replace('[\s+]','', $search);//quitar espacios
+		$search = strtolower($search);//convertir todo a minusculas
+		if($search != ""){
+			$query->where(\DB::raw("LOWER(nombre)"), "LIKE", "%$search%");
+		}
+	}
+	
+	// Added
+
+	public function users()
+	{
+		return $this->hasMany(User::class);
+	}
 }

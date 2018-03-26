@@ -15,11 +15,10 @@
 					<th>Nombre</th>
 					<th>Fecha</th>
 					<th>Presupuesto</th>
-					{{--  <th>By</th>  --}}
-					<th>
-						<div class="d-flex flex-row-reverse">
-							{{ link_to('metas/create', 'Crear', ['class'=>'btn btn-sm btn-info']) }}
-						</div>
+					{{--
+					<th>By</th> --}}
+					<th class="text-center" style="width: 150px">
+						{{ link_to('metas/create', 'Crear', ['class'=>'btn btn-sm btn-primary']) }}
 					</th>
 				</tr>
 			</thead>
@@ -31,13 +30,30 @@
 					<td>{{$meta->nombre}}</td>
 					<td>{{ date("d/m/Y", strtotime($meta->fecha_inicio))}}</td>
 					<td>{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
-					{{--  <td>{{$meta->creador_id}}</td>  --}}
-					<td>
-						<div class="d-flex flex-row-reverse">
-							<div class="form-inline">
-								{{--  {{ link_to_action('MetaController@show', 'Ver', $meta->id, ['class'=>'btn btn-sm btn-dark mr-1']) }}   --}}
-								{{ link_to_action('MetaController@edit', 'Editar', $meta->id, ['class'=>'btn btn-sm btn-success mr-1']) }} {{ Form::open(['action'=>['MetaController@destroy', $meta->id], 'method'=>'DELETE'])}} 
-								{{ Form::submit('Borrar', ['class'=>'btn btn-sm btn-secondary']) }} {{ Form::close()}}
+					{{--
+					<td>{{$meta->creador_id}}</td> --}}
+					<td class="text-center">
+						<a href="{{route('metas.show', $meta->id)}}" title="Ver" class="btn btn-sm btn-info text-uppercase"><i class="icon-search"></i></a>
+						<a href="{{route('metas.edit', $meta->id)}}" title="Editar" class="btn btn-sm btn-warning text-uppercase"><i class="icon-pencil"></i></a>
+						<button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="icon-bin"></i></button>
+						<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title" id="modalEliminarLabel">Eliminar Gasto</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> 
+										{!! Form::open(['route' =>['metas.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+										<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+									</div>
+								</div>
 							</div>
 						</div>
 					</td>
@@ -49,6 +65,6 @@
 </div>
 @endsection
  
-@section('script')
-{{--  <script src="{{ url('js/meta.js') }}"></script>  --}}
+@section('script') {{--
+<script src="{{ url('js/meta.js') }}"></script> --}}
 @endsection
