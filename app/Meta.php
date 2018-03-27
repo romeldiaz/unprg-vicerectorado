@@ -18,7 +18,7 @@ class Meta extends Model
     protected $fillable = [
         'nombre', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin', 'producto', 'presupuesto', 'estado', 'actividad_id', 'creador_id'
 	];
-	
+
 	protected $table = 'metas';
 
 	public $timestamps = false;
@@ -38,10 +38,11 @@ class Meta extends Model
 		return $this->belongsToMany(Responsable::class);
 	}
 
-	// public function requisitos()
-	// {
-	// 	return $this->hasMany(Requisito::class);
-	// }
+
+	public function requisitos()//romel
+	{
+		return $this->hasMany(Requisito::class);
+	}
 
 	public function monitoreos()
 	{

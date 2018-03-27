@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notificacion;
+use Auth;
 
 class NotificacionController extends Controller
 {
@@ -14,7 +16,8 @@ class NotificacionController extends Controller
      */
     public function index()
     {
-        return 'index';
+        $notificaciones = Notificacion::where('user_id',Auth::user()->id)->paginate(5);
+        return view('notificaciones.index', compact('notificaciones'));
     }
 
     /**

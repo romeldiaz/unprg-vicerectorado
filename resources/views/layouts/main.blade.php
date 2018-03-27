@@ -18,6 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="{{ url('dist/css/skins/skin-blue.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 	@yield('css')
+	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <!--
@@ -388,6 +389,17 @@ desired effect
 	<!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+
+ <script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+ <script>
+	 //Date picker
+		 $(function () {
+			 $('.datepicker').datepicker({
+				 format: 'dd/mm/yyyy',
+				 autoclose: true
+			 })
+		 })
+ </script>
 	@yield('script')
 </body>
 </html>

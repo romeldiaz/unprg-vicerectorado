@@ -29,6 +29,10 @@ Route::resource('perfil', 'PerfilController');
 
 Route::resource('notificaciones', 'NotificacionController');
 
+Route::get('metas/{meta_id}/requisitos/create', 'RequisitoController@create')->name('requisito.create');
+Route::get('metas/{meta_id}/requisitos/{requisito_id}/edit', 'RequisitoController@edit')->name('requisito.edit');
+Route::resource('requisitos', 'RequisitoController');
+
 Route::post('users/post_js', 'UserController@post_js');
 Route::resource('users', 'UserController');
 

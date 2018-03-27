@@ -35,6 +35,7 @@
               <p class="lead mb-0">{{ $actividad->nombre }}</p>
               <label for="actividad_estado">Estado:</label>
               <span class="badge badge-pill badge-info p-1">En proceso</span>
+              total:
             </div>
           </div>
         </div>
@@ -62,8 +63,8 @@
                     <tbody>
                       <tr>
                         <td>{{ $actividad->presupuesto}}</td>
-                        <td>{{ 100 }}</td>
-                        <td>{{ $actividad->presupuesto-100}}</td>
+                        <td>{{ $actividad->metas->sum('presupuesto') }}</td>
+                        <td>{{ $actividad->presupuesto-100 - $actividad->metas->sum('presupuesto')}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -318,11 +319,11 @@
 							</td>
 							<td class="text-center">
 								@if ($meta->estado == 'I')
-								<span class="label label-primary">Iniciado</span> 
+								<span class="label label-primary">Iniciado</span>
 								@endif @if ($meta->estado == 'E')
-								<span class="label label-warning">En proceso</span> 
+								<span class="label label-warning">En proceso</span>
 								@endif @if ($meta->estado == 'F')
-								<span class="label label-success">Finalizado</span> 
+								<span class="label label-success">Finalizado</span>
 								@endif
 							</td>
 							<td class="text-right">{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
@@ -341,7 +342,7 @@
 												¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> 
+												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
 												{!! Form::open(['route' =>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
 												<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
 											</div>

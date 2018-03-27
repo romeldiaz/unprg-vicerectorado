@@ -1,4 +1,4 @@
-@extends('layouts.main') 
+@extends('layouts.main')
 @section('css')
 	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 @endsection
@@ -15,6 +15,9 @@
 				</li>
 				<li>
 					<a data-toggle="tab" href="#tab_monitoreo">Monitoreo</a>
+				</li>
+				<li>
+					<a data-toggle="tab" href="#tab_requisitos">Requisitos</a>
 				</li>
 				<li class="pull-right">
 					<a href="{{route('actividades.show', $meta->actividad->id)}}" class=""><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver</a>
@@ -41,6 +44,8 @@
 								<span class="label label-success">Finalizado</span> @endif
 							</div>
 						</div>
+
+
 					</div>
 					<div class="row">
 						<div class="col col-sm-6">
@@ -233,7 +238,7 @@
 									{!!Form::text('numero', null, ['class'=>'form-control', 'placeholder'=>'Número de documento'])!!}
 								</div>
 							</div>
-							
+
 							<div class="d-flex flex-row-reverse">
 								<div class="form-inline">
 									<a href="http://localhost:8000/users" class="btn btn-sm btn-secondary mr-1">Cancelar</a>
@@ -327,22 +332,80 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="tab-pane" id="tab_requisitos">
+					<div class="row">
+						<div class="col col-sm-12">
+					<div class="box box-primary">
+            <div class="box-header with-border">
+							<i class="ion ion-clipboard"></i>
+              <h3 class="box-title">Requisitos</h3>
+              <div class="box-tools pull-right">
+								<a href="{{ url('metas/'.$meta->id.'/requisitos/create') }}" class="btn btn-box-tool"><i class="fa fa-cog"></i></a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+							<table class="table table-hover">
+		            <thead>
+		                <tr>
+		                  <th>ID</th>
+		                  <th>Nombre</th>
+		                  <th>estado</th>
+		                  <th>observacion</th>
+		                  <th>Fecha completado</th>
+		                  <th></th>
+		                </tr>
+		            </thead>
+		            <tbody id="table-body-oficinas">
+		                @foreach($meta->requisitos as $key => $requisito)
+		                  <tr>
+		                    <td>{{ $requisito->id }}</td>
+		                    <td>{{ $requisito->nombre }}</td>
+		                    <td>
+		                      @if($requisito->estado==0)
+		                        <small class="label label-info"><i class="fa fa-clock-o"></i> En proceso</small>
+		                      @else
+		                        <small class="label label-warning"><i class="fa fa-trophy"></i> Completado</small>
+		                      @endif
+		                    </td>
+		                    <td>{{ $requisito->observacion }}</td>
+		                    <td>{{ $requisito->fecha_completado }}</td>
+		                    <th>
+		                      {{ Form::open(['action'=>['RequisitoController@destroy', $requisito->id], 'method'=>'DELETE']) }}
+		                        <a href="{{ url('metas/'.$meta->id.'/requisitos/'.$requisito->id.'/edit') }}" class="btn btn-success btn-xs btn-flat"><i class="fa fa-pencil"></i></a>
+		                        <button type="submit" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i></button>
+		                      {{ Form::close() }}
+		                    </th>
+		                  </tr>
+		                @endforeach
+		            </tbody>
+		          </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 @endsection
- 
+
 @section('script')
 <script src="{{ url('js/comun.js') }}"></script>
 <script src="{{ url('js/actividad_show.js') }}"></script>
 <script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
-	//Date picker 
+	//Date picker
 		$(function () {
-			$('.datepicker').datepicker({ 
+			$('.datepicker').datepicker({
 				format: 'dd/mm/yyyy',
-				autoclose: true 
+				autoclose: true
 			})
 		})
 </script>

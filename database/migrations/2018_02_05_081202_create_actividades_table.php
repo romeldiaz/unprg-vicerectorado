@@ -18,7 +18,8 @@ class CreateActividadesTable extends Migration
 			$table->string('nombre', 150);
 			$table->string('estado', 20)->nullable();
 
-			$table->date('fecha_creacion')->default('now()');
+			//$table->date('fecha_creacion')->default('now()');
+      $table->date('fecha_creacion')->nullable();
 			$table->decimal('presupuesto', 10, 2)->nullable();
 			$table->date('fecha_inicio')->nullable();
 			$table->date('fecha_fin_esperada')->nullable();
@@ -30,7 +31,7 @@ class CreateActividadesTable extends Migration
 			$table->string('descripcion_acta', 255)->nullable();
 			$table->unsignedInteger('creador_id');
 			$table->unsignedInteger('monitor_id');
-			
+
 			// SoftDelete
 			$table->softDeletes();
 

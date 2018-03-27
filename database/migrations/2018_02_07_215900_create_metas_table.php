@@ -52,6 +52,7 @@ class CreateMetasTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('requisitos');
         Schema::dropIfExists('monitoreos');
         Schema::dropIfExists('metas');
     }

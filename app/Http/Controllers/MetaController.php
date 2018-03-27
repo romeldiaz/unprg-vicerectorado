@@ -24,7 +24,7 @@ class MetaController extends Controller
     {
         $this->middleware('auth');
 	}
-	
+
 	/**
      * Display a listing of the resource.
      *
@@ -34,7 +34,7 @@ class MetaController extends Controller
     {
 		return redirect()->route('metas.create');
 	}
-	
+
 	// public function showAll(){
 	// 	// Muestra las metas a las que a sido asignado como responsable
 	// 	$responsables = Responsable::where('user_id', Auth::user()->id)->get();
@@ -55,7 +55,7 @@ class MetaController extends Controller
     public function create()
     {
 		$actividades = User::find(Auth::user()->id)->actividades;
-		
+
         return view('metas.create', compact('actividades'));
     }
 
@@ -67,15 +67,16 @@ class MetaController extends Controller
      */
     public function store(MetaStoreRequest $request)
     {
+
 		$meta = Meta::create($request->all());
 
 		// $meta = Meta::find($meta->id);
-		
+
 		// $actividad = Actividad::where('id', $meta->actividad->id);
 
 		// Responsables
 		// $meta->responsables()->attach($request->get('responsables'));
-		
+
 		return redirect()->route('metas.edit', $meta->id)
 						->with('info', 'Meta creada con éxito');
     }
@@ -90,7 +91,7 @@ class MetaController extends Controller
     {
 		$meta = Meta::findOrFail($id);
 		$documentos = Tipo_documento::all();
-		
+
 		return view ('metas.show', compact('meta', 'documentos'));
     }
 
@@ -118,7 +119,7 @@ class MetaController extends Controller
     public function update(MetaUpdateRequest $request, $id)
     {
         $meta = Meta::find($id);
-		
+
 		$meta->fill($request->all())->save();
 
 		$meta->responsables()->sync($request->get('responsables'));
@@ -136,7 +137,7 @@ class MetaController extends Controller
     public function destroy($id)
     {
         Actividad::find($id)->delete();
-		
+
 		return back()->with('info-delete', 'Eliminado correctamente');
 	}
 }

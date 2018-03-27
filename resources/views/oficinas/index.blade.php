@@ -84,4 +84,6 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
+
+
 @endsection
