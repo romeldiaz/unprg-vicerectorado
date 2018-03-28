@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Gasto extends Model
 {
 	use SoftDeletes; //habilita borrado suave (borrado por software)
-	protected $dates = ['deleted_at', 'fecha'];
+	protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

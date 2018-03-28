@@ -388,18 +388,8 @@ desired effect
 	<script src="{{ url('dist/js/adminlte.min.js') }}"></script>
 	<!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
-     user experience. -->
-
- <script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
- <script>
-	 //Date picker
-		 $(function () {
-			 $('.datepicker').datepicker({
-				 format: 'dd/mm/yyyy',
-				 autoclose: true
-			 })
-		 })
- </script>
+	 user experience. -->
+	
 	@yield('script')
 </body>
 </html>

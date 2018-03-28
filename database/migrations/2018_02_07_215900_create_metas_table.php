@@ -22,8 +22,8 @@ class CreateMetasTable extends Migration
 			$table->date('fecha_fin')->nullable();
 			$table->string('producto', 255);
 			$table->decimal('presupuesto', 10, 2);
-			$table->enum('estado', ['I', 'E', 'F'])->default('I');
-			// I: Iniciado - E: En Proceso - F: Finalizado
+			$table->enum('estado', ['P', 'E', 'F'])->default('P');
+			// P: Pendiente - E: En Proceso - F: Finalizado
 
 			// SoftDelete
 			$table->softDeletes();

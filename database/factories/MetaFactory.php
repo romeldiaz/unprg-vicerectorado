@@ -8,7 +8,7 @@ $factory->define(App\Meta::class, function (Faker $faker) {
 	$monitor = $rand_act->responsables()->get()->random();
     return [
         'nombre' => $faker->sentence(2),
-		'estado' => $faker->randomElement(['I', 'E', 'F']),
+		'estado' => $faker->randomElement(['P', 'E', 'F']),
 		'producto' => $faker->sentence(2),
 		'presupuesto' => $faker->randomFloat(2, 1000, 10000),
 		'fecha_inicio' => $faker->date('Y-m-d', 'now + 30 days'),
