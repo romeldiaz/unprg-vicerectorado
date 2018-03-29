@@ -31,106 +31,162 @@
           </div>
 
           <div class="col col-sm-12">
-            <div class="callout callout-purple">
-              <p class="lead mb-0">{{ $actividad->nombre }}</p>
-              <label for="actividad_estado">Estado:</label>
-              <span class="badge badge-pill badge-info p-1">En proceso</span>
-              total:
+            <div class="row">
+              <div class="col col-sm-8">
+                <div class="callout callout-purple">
+                  <p class="lead mb-0">{{ $actividad->nombre }}</p>
+                  <label for="actividad_estado">Estado:</label>
+                  <span class="badge badge-pill badge-info p-1">En proceso</span>
+                </div>
+              </div>
+              <div class="col col-sm-4">
+                <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-flag-checkered"></i></span>
+
+            <div class="info-box-content">
+              <?php
+              $total = count($actividad->metas);
+              $completadas = count($actividad->metas->where('estado', 'F'));
+              $avance = round(($completadas/$total)*100);
+              $avance =$avance.'%';
+              ?>
+              <span class="info-box-text">Metas</span>
+              <span class="info-box-number">{{ $completadas.'/'.$total }}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: {{$avance}}"></div>
+              </div>
+              <span class="progress-description">
+                {{$avance}} alcanzada!
+              </span>
             </div>
+            <!-- /.info-box-content -->
           </div>
-        </div>
+              </div>
+            </div>
 
-        <div class="row">
+
+          </div>
+
+
+
+          <!--  -->
           <div class="col col-sm-6">
-            <div class="col col-sm-12">
-              <div class="box box-success">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Presupuesto</h3>
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
+            <div class="row">
+              <div class="col col-sm-12">
+                <div class="box box-success">
+                  <div class="box-header with-border">
+                    <i class="text-green fa fa-money"></i>
+                    <h3 class="box-title">Presupuesto</h3>
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div class="box-body">
-                  <table class="table table-sm">
-                    <thead>
-                      <tr>
-                        <th>Presupuesto</th>
-                        <th>Gastos</th>
-                        <th>Diferencia</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ $actividad->presupuesto}}</td>
-                        <td>{{ $actividad->metas->sum('presupuesto') }}</td>
-                        <td>{{ $actividad->presupuesto-100 - $actividad->metas->sum('presupuesto')}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="box-body">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Presupuesto</th>
+                          <th>Gastos</th>
+                          <th>Diferencia</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <?php
+                            $presupuesto = $actividad->presupuesto;
+                            $gastos = $actividad->metas->sum('presupuesto');
+                            $dif = $presupuesto-$gastos;
+                           ?>
+                          <td>{{ $presupuesto }}</td>
+                          <td>{{ $gastos }}</td>
+                          @if($dif>=0)
+                            <td class="text-aqua">{{ $dif }} </td>
+                          @else
+                            <td class="text-red">{{ $dif }} </td>
+                          @endif
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col col-sm-6">
-              <div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Resolucion</h3>
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
+              <div class="col col-sm-12">
+                <div class="box box-info">
+                  <div class="box-header with-border">
+                    <i class="text-aqua fa fa-gavel"></i>
+                    <h3 class="box-title">Legal</h3>
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div class="row">
+                      <div class="col col-sm-4">
+                        <p class="card-title"><strong><ins>RESOLUCION</ins></strong></p>
+                        <p class="card-text">N°: {{ $actividad->numero_resolucion}}</p>
+                        <p class="card-text">Fecha: {{ $actividad->fecha_resolucion}}</p>
+                      </div>
+                      <div class="col col-sm-8">
+                        <p class="card-title"><strong><ins>ACTA</ins></strong></p>
+                        <p class="card-title">N°: {{ $actividad->fecha_acta }}</p>
+                        <p class="card-text" align="justify">{{ $actividad->descripcion_acta }}</p>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
-                <div class="box-body">
-                  <p class="card-title">N°: {{ $actividad->numero_resolucion}}</p>
-                  <p class="card-text">Fecha: {{ $actividad->fecha_resolucion}}</p>
-                </div>
-              </div>
-            </div>
 
-            <div class="col col-sm-6">
-              <div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Acta</h3>
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="box-body">
-                  <p class="card-title">N°: {{ $actividad->fecha_acta }}</p>
-                  <p class="card-text">{{ $actividad->descripcion_acta }}</p>
-                </div>
               </div>
             </div>
           </div>
 
           <div class="col col-sm-6">
             <div class="box box-primary">
-              <div class="box-body">
-                Creador:
-                <ul>
-                  <li>
-                    {{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}
-                    <a href="javascript: show_info_user({{$creador->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-                  </li>
-                </ul>
-                Monitor:
-                <ul>
-                  <li>
-                    {{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}
-                    <a href="javascript: show_info_user({{$monitor->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-                  </li>
-                </ul>
-                Responsables:
-                <ul>
-                  @foreach($responsables as $key=> $responsable)
-                    <li>
-                      {{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}
-                      <a href="javascript: show_info_user({{$responsable->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-                    </li>
-                  @endforeach
-                </ul>
+              <div class="box-header with-border">
+                <i class="text-light-blue fa fa-users"></i>
+                <div class="box-title">Usuarios</div>
+                <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="box-body no-padding">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px"></th>
+                      <th>Usuario</th>
+                      <th>Rol</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><i class="text-red fa fa-user"></i></td>
+                      <td>{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}</td>
+                      <td><a href="javascript: show_info_user({{$creador->id}})"><small class="label label-danger">Creador</small></a></td>
+                    </tr>
+                    <tr>
+                      <td><i class="text-green fa fa-user"></i></td>
+                      <td>{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}</td>
+                      <td><a href="javascript: show_info_user({{$monitor->id}})"><small class="label label-success ">Monitor</small></a></td>
+                    </tr>
+                    @foreach($responsables as $key=> $responsable)
+                    <tr>
+                      <td><i class="text-primary fa fa-user"></i></td>
+                      <td>{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}</td>
+                      <td><a href="javascript: show_info_user({{$responsable->id}})"><small class="label label-primary ">Responsable</small></a></td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+
+                </table>
+
               </div>
             </div>
 

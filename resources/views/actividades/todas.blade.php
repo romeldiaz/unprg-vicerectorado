@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('sidebar-page-actividades', 'active treeview')
-@section('sidebar-page-actividades-asignaciones', 'active')
+@section('sidebar-page-actividades-todas', 'active')
 
 @section('content')
 <div class="row">
@@ -9,11 +9,11 @@
     <div class="box">
       <div class="box-header with-border">
         <div class="box-title">
-          Asignaciones
+          Todas las Actividades
         </div>
         <div class="box-tools">
 
-          {{ Form::open(['action'=>'ActividadController@asignaciones', 'method'=>'GET'])}}
+          {{ Form::open(['action'=>'ActividadController@all', 'method'=>'GET'])}}
             <div class="input-group input-group-sm" style="width: 150px;">
               {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
               <div class="input-group-btn">
@@ -31,6 +31,7 @@
               <th>Nombre</th>
               <th>Fecha</th>
               <th>Presupuesto</th>
+              <th>Estado</th>
               <th>
                 <a style="color:#000;" href="javascript:"  data-toggle="tooltip" data-html="true" data-placement="top"
                 title="
@@ -57,7 +58,9 @@
                 Tiempo</a>
               </th>
               <th>By</th>
-              <th></th>
+              <th>
+
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -69,7 +72,25 @@
               <td>{{$actividad->nombre}}</td>
               <td>{{$actividad->fecha_inicio}}</td>
               <td>{{$actividad->presupuesto}}</td>
+              <td>
+                <?php
+                $total = count($actividad->metas);
+                $completadas = count($actividad->metas->where('estado', 'F'));
+                //C: creada (sin metas)
+                //P: proceso (metas incompletas)
+                //T: terminada (metas completadas)
+                $estado_html = '';
+                if($total == 0 ){
+                  $estado_html = '<span class="label label-default">Creada</span>';
+                }elseif ($completadas == $total) {
+                  $estado_html = '<span class="label label-success">Finalizada</span>';
+                }else{
+                  $estado_html = '<span class="label label-primary">En proceso</span>';
+                }
+                echo $estado_html;
+                ?>
 
+              </td>
               <td style="width:30px;">
                 <?php
                 $hoy =  \Carbon\Carbon::now();

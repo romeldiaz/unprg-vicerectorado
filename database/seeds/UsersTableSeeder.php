@@ -14,6 +14,19 @@ class UsersTableSeeder extends Seeder
     {
 		factory(App\User::class, 25)->create();
 
+    App\User::create([
+      'nombres' => 'Admin',
+      'paterno' => 'Admin',
+      'materno' => 'Admin',
+      'cuenta' => 'admin',
+      'password' => Hash::make('admin'),
+      'remember_token' => str_random(10),
+      'jefe' => false,
+      'imagen' => 'default.jpg',
+      'oficina_id' => rand(1,10),
+      'tipo' => 'admin',
+    ]);
+
 		App\User::create([
 			'nombres' => 'Romel Hammerlin',
 			'paterno' => 'Diaz',

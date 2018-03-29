@@ -40,6 +40,7 @@ Route::post('actividades/post_js', 'ActividadController@post_js');
 Route::get('actividades/asignaciones', 'ActividadController@asignaciones');
 Route::get('actividades/creaciones', 'ActividadController@creaciones');
 Route::get('actividades/monitoreos', 'ActividadController@monitoreos');
+Route::get('actividades/todas', 'ActividadController@all');
 Route::resource('actividades', 	'ActividadController');
 Route::resource('responsables', 'ResponsableController');
 Route::resource('gastos', 		'GastoController');

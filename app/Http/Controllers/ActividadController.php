@@ -18,9 +18,18 @@ class ActividadController extends Controller
       $this->middleware('auth');
     }
 
+    public function all(Request $request){//solo administrador
+      $actividades = Actividad::search($request->get('search'))->paginate(10);
+      return view('actividades.todas', compact('actividades'));
+    }
+
     public function index()
     {
-      return redirect('actividades/asignaciones');
+      if(Auth::user()->tipo=='admin'){
+        return redirect('actividades/todas');
+      }else{
+        return redirect('actividades/asignaciones');
+      }
     }
 
     public function asignaciones(Request $request){
@@ -85,6 +94,8 @@ class ActividadController extends Controller
           $plazo = null;
         }
 
+        //count($actividad->metas); todas las metas
+        //count($actividad->metas->where('estado', 'F')); metas completadas
         return view('actividades.show', compact('oficinas', 'actividad', 'responsables', 'creador', 'monitor','plazo'));
     }
 

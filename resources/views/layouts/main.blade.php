@@ -191,9 +191,15 @@ desired effect
 								<li class="user-header">
 									<img src="{{ url('images/profile/'.Auth::user()->imagen) }}" class="img-circle" alt="User Image">
 									<p>
-										{{ Auth::user()->nombres.' '.Auth::user()->materno.' '.Auth::user()->paterno }} @if(Auth::user()->jefe)
-										<small>Jefe de Oficina</small> @else()
-										<small>Usuario de oficina</small> @endif
+										{{ Auth::user()->nombres.' '.Auth::user()->materno.' '.Auth::user()->paterno }}
+
+										@if(Auth::user()->tipo=='admin')
+				              <small>Administrador</small>
+				            @elseif(Auth::user()->jefe)
+				              <small>Jefe</small>
+				            @else
+				              <small>Usuario</small>
+				            @endif
 									</p>
 								</li>
 								<!-- Menu Body -->
@@ -250,9 +256,13 @@ desired effect
 					<div class="pull-left info">
 						<p>{{ Auth::user()->cuenta }}</p>
 						<!-- Status -->
-						@if(Auth::user()->jefe)
-						<a href="#"><i class="fa fa-circle text-success"></i>Boss</a> @else()
-						<a href="#"><i class="fa fa-circle text-success"></i>Worker</a> @endif
+						@if(Auth::user()->tipo=='admin')
+							<a href="#"><i class="fa fa-circle text-success"></i>Admin</a>
+						@elseif(Auth::user()->jefe)
+							<a href="#"><i class="fa fa-circle text-success"></i>Boss</a>
+						@else
+							<a href="#"><i class="fa fa-circle text-success"></i>Worker</a>
+						@endif
 					</div>
 				</div>
 				<!-- search form (Optional) -->
@@ -267,25 +277,7 @@ desired effect
 				</form>
 				<!-- /.search form -->
 				<!-- Sidebar Menu -->
-				<ul class="sidebar-menu" data-widget="tree">
-					<li class="header">MENU</li>
-					<!-- Optionally, you can add icons to the links -->
-					<li class="@yield('sidebar_page_usuarios', '')"><a href="{{ url('users') }}"><i class="fa fa-user"></i> <span>Usuarios</span></a></li>
-					<li class="@yield('sidebar_page_oficina', '')"><a href="{{ url('oficinas') }}" }}><i class="fa fa-institution"></i> <span>Oficinas</span></a></li>
-					<li class="@yield('sidebar-page-actividades', 'treeview')">
-						<a href="#"><i class="fa fa-magic"></i> <span>Actividades</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-						<ul class="treeview-menu">
-							<li class="@yield('sidebar-page-actividades-asignaciones', '')"><a href="{{ url('actividades/asignaciones') }}"><i class="fa fa-circle-o"></i> <span>Asignaciones</span></a></li>
-							<li class="@yield('sidebar-page-actividades-creaciones', '')"><a href="{{ url('actividades/creaciones') }}"><i class="fa fa-circle-o"></i> <span>Creaciones</span></a></li>
-							<li class="@yield('sidebar-page-actividades-monitoreos', '')"><a href="{{ url('actividades/monitoreos')}}"><i class="fa fa-circle-o"></i> <span>Monitoreos</span></a></li>
-						</ul>
-					</li>
-					<li class="@yield('sidebar_page_config', '')"><a href="#" }}><i class="fa fa-link"></i> <span>Config</span></a></li>
-				</ul>
+				@include('layouts.sidebarMenu');
 				<!-- /.sidebar-menu -->
 			</section>
 			<!-- /.sidebar -->

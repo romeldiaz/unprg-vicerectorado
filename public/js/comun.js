@@ -10,3 +10,7 @@ function paginacion(){
   $("#mypag").attr('hidden', false);
   console.log(pag);
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
