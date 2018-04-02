@@ -2,9 +2,9 @@
 @section('content')
 <div class="nav-tabs-custom">
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="#actividad" data-toggle="tab">Actividad</a></li>
-		<li><a href="#responsables" data-toggle="tab">Responsables</a></li>
-		<li><a href="#metas" data-toggle="tab">Metas</a></li>
+		<li class="active"><a href="#actividad" data-toggle="tab"><i class="fa fa-home"></i> Actividad</a></li>
+		<li><a href="#responsables" data-toggle="tab"><i class="fa fa-group"></i> Responsables</a></li>
+		<li><a href="#metas" data-toggle="tab"><i class="fa fa-tasks"></i> Metas</a></li>
 	</ul>
 	<div class="tab-content">
 		<div class="active tab-pane" id="actividad">
@@ -255,8 +255,7 @@
 				<div class="col col-sm-12">
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<i class="ion ion-clipboard"></i>
-							<h3 class="box-title">Metas</h3>
+							<h3 class="box-title"><i class="fa fa-tasks"></i> Metas</h3>
 							<div class="box-tools pull-right">
 								<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-box-tool"><i class="fa fa-cog"></i></a>
 								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -265,16 +264,16 @@
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body table-responsive no-padding">
-							<table class="table table-sm table-hover table-fixed">
+							<table class="table table-sm table-hover custom_datatable" id="meta_table">
 								<thead>
 									<tr>
-										<th class="text-center" style="width:50px;">#</th>
+										<th class="text-center" style="width: 80px;">#</th>
 										<th class="text-center">Nombre</th>
 										<th class="text-center">Fecha Inicial</th>
 										<th class="text-center">Fecha Final</th>
 										<th class="text-center">Estado</th>
 										<th class="text-center">Presupuesto</th>
-										<th class="text-center"></th>
+										<th class="text-center" style="width: 120px;"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -297,34 +296,38 @@
 											<td class="text-center">
 												<a href="{{route('metas.show', [$actividad->id, $meta->id])}}" title="Ver" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>				@if ($meta->creador->id == Auth::user()->id)
 												<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>				@endif @if ($meta->creador->id == Auth::user()->id)
-												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
-												<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-													<div class="modal-dialog" role="document">
+												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta" title="Eliminar"><i class="fa fa-trash"></i></button>
+												<div class="modal fade" id="modalElimMeta" aria-hidden="true">
+													<div class="modal-dialog">
 														<div class="modal-content">
-															<div class="modal-header">
-																<h4 class="modal-title" id="modalEliminarLabel">Eliminar Meta</h4>
+															<div class="modal-header bg-danger">
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<h4 class="modal-title">Eliminar Meta</h4>
 															</div>
 															<div class="modal-body">
 																¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
 															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
-																=>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
-																<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+															<div class="modal-footer text-right">
+																<div class="inline-flex">
+																	<button type="button" class="btn btn-sm btn-default mr-2" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
+																	=>['metas.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+																	<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 												@endif
 											</td>
-									</tr>
+										</tr>
 									@endforeach
-									<tr>
-										<th class="text-right" colspan="5">Total</th>
-										<td class="text-right">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
-										<td></td>
-									</tr>
+									<tfoot>
+										<tr>
+											<th class="text-right" colspan="5">Total</th>
+											<td class="text-right">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
+											<td></td>
+										</tr>
+									</tfoot>
 								</tbody>
 							</table>
 						</div>
@@ -341,4 +344,10 @@
 @section('script')
 <script src="{{ url('js/actividad_show.js') }}"></script>
 <script src="{{ url('js/actividad_show_responsables.js') }}"></script>
+<script src="{{ url('js/custom_datatable.js') }}"></script>
+<script>
+	$(function () { 
+		noSortableTable(0, [6]);
+	});
+</script>
 @endsection

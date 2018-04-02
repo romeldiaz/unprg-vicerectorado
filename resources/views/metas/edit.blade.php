@@ -1,6 +1,6 @@
 @php
-	$meta->fecha_fin = date("d-m-Y", strtotime($meta->fecha_fin));
-	$meta->fecha_inicio = date("d-m-Y", strtotime($meta->fecha_inicio));
+	$meta->fecha_fin = !is_null($meta->fecha_fin) ? date("d-m-Y", strtotime($meta->fecha_fin)) : null;
+	$meta->fecha_inicio = !is_null($meta->fecha_inicio) ? date("d-m-Y", strtotime($meta->fecha_inicio)) : null;
 @endphp
 {!! Form::model($meta, ['route' => ['metas.update', $meta->id], 'method' => 'PUT']) !!} 
 	{!! Form::hidden('actividad_id', $meta->actividad->id) !!}
@@ -71,8 +71,8 @@
 			{!! Form::select('monitor_id', $opciones , null,['class'=>'form-control form-control-sm', 'placeholder'=>'Seleccione un usuario como monitor']) !!}
 		</div>
 	</div>
-	<div class="form-group">
-		<a class="text-uppercase" style="margin-right: .75rem;" href="{{route('metas.create', $actividad->id)}}"> Cancelar</a>
-		<button class="btn btn-success text-uppercase" type="submit"><i class="icon-plus"></i> Guardar</button>
+	<div class="form-group pt-4">
+		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-save"></i> Guardar</button>
+		<a class="btn btn-md btn-default" href="{{route('metas.create', $meta->actividad->id)}}"><i class="fa fa-times"></i> Cancelar</a>
 	</div>
 {!! Form::close() !!}

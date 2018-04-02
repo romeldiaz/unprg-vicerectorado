@@ -27,75 +27,59 @@
 			<div class="box-header with-border">
 				<div class="box-title" style="display:block;">
 					Registros de Monitoreo 
-					{{--  @if (isset($monitoreo))
-					<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-xs btn-info btn-flat pull-right"><i class="fa fa-plus"></i> Nueva Meta</a>@endif
-					<a href="{{route('actividades.show', $actividad->id)}}" style="margin-right: .75rem;" class="btn btn-xs pull-right"><i class="fa fa-arrow-left"></i> Volver</a>  --}}
+					@if (isset($monitoreo))
+					<a href="{{route('monitoreo.create', $meta->id)}}" class="btn btn-xs btn-info btn-flat pull-right"><i class="fa fa-plus"></i> Nuevo Registro</a>@endif
+					<a href="{{route('metas.show', [$meta->actividad->id, $meta->id])}}" style="margin-right: .75rem;" class="btn-xs pull-right"><i class="fa fa-caret-left"></i> Volver</a>
 				</div>
 			</div>
 			<div class="box-body table-responsive no-padding">
-				<table class="table table-sm table-hover table-fixed">
+				<table class="table table-hover custom_datatable" id="monitoreo_table">
 					<thead>
 						<tr>
-							<th class="text-center" style="width:50px;">#</th>
-							<th class="text-center">Nombre</th>
-							<th class="text-center">Fecha Inicial</th>
-							<th class="text-center">Fecha Final</th>
-							<th class="text-center">Estado</th>
-							<th class="text-center">Presupuesto</th>
-							<th class="text-center"></th>
+							<th class="text-center" style="width: 80px;">#</th>
+							<th class="text-center">Descripción</th>
+							<th class="text-center">Fecha</th>
+							<th class="text-center">Observacion</th>
+							<th class="text-center" style="width: 120px;"></th>
 						</tr>
 					</thead>
-					<tbody>
-						@foreach ($actividad->metas as $meta)
+					<tbody id="table-body-oficinas">
+						@foreach($meta->monitoreos as $monitoreo)
 						<tr>
-							<td class="text-center">{{$loop->index+1}}</td>
-							<td>{{$meta->nombre}}</td>
-							<td class="text-center">
-								@if ($meta->estado == 'E' || $meta->estado == 'F') {{ date("d/m/Y", strtotime($meta->fecha_inicio))}} @endif
-								<td class="text-center">
-									@if ($meta->estado == 'F') {{ date("d/m/Y", strtotime($meta->fecha_fin))}} @endif
-								</td>
-								<td class="text-center">
-									@if ($meta->estado == 'P')
-									<span class="label label-primary">Pendiente</span> @endif @if ($meta->estado == 'E')
-									<span class="label label-warning">En proceso</span> @endif @if ($meta->estado == 'F')
-									<span class="label label-success">Finalizado</span> @endif
-								</td>
-								<td class="text-right">{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
-								<td class="text-center">
-									<a href="{{route('metas.show', [$actividad->id, $meta->id])}}" title="Ver" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>									@if ($meta->creador->id == Auth::user()->id)
-									<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>									@endif @if ($meta->creador->id == Auth::user()->id)
-									<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
-									<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h4 class="modal-title" id="modalEliminarLabel">Eliminar Meta</h4>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-												</div>
-												<div class="modal-body">
-													¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
-													=>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+							<td class="text-center">{{ $loop->index+1 }}</td>
+							<td>{{ $monitoreo->descripcion }}</td>
+							<td class="text-center">{{ date("d/m/Y", strtotime($monitoreo->fecha)) }}</td>
+							<td>{{ $monitoreo->observacion }}</td>
+							<th>
+								<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $requisito->id])}}"><i class="fa fa-pencil"></i></a>
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade in" id="modalElimMonitoreo" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header bg-danger">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title">Eliminar Registro de Monitoreo</h4>
+											</div>
+											<div class="modal-body">
+												¿Realmente desea eliminar el registro "<strong>{{ $monitoreo->descripcion }}</strong>"?
+											</div>
+											<div class="modal-footer text-right">
+												<div class="inline-flex">
+													<button type="button" class="btn btn-sm btn-secondary mr-2" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
+													=>['monitoreo.destroy', $monitoreo->id], 'method' => 'DELETE']) !!}
 													<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
 												</div>
 											</div>
 										</div>
 									</div>
-									@endif
-								</td>
+								</div>
+							</th>
 						</tr>
 						@endforeach
-						<tr>
-							<th class="text-right" colspan="5">Total</th>
-							<td class="text-right pr-3">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
-							<td></td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
+			<!-- /.box-body -->
 		</div>
 	</div>
 </div>

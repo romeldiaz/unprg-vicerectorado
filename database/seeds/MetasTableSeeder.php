@@ -11,7 +11,7 @@ class MetasTableSeeder extends Seeder
      */
     public function run()
     {
-		factory(App\Meta::class, 90)->create()->each(function(App\Meta $meta){
+		factory(App\Meta::class, 120)->create()->each(function(App\Meta $meta){
 			$responsables = App\Actividad::find($meta->actividad_id)->responsables()->get();
 			$ids = [];
 			for ($i=0; $i < $responsables->count(); $i++) {

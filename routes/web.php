@@ -48,17 +48,16 @@ Route::post('javascript', 'JavascriptController@funciones');
 
 
 
-// Route::get('metas/asignaciones', 'ActividadController@asignaciones')->name('metas.all');
-// Route::get('actividades/creaciones', 'ActividadController@creaciones')->name('metas.my');
 Route::resource('metas', 		'MetaController', ['except' => [
 	'index',
 	'create',
 	'edit',
 	'show'
 ]]);
-Route::get('actividades/{actividad}/metas/create', 		'MetaController@create')->name('metas.create');
-Route::get('actividades/{actividad}/metas/edit/{meta}', 'MetaController@edit')	->name('metas.edit');
-Route::get('actividades/{actividad}/metas/{meta}', 		'MetaController@show')	->name('metas.show');
+Route::get('actividades/{actividad}/metas/create', 		'MetaController@create')	->name('metas.create');
+Route::get('actividades/{actividad}/metas/edit/{meta}', 'MetaController@edit')		->name('metas.edit');
+Route::get('actividades/{actividad}/metas/{meta}', 		'MetaController@show')		->name('metas.show');
+Route::put('metas/{meta}/responsables',					'MetaController@regResp')	->name('metas.regResp');
 
 Route::resource('gastos', 								'GastoController', ['except' => [
 	'index',
@@ -66,8 +65,8 @@ Route::resource('gastos', 								'GastoController', ['except' => [
 	'edit',
 	// 'show'
 ]]);
-Route::get('metas/{meta}/gastos/create', 		'GastoController@create')->name('gastos.create');
-Route::get('metas/{meta}/gastos/{gasto}/edit', 	'GastoController@edit')->name('gastos.edit');
+Route::get('metas/{meta}/gastos/create', 		'GastoController@create')	->name('gastos.create');
+Route::get('metas/{meta}/gastos/{gasto}/edit', 	'GastoController@edit')		->name('gastos.edit');
 
 Route::resource('monitoreo', 						'MonitoreoController', ['except' => [
 	'index',
@@ -75,5 +74,5 @@ Route::resource('monitoreo', 						'MonitoreoController', ['except' => [
 	'edit',
 	// 'show'
 ]]);
-Route::get('metas/{meta}/monitoreo/create', 		'MonitoreoController@create')->name('monitoreo.create');
-Route::get('metas/{meta}/monitoreo/{monitoreo}/edit', 	'MonitoreoController@edit')->name('monitoreo.edit');
+Route::get('metas/{meta}/monitoreo/create', 			'MonitoreoController@create')	->name('monitoreo.create');
+Route::get('metas/{meta}/monitoreo/{monitoreo}/edit', 	'MonitoreoController@edit')		->name('monitoreo.edit');

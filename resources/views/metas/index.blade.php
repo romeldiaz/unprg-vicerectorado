@@ -72,21 +72,23 @@
 								<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
 								@endif
 								@if ($meta->creador->id == Auth::user()->id)
-								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
-								<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade" id="modalElimMeta" aria-hidden="true">
+									<div class="modal-dialog">
 										<div class="modal-content">
-											<div class="modal-header">
-												<h4 class="modal-title" id="modalEliminarLabel">Eliminar Meta</h4>
+											<div class="modal-header bg-danger">
 												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title">Eliminar Meta</h4>
 											</div>
 											<div class="modal-body">
 												¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
 											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-												{!! Form::open(['route' =>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
-												<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+											<div class="modal-footer text-right">
+												<div class="inline-flex">
+													<button type="button" class="btn btn-sm btn-default mr-2" data-dismiss="modal">Cerrar</button>
+													{!! Form::open(['route' =>['metas.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+													<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -116,7 +118,8 @@
 		$(function () {
 			$('.datepicker').datepicker({ 
 				format: 'dd-mm-yyyy',
-				autoclose: true 
+				autoclose: true,
+				zIndexOffset: 1030
 			})
 			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
 		})

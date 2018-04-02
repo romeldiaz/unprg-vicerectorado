@@ -4,11 +4,8 @@ $gasto->fecha = date("d-m-Y", strtotime($gasto->fecha));
 Gasto: 
 {!! Form::model($gasto, ['route' => ['gastos.update', $gasto->id], 'method' => 'PUT']) !!}
 {!! Form::hidden('meta_id', $gasto->meta->id) !!}
-<input name="page" type="hidden" value="create">
-<!--Para controlar el script usuario js-->
 <div class="form-group">
-	{!! Form::select('tipo', ['B' => 'Bien', 'S' => 'Servicio'], null, ['class'=>'form-control form-control-sm', 'placeholder'
-	=> 'Elige un tipo de gasto...']) !!}
+	{!! Form::select('tipo', ['B' => 'Bien', 'S' => 'Servicio'], null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Elige un tipo de gasto...']) !!}
 </div>
 <div class="form-group">
 	{!! Form::text('descripcion', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Detalle'])!!}
@@ -27,24 +24,18 @@ Gasto:
 		{!! Form::text('fecha',null, ['class'=>'datepicker form-control pull-right', 'placeholder'=>'Fecha']) !!}
 	</div>
 </div>
-Tipo de Documento:
+Documento:
 <div class="form-group">
-	<select class="form-control form-control-sm" name="tipo_documento_id" id="tipo_documento_id">
-		<option selected="selected" value="">Seleccione un tipo de documento...</option>
-		@foreach ($documentos as $doc)
-		<option value="{{$doc->id}}">{{$doc->nombre}}</option>
-		@endforeach
-	</select>
+	{!! Form::select('tipo_documento_id', $documentos, null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Elige un tipo de documento...']) !!}
 </div>
 <div class="form-group">
 	<div class="input-group">
-		<div class="input-group-addon">N°&nbsp;</div>
+		<div class="input-group-addon">N° </div>
 		{!!Form::text('numero', null, ['class'=>'form-control', 'placeholder'=>'Número de documento'])!!}
 	</div>
 </div>
-<div class="d-flex flex-row-reverse">
-	<div class="form-inline">
-		<a href="http://localhost:8000/users" class="btn btn-sm btn-secondary mr-1">Cancelar</a>
-		<input class="btn btn-sm btn-info" type="submit" value="Crear">
-	</div>
+<div class="form-group pt-4">
+	<button class="btn btn-md btn-info" type="submit"><i class="fa fa-save"></i> Guardar</button>
+	<a href="{{route('gastos.create', $meta->id)}}" class="btn btn-md btn-default"><i class="fa fa-times"></i> Cancelar</a>
 </div>
+{!! Form::close() !!}

@@ -37,8 +37,9 @@ class MonitoreoController extends Controller
     public function create($id)
     {
 		$meta = Meta::findOrFail($id);
+		$hoy = Carbon::now()->format('d-m-Y');
 		
-        return view('monitoreos.index', compact('meta'));
+        return view('monitoreos.index', compact('meta', 'hoy'));
     }
 
     public function store(Request $request)

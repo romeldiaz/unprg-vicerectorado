@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\GastoRequest;
 
 use App\Gasto;
 use App\Meta;
@@ -41,7 +42,6 @@ class GastoController extends Controller
 		$documentos = Tipo_documento::all();
 
 		return view('gastos.index', compact('meta', 'documentos'));
-
     }
 
     /**
@@ -50,9 +50,12 @@ class GastoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GastoRequest $request)
     {
-        //
+		$gasto = Gasto::create($request->all());
+
+		return redirect()->route('gastos.create', $gasto->meta->id)
+						->with('info', 'Gasto creado con éxito');
     }
 
     /**
@@ -76,7 +79,7 @@ class GastoController extends Controller
     {
         $gasto = Gasto::findOrFail($id);
 		$meta = $gasto->meta;
-		$documentos = Tipo_documento::all();
+		$documentos = Tipo_documento::orderBy('id', 'ASC')->pluck('nombre', 'id');
 
 		return view ('gastos.index', compact('gasto', 'meta', 'documentos'));
     }
@@ -90,7 +93,12 @@ class GastoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+		$gasto = Gasto::find($id);
+
+		$gasto->fill($request->all())->save();
+
+		return redirect()->route('gastos.create', $gasto->meta->id)
+    					->with('info', 'Gasto actualizado con éxito');
     }
 
     /**

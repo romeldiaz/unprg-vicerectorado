@@ -16,10 +16,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="{{ url('bower_components/Ionicons/css/ionicons.min.css') }}">
 	<link rel="stylesheet" href="{{ url('dist/css/AdminLTE.min.css') }}">
 	<link rel="stylesheet" href="{{ url('dist/css/skins/skin-blue.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-	@yield('css')
-	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	@yield('css')
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -390,6 +390,37 @@ desired effect
      Both of these plugins are recommended to enhance the
 	 user experience. -->
 	
+	<script src="{{ url('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+	
+	
+	<script>
+		function initTable () { 
+			return $('.custom_datatable').DataTable({ 
+				'retrieve': true,
+				'paging' : true, 
+				'lengthChange': false, 
+				'searching' : true, 
+				'ordering' : true, 
+				'info' : true, 
+				'autoWidth' : false,
+				"language": { 
+					"search": "Buscar:",
+					"lengthMenu": "Mostrar _MENU_ registros por página", 
+					"zeroRecords": "No se encontró nada.", 
+					"info": "Mostrando página _PAGE_ de _PAGES_", 
+					"infoEmpty": "Sin registros disponibles", 
+					"infoFiltered": "(filtrado de _MAX_ registros totales)",
+					"paginate": { "previous": "Anterior", "next": "Siguiente" }
+				}
+			});
+		}
+		
+		$(function () { 
+			initTable();
+		});
+	</script>
 	@yield('script')
+	
 </body>
 </html>
