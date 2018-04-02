@@ -51,7 +51,7 @@
 						@foreach($meta->gastos as $gasto)
 						<tr>
 							<td class="text-center">{{ $loop->index+1 }}</td>
-							<td class="text-center">{{ date("d/m/Y", strtotime($gasto->fecha)) }}</td>
+							<td class="text-center">{{ date("d-m-Y", strtotime($gasto->fecha)) }}</td>
 							<td class="text-center">{{ $gasto->tipo_documento->nombre }}</td>
 							<td class="text-center">{{ $gasto->numero }}</td>
 							<td>{{ $gasto->descripcion }}</td>

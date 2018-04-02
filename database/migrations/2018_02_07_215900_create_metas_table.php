@@ -23,7 +23,7 @@ class CreateMetasTable extends Migration
 			$table->string('producto', 255);
 			$table->decimal('presupuesto', 10, 2);
 			$table->enum('estado', ['P', 'E', 'F'])->default('P');
-			$table->string('avance', 10);
+			$table->string('avance', 10)->default(0);
 			// P: Pendiente - E: En Proceso - F: Finalizado
 
 			// SoftDelete

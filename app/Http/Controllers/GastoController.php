@@ -109,7 +109,7 @@ class GastoController extends Controller
      */
     public function destroy($id)
     {
-        Gasto::find($id)->delete();
+        Gasto::findOrFail($id)->delete();
 		
 		return back()->with('info-delete', 'Eliminado correctamente');
     }
