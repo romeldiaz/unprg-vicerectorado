@@ -1,16 +1,59 @@
-<div class="list-group list-group-flush m-3">
-  <a class="list-group-item list-group-item-action bg-light" href="{{ url('perfil') }}"><span class="icon-user mr-2"></span>Perfil</a>
-  <a class="list-group-item list-group-item-action bg-light" href="{{ url('dashboard/tareas')}}"><span class="icon-hammer mr-2"></span>Tareas</a>
-  <a class="list-group-item list-group-item-action bg-light" href="#"><span class="icon-mail2 mr-2"></span>Mensajes</a>
-  <a class="list-group-item list-group-item-action bg-light" href="#"><span class="icon-stats-bars2 mr-2"></span>Progreso</a>
-  <a class="list-group-item list-group-item-action bg-light" data-toggle="collapse" href="#administrar-sublist"><span class="icon-cog mr-2"></span>Administrar</a>
-  <div class="collapse" id="administrar-sublist">
-      <div class="list-group ml-4">
-        <a class="list-group-item list-group-item-action bg-light p-1" href="{{ url('actividades') }}">Actividades</a>
-        <a class="list-group-item list-group-item-action bg-light p-1" href="{{ url('usuarios') }}">Usuarios</a>
-        <a class="list-group-item list-group-item-action bg-light p-1" href="{{ url('oficinas') }}">Oficinas</a>
-        <a class="list-group-item list-group-item-action bg-light p-1" href="{{ url('documentos') }}">Documentos</a>
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img src="{{ url('images/profile/'.Auth::user()->imagen) }}" style="width: 100%; max-width: 45px; height: 45px;" class="img-circle"
+         alt="User Image">
       </div>
-
-  </div>
-</div>
+      <div class="pull-left info">
+        <p>{{ Auth::user()->cuenta }}</p>
+        <!-- Status -->
+        @if(Auth::user()->tipo=='admin')
+        <a href="#"><i class="fa fa-circle text-success"></i>Admin</a>
+        @elseif(Auth::user()->jefe)
+        <a href="#"><i class="fa fa-circle text-success"></i>Boss</a>
+        @else()
+        <a href="#"><i class="fa fa-circle text-success"></i>Worker</a>
+        @endif
+      </div>
+    </div>
+    <!-- search form (Optional) -->
+    <form action="#" method="get" class="sidebar-form">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search...">
+        <span class="input-group-btn">
+          <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    </form>
+    <!-- /.search form -->
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="header">MENU</li>
+      <!-- Optionally, you can add icons to the links -->
+      <li class="@yield('sidebar-page-actividades', 'treeview')">
+        <a href="#"><i class="fa fa-magic"></i> <span>Actividades</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+      </a>
+        <ul class="treeview-menu">
+          <li class="@yield('sidebar-page-actividades-asignaciones', '')"><a href="{{ url('actividades/asignaciones') }}"><i class="fa fa-circle-o"></i> <span>Asignaciones</span></a></li>
+          <li class="@yield('sidebar-page-actividades-creaciones', '')"><a href="{{ url('actividades/creaciones') }}"><i class="fa fa-circle-o"></i> <span>Creaciones</span></a></li>
+          <li class="@yield('sidebar-page-actividades-monitoreos', '')"><a href="{{ url('actividades/monitoreos')}}"><i class="fa fa-circle-o"></i> <span>Monitoreos</span></a></li>
+        </ul>
+      </li>
+      @if(Auth::user()->tipo=='admin')
+      <li class="@yield('sidebar_page_usuarios', '')"><a href="{{ url('users') }}"><i class="fa fa-user"></i> <span>Usuarios</span></a></li>
+      <li class="@yield('sidebar_page_oficina', '')"><a href="{{ url('oficinas') }}" }}><i class="fa fa-institution"></i> <span>Oficinas</span></a></li>
+      <li class="@yield('sidebar_page_config', '')"><a href="#" }}><i class="fa fa-link"></i> <span>Config</span></a></li>
+      @endif
+      </ul>
+    <!-- /.sidebar-menu -->
+  </section>
+  <!-- /.sidebar -->
+</aside>

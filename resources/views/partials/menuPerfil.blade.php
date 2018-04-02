@@ -5,7 +5,9 @@
             <img class="profile-user-img img-responsive img-circle" src="{{ url('images/profile/'.Auth::user()->imagen) }}" height="300px" style="height: 200px; width:180px;" alt="User profile picture">
 
             <h3 class="profile-username text-center">{{ $user->nombres.' '.$user->paterno.' '.$user->materno }}</h3>
-            @if($user->jefe)
+            @if($user->tipo=='admin')
+              <p class="text-center"><i class="text-success glyphicon glyphicon-king"></i>Admin del Sistema</p>
+            @elseif($user->jefe)
               <p class="text-center"><i class="text-success glyphicon glyphicon-king"></i>Jefe de oficina</p>
             @else
               <p class="text-center"><i class="text-info glyphicon glyphicon-pawn"></i>Usuario de oficina</p>

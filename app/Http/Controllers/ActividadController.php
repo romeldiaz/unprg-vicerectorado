@@ -39,6 +39,12 @@ class ActividadController extends Controller
       return view('actividades.creaciones', compact('actividades'));
     }
 
+    public function todas(Request $request){
+      //las actividades creadas por el usuario
+      $actividades = Actividad::search($request->get('search'))->paginate(10);
+      return view('actividades.todas', compact('actividades'));
+    }
+
     public function monitoreos(Request $request){
       //las actividades creadas por el usuario
       $actividades = Actividad::search($request->get('search'))->where('monitor_id', Auth::user()->id)->paginate(5);
