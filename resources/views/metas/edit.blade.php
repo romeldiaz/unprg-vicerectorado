@@ -61,13 +61,15 @@
 		@php
 		$opciones = array()
 		@endphp
-		@foreach ($actividad->users->sortBy('paterno') as $user)
+		@foreach ($actividad->users as $user)
 		@php
-		$opciones[$user->id] = $user->paterno . ' ' . $user->materno. ' '. $user->nombres;
+		$opciones[$user->id] = $user->nombres.' '.$user->paterno.' '.$user->materno;
 		@endphp
 		@endforeach
 		{!! Form::label('monitor_id', 'Monitor', ['class'=>'control-label control-label-sm']) !!}
-		{!! Form::select('monitor_id', $opciones , null,['class'=>'form-control form-control-sm', 'placeholder'=>'Seleccione un usuario como monitor']) !!}
+		<div class="form-group">
+			{!! Form::select('monitor_id', $opciones , null,['class'=>'form-control form-control-sm', 'placeholder'=>'Seleccione un usuario como monitor']) !!}
+		</div>
 	</div>
 	<div class="form-group pt-4">
 		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-save"></i> Guardar</button>

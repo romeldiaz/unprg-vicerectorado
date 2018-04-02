@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Meta::class, function (Faker $faker) {
 	$rand_act = App\Actividad::all()->random();
 	$user = $rand_act->responsables()->get()->random();
-	$monitor = $rand_act->monitor_id;
+	$monitor = $rand_act->responsables()->get()->random();
 	$avance = rand(1,20)*5;
     return [
         'nombre' => $faker->sentence(2),
@@ -19,6 +19,6 @@ $factory->define(App\Meta::class, function (Faker $faker) {
 		'avance' => $avance,
 		'actividad_id' => $rand_act->id,
 		'creador_id' => $user->user_id,
-		'monitor_id' => $monitor,
+		'monitor_id' => $monitor->user_id,
     ];
 });

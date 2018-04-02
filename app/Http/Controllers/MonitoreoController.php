@@ -46,38 +46,47 @@ class MonitoreoController extends Controller
     {
 		$monitoreo = Monitoreo::create($request->all());
 
-		return redirect()->route('monitoreo.create', $monitoreo->meta->id)
-						->with('info', 'Registro de monitoreo creado con éxito');
+        return redirect()->route('monitoreos.index', $monitoreo->meta->id);
     }
 
     public function show($id)
     {
-		//
+		// $monitoreo = Meta::findOrFail($id);
+		// $documentos = Tipo_documento::all();
+
+		// return view('metas.show', compact('meta', 'documentos'));
+
     }
 
-    public function edit($meta_id, $id)
+    public function edit(Request $request)
     {
-		$monitoreo = Monitoreo::findOrFail($id);
-		$meta = $monitoreo->meta;
-
-		return view ('monitoreos.index', compact('monitoreo', 'meta'));
+        $meta = Meta::findOrFail($request->meta_id);
+        $monitoreo = Monitoreo::findOrFail($request->monitoreo_id);
+        $monitoreos = Monitoreo::all();
+        $now = Carbon::now();
+        $hoy = $now->format('Y-m-d');
+        return view('monitoreos.index', [
+            'meta' => $meta,
+            'monitoreo' => $monitoreo,
+            'hoy' => $hoy,
+            'monitoreos' => $monitoreos,
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $monitoreo = Monitoreo::find($id);
-
-		$monitoreo->fill($request->all())->save();
-
-		return redirect()->route('monitoreo.create', $monitoreo->meta->id)
-    					->with('info', 'Registro de monitoreo actualizado con éxito');
-
+        $monitoreo = Monitoreo::findOrFail($id);
+        $monitoreo->fecha = $request->fecha;
+        $monitoreo->descripcion = $request->descripcion;
+        $monitoreo->observacion = $request->observacion;
+        $monitoreo->save();
+        return redirect('monitoreos');
     }
 
     public function destroy($id)
     {
-        Monitoreo::findOrFail($id)->delete();
-
-		return back()->with('info-delete', 'Eliminado correctamente');
+        $tarea = Monitoreo::findOrFail($id);
+        $tarea->delete();
+        return redirect('monitoreos');
     }
 }

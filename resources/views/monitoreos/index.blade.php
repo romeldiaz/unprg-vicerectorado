@@ -48,10 +48,10 @@
 						<tr>
 							<td class="text-center">{{ $loop->index+1 }}</td>
 							<td>{{ $monitoreo->descripcion }}</td>
-							<td class="text-center">{{ date("d-m-Y", strtotime($monitoreo->fecha)) }}</td>
+							<td class="text-center">{{ date("d/m/Y", strtotime($monitoreo->fecha)) }}</td>
 							<td>{{ $monitoreo->observacion }}</td>
 							<th>
-								<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $monitoreo->id])}}"><i class="fa fa-pencil"></i></a>
+								<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $requisito->id])}}"><i class="fa fa-pencil"></i></a>
 								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo" title="Eliminar"><i class="fa fa-trash"></i></button>
 								<div class="modal fade in" id="modalElimMonitoreo" aria-hidden="true">
 									<div class="modal-dialog">
@@ -93,8 +93,7 @@
 		$(function () {
 			$('.datepicker').datepicker({ 
 				format: 'dd-mm-yyyy',
-				autoclose: true,
-				zIndexOffset: 1030
+				autoclose: true 
 			})
 			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
 		})
