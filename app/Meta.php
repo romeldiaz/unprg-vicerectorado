@@ -38,7 +38,6 @@ class Meta extends Model
 		return $this->belongsToMany(Responsable::class);
 	}
 
-
 	public function requisitos()//romel
 	{
 		return $this->hasMany(Requisito::class);

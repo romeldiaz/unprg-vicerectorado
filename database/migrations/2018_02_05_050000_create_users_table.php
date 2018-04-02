@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
 			$table->rememberToken();
 			$table->boolean('jefe')->nullable();
 			$table->string('imagen', 255)->nullable();
-      $table->string('tipo', 20)->nullable();
+      $table->string('tipo', 25)->nullable();
 			$table->unsignedInteger('oficina_id');
 
 			// SoftDelete

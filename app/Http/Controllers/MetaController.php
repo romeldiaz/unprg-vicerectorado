@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\MetaStoreRequest;
 use App\Http\Requests\MetaUpdateRequest;
+use App\Http\Requests\MetaResponsablesRequest;
 
 use App\Meta;
 use App\Actividad;
@@ -60,12 +61,6 @@ class MetaController extends Controller
 		$datos['creador_id'] = Auth::user()->id;
 		
 		$meta = Meta::create($datos);
-		// $meta = Meta::find($meta->id);
-		
-		// $actividad = Actividad::where('id', $meta->actividad->id);
-
-		// Responsables
-		// $meta->responsables()->attach($request->get('responsables'));
 		
 		return redirect()->route('metas.create', $meta->actividad->id);
     }
@@ -79,8 +74,9 @@ class MetaController extends Controller
     public function show($actividad_id, $id)
     {
 		$meta = Meta::findOrFail($id);
-		
-		return view('metas.show', compact('meta'));
+		$actividad = $meta->actividad;
+
+		return view('metas.show', compact('meta', 'actividad'));
     }
 
     /**
@@ -112,18 +108,38 @@ class MetaController extends Controller
 		}
 		if($request->estado == 'E'){
 			$request->fecha_fin = null;
-			$request->fecha_inicio = null;
+			// $request->fecha_inicio = null;
 		}
         $meta = Meta::find($id);
 		
 		$meta->fill($request->all())->save();
 
-
-		// $meta->responsables()->sync($request->get('responsables'));
-
 		return redirect()->route('metas.edit', [$meta->actividad->id, $meta->id])
 						->with('info', 'Meta actualizada con éxito');
-    }
+	}
+	
+	/**
+     * Crear o Actualizar los responsables de cada meta.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+	public function regResp(MetaResponsablesRequest $request, $id)
+	{
+		$meta = Meta::find($id);
+		if($meta->responsables()->get()->count() == 0){
+			$meta->responsables()->attach($request->get('responsables'));	
+		}
+		else
+		{
+			$meta->responsables()->sync($request->get('responsables'));
+		}
+
+		return redirect()->route('metas.show', [$meta->actividad->id, $meta->id])
+    					->with('info', 'Responsables de la meta actualizados con éxito');
+
+	}
 
     /**
      * Remove the specified resource from storage.
@@ -133,7 +149,7 @@ class MetaController extends Controller
      */
     public function destroy($id)
     {
-        Actividad::find($id)->delete();
+        Meta::find($id)->delete();
 		
 		return back()->with('info-delete', 'Eliminado correctamente');
 	}

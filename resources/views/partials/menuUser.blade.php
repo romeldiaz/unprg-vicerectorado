@@ -1,0 +1,60 @@
+<!-- User Account Menu -->
+<li class="dropdown user user-menu">
+  <!-- Menu Toggle Button -->
+  @guest
+  <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+  @else
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <!-- The user image in the navbar-->
+    <img src="{{ url('images/profile/'.Auth::user()->imagen) }}" width="25px" class="user-image" alt="User Image">
+    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+    <span class="hidden-xs">{{ Auth::user()->cuenta }}</span>
+  </a>
+  <ul class="dropdown-menu">
+    <!-- The user image in the menu -->
+    <li class="user-header">
+      <img src="{{ url('images/profile/'.Auth::user()->imagen) }}" class="img-circle" alt="User Image">
+      <p>
+        {{ Auth::user()->nombres.' '.Auth::user()->materno.' '.Auth::user()->paterno }}
+        @if(Auth::user()->tipo=='admin')
+        <small>Admin del Sistema</small>
+        @elseif(Auth::user()->jefe)
+        <small>Jefe de Oficina</small>
+        @else()
+        <small>Usuario de oficina</small>
+        @endif
+      </p>
+    </li>
+    <!-- Menu Body -->
+    <li class="user-body">
+      <div class="row">
+        <div class="col-xs-4 text-center">
+          <a href="{{ url('actividades/asignaciones') }}">Actividades</a>
+        </div>
+        <div class="col-xs-4 text-center">
+          <a href="#">Metas</a>
+        </div>
+        <div class="col-xs-4 text-center">
+          <a href="#">Otros</a>
+        </div>
+      </div>
+      <!-- /.row -->
+    </li>
+    <!-- Menu Footer-->
+    <li class="user-footer">
+      <div class="pull-left">
+        <a href="{{ url('perfil') }}" class="btn btn-default btn-flat">Perfil</a>
+      </div>
+      <div class="pull-right">
+        <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+        {{ __('Logout') }}
+      </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
+      </div>
+    </li>
+  </ul>
+  @endguest
+</li>

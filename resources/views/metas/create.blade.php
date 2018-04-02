@@ -40,8 +40,8 @@
 				@endforeach
 			</select>
 	</div>
-	<div class="form-group">
-		<a class="text-uppercase" style="margin-right: .75rem;" href="{{route('actividades.show', $actividad->id)}}"> Cancelar</a>
-		<button class="btn btn-success text-uppercase" type="submit"><i class="icon-plus"></i> Crear</button>
+	<div class="form-group pt-4">
+		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-plus"></i> Crear</button>
+		<a class="btn btn-md btn-default" href="{{route('metas.create', $actividad->id)}}"><i class="fa fa-times"></i> Cancelar</a>
 	</div>
 {!! Form::close() !!}

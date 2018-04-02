@@ -8,9 +8,5 @@ $(document).ready(function(){
 function paginacion(){
   pag = $("ul.pagination").attr('class', 'pagination pagination-sm no-margin pull-right');
   $("#mypag").attr('hidden', false);
-  console.log(pag);
+//   console.log(pag);
 }
-
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})

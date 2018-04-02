@@ -6,7 +6,7 @@
 
             <h3 class="profile-username text-center">{{ $user->nombres.' '.$user->paterno.' '.$user->materno }}</h3>
             @if($user->tipo=='admin')
-              <p class="text-center"><i class="text-success glyphicon glyphicon-king"></i>Administrador del sistema</p>
+              <p class="text-center"><i class="text-success glyphicon glyphicon-king"></i>Admin del Sistema</p>
             @elseif($user->jefe)
               <p class="text-center"><i class="text-success glyphicon glyphicon-king"></i>Jefe de oficina</p>
             @else

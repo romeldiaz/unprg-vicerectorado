@@ -16,10 +16,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="{{ url('bower_components/Ionicons/css/ionicons.min.css') }}">
 	<link rel="stylesheet" href="{{ url('dist/css/AdminLTE.min.css') }}">
 	<link rel="stylesheet" href="{{ url('dist/css/skins/skin-blue.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-	@yield('css')
-	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	@yield('css')
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -175,66 +175,7 @@ desired effect
 							</ul>
 						</li>
 						<!-- User Account Menu -->
-						<li class="dropdown user user-menu">
-							<!-- Menu Toggle Button -->
-							@guest
-							<li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-							@else
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<!-- The user image in the navbar-->
-								<img src="{{ url('images/profile/'.Auth::user()->imagen) }}" width="25px" class="user-image" alt="User Image">
-								<!-- hidden-xs hides the username on small devices so only the image appears. -->
-								<span class="hidden-xs">{{ Auth::user()->cuenta }}</span>
-							</a>
-							<ul class="dropdown-menu">
-								<!-- The user image in the menu -->
-								<li class="user-header">
-									<img src="{{ url('images/profile/'.Auth::user()->imagen) }}" class="img-circle" alt="User Image">
-									<p>
-										{{ Auth::user()->nombres.' '.Auth::user()->materno.' '.Auth::user()->paterno }}
-
-										@if(Auth::user()->tipo=='admin')
-				              <small>Administrador</small>
-				            @elseif(Auth::user()->jefe)
-				              <small>Jefe</small>
-				            @else
-				              <small>Usuario</small>
-				            @endif
-									</p>
-								</li>
-								<!-- Menu Body -->
-								<li class="user-body">
-									<div class="row">
-										<div class="col-xs-4 text-center">
-											<a href="#">Actividades</a>
-										</div>
-										<div class="col-xs-4 text-center">
-											<a href="#">Metas</a>
-										</div>
-										<div class="col-xs-4 text-center">
-											<a href="#">Otros</a>
-										</div>
-									</div>
-									<!-- /.row -->
-								</li>
-								<!-- Menu Footer-->
-								<li class="user-footer">
-									<div class="pull-left">
-										<a href="{{ url('perfil') }}" class="btn btn-default btn-flat">Perfil</a>
-									</div>
-									<div class="pull-right">
-										<a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
-                                  document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                  </a>
-										<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-											@csrf
-										</form>
-									</div>
-								</li>
-							</ul>
-							@endguest
-						</li>
+						@include('partials.menuUser')
 						<!-- Control Sidebar Toggle Button -->
 						<li>
 							<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
@@ -244,44 +185,7 @@ desired effect
 			</nav>
 		</header>
 		<!-- Left side column. contains the logo and sidebar -->
-		<aside class="main-sidebar">
-			<!-- sidebar: style can be found in sidebar.less -->
-			<section class="sidebar">
-				<!-- Sidebar user panel (optional) -->
-				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="{{ url('images/profile/'.Auth::user()->imagen) }}" style="width: 100%; max-width: 45px; height: 45px;" class="img-circle"
-						 alt="User Image">
-					</div>
-					<div class="pull-left info">
-						<p>{{ Auth::user()->cuenta }}</p>
-						<!-- Status -->
-						@if(Auth::user()->tipo=='admin')
-							<a href="#"><i class="fa fa-circle text-success"></i>Admin</a>
-						@elseif(Auth::user()->jefe)
-							<a href="#"><i class="fa fa-circle text-success"></i>Boss</a>
-						@else
-							<a href="#"><i class="fa fa-circle text-success"></i>Worker</a>
-						@endif
-					</div>
-				</div>
-				<!-- search form (Optional) -->
-				<form action="#" method="get" class="sidebar-form">
-					<div class="input-group">
-						<input type="text" name="q" class="form-control" placeholder="Search...">
-						<span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-					</div>
-				</form>
-				<!-- /.search form -->
-				<!-- Sidebar Menu -->
-				@include('layouts.sidebarMenu');
-				<!-- /.sidebar-menu -->
-			</section>
-			<!-- /.sidebar -->
-		</aside>
+		@include('partials.sidebar')
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Main content -->
@@ -381,7 +285,38 @@ desired effect
 	<!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
 	 user experience. -->
-	
+
+	<script src="{{ url('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+
+
+	<script>
+		function initTable () {
+			return $('.custom_datatable').DataTable({
+				'retrieve': true,
+				'paging' : true,
+				'lengthChange': false,
+				'searching' : true,
+				'ordering' : true,
+				'info' : true,
+				'autoWidth' : false,
+				"language": {
+					"search": "Buscar:",
+					"lengthMenu": "Mostrar _MENU_ registros por página",
+					"zeroRecords": "No se encontró nada.",
+					"info": "Mostrando página _PAGE_ de _PAGES_",
+					"infoEmpty": "Sin registros disponibles",
+					"infoFiltered": "(filtrado de _MAX_ registros totales)",
+					"paginate": { "previous": "Anterior", "next": "Siguiente" }
+				}
+			});
+		}
+
+		$(function () {
+			initTable();
+		});
+	</script>
 	@yield('script')
+
 </body>
 </html>

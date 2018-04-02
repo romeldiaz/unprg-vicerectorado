@@ -1,253 +1,179 @@
 @extends('layouts.main') 
 @section('content')
-  <div class="nav-tabs-custom">
-
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#actividad" data-toggle="tab">Actividad</a></li>
-      <li><a href="#responsables" data-toggle="tab">Responsables</a></li>
-      <li><a href="#metas" data-toggle="tab">Metas</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="active tab-pane" id="actividad">
-        {{ Form::hidden('actividad_id', $actividad->id) }}<!--Para capturara la actividad desde el script -->
-
-        <div class="row">
-          <div class="col col-sm-12">
-            <div class="progress" style="margin:0">
-              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-            </div>
-          </div>
-
-          <div class="col col-sm-12">
-            @if(empty($plazo))
-              <p class="text-right text-primary">Esta actividad no tiene una fecha limite definida</p>
-            @elseif($plazo>=0)
-              <p class="text-right text-primary">Faltan {{$plazo}} dias para terminar la actividad</p>
-            @else
-              <p class="text-right text-danger">La actividad lleva {{abs($plazo)}} dias retrasada</p>
-            @endif
-          </div>
-
-          <div class="col col-sm-12">
-            <div class="row">
-              <div class="col col-sm-8">
-                <div class="callout callout-purple">
-                  <p class="lead mb-0">{{ $actividad->nombre }}</p>
-                  <label for="actividad_estado">Estado:</label>
-                  <span class="badge badge-pill badge-info p-1">En proceso</span>
-                </div>
-              </div>
-              <div class="col col-sm-4">
-                <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-flag-checkered"></i></span>
-
-            <div class="info-box-content">
-              <?php
-              $total = count($actividad->metas);
-              $completadas = count($actividad->metas->where('estado', 'F'));
-              $avance = round(($completadas/$total)*100);
-              $avance =$avance.'%';
-              ?>
-              <span class="info-box-text">Metas</span>
-              <span class="info-box-number">{{ $completadas.'/'.$total }}</span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: {{$avance}}"></div>
-              </div>
-              <span class="progress-description">
-                {{$avance}} alcanzada!
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-              </div>
-            </div>
-
-
-          </div>
-
-
-
-          <!--  -->
-          <div class="col col-sm-6">
-            <div class="row">
-              <div class="col col-sm-12">
-                <div class="box box-success">
-                  <div class="box-header with-border">
-                    <i class="text-green fa fa-money"></i>
-                    <h3 class="box-title">Presupuesto</h3>
-                    <div class="box-tools pull-right">
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="box-body">
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th>Presupuesto</th>
-                          <th>Gastos</th>
-                          <th>Diferencia</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <?php
-                            $presupuesto = $actividad->presupuesto;
-                            $gastos = $actividad->metas->sum('presupuesto');
-                            $dif = $presupuesto-$gastos;
-                           ?>
-                          <td>{{ $presupuesto }}</td>
-                          <td>{{ $gastos }}</td>
-                          @if($dif>=0)
-                            <td class="text-aqua">{{ $dif }} </td>
-                          @else
-                            <td class="text-red">{{ $dif }} </td>
-                          @endif
-
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col col-sm-12">
-                <div class="box box-info">
-                  <div class="box-header with-border">
-                    <i class="text-aqua fa fa-gavel"></i>
-                    <h3 class="box-title">Legal</h3>
-                    <div class="box-tools pull-right">
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="box-body">
-                    <div class="row">
-                      <div class="col col-sm-4">
-                        <p class="card-title"><strong><ins>RESOLUCION</ins></strong></p>
-                        <p class="card-text">N°: {{ $actividad->numero_resolucion}}</p>
-                        <p class="card-text">Fecha: {{ $actividad->fecha_resolucion}}</p>
-                      </div>
-                      <div class="col col-sm-8">
-                        <p class="card-title"><strong><ins>ACTA</ins></strong></p>
-                        <p class="card-title">N°: {{ $actividad->fecha_acta }}</p>
-                        <p class="card-text" align="justify">{{ $actividad->descripcion_acta }}</p>
-                      </div>
-                    </div>
-
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="col col-sm-6">
-            <div class="box box-primary">
-              <div class="box-header with-border">
-                <i class="text-light-blue fa fa-users"></i>
-                <div class="box-title">Usuarios</div>
-                <div class="box-tools pull-right">
-                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="box-body no-padding">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th style="width: 10px"></th>
-                      <th>Usuario</th>
-                      <th>Rol</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><i class="text-red fa fa-user"></i></td>
-                      <td>{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}</td>
-                      <td><a href="javascript: show_info_user({{$creador->id}})"><small class="label label-danger">Creador</small></a></td>
-                    </tr>
-                    <tr>
-                      <td><i class="text-green fa fa-user"></i></td>
-                      <td>{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}</td>
-                      <td><a href="javascript: show_info_user({{$monitor->id}})"><small class="label label-success ">Monitor</small></a></td>
-                    </tr>
-                    @foreach($responsables as $key=> $responsable)
-                    <tr>
-                      <td><i class="text-primary fa fa-user"></i></td>
-                      <td>{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}</td>
-                      <td><a href="javascript: show_info_user({{$responsable->id}})"><small class="label label-primary ">Responsable</small></a></td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-
-                </table>
-
-              </div>
-            </div>
-
-            <div class="modal fade" id="modalUserInfo" >
-              <div class="modal-dialog">
-                <div class="box-body no-padding">
-                  <div class="box box-widget widget-user no-margin">
-                    <div class="widget-user-header bg-aqua-active" style="padding-top:0; padding-right:0">
-                      <div class="text-right">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
-                      <h3 class="widget-user-username"><span id="user-fullname"></span></h3>
-                      <h5 class="widget-user-desc"><span id="user-puesto"></span></h5>
-                    </div>
-                    <div class="widget-user-image">
-                      <img class="img-circle" src="../dist/img/user1-128x128.jpg" alt="User Avatar">
-                    </div>
-                    <div class="box-footer">
-                      <div class="row">
-                        <div class="col-sm-4 border-right">
-                          <div class="description-block">
-                            <h5 class="description-header"><span id="user-actividades"></span></h5>
-                            <span class="description-text">Actividades</span>
-                          </div>
-                        </div>
-                        <div class="col-sm-4 border-right">
-                          <div class="description-block">
-                            <h5 class="description-header"><span id="user-metas"></h5>
-                            <span class="description-text">Metas</span>
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="description-block">
-                            <h5 class="description-header"><span id="user-puntaje"></h5>
-                            <span class="description-text">Puntos</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="box-body">
-                        <table class="table table-sm mt-2">
-                          <tbody>
-                            <tr>
-                              <td>Oficina:</td>
-                              <td><span id="user-oficina"></span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
+<div class="nav-tabs-custom">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#actividad" data-toggle="tab"><i class="fa fa-home"></i> Actividad</a></li>
+		<li><a href="#responsables" data-toggle="tab"><i class="fa fa-group"></i> Responsables</a></li>
+		<li><a href="#metas" data-toggle="tab"><i class="fa fa-tasks"></i> Metas</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="active tab-pane" id="actividad">
+			{{ Form::hidden('actividad_id', $actividad->id) }}
+			<!--Para capturara la actividad desde el script -->
+			<div class="row">
+				<div class="col col-sm-12">
+					<div class="progress" style="margin:0">
+						<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
+						 aria-valuemax="100">75%</div>
+					</div>
+				</div>
+				<div class="col col-sm-12">
+					@if(empty($plazo))
+					<p class="text-right text-primary">Esta actividad no tiene una fecha limite definida</p>
+					@elseif($plazo>=0)
+					<p class="text-right text-primary">Faltan {{$plazo}} dias para terminar la actividad</p>
+					@else
+					<p class="text-right text-danger">La actividad lleva {{abs($plazo)}} dias retrasada</p>
+					@endif
+				</div>
+				<div class="col col-sm-12">
+					<div class="callout callout-purple">
+						<p class="lead mb-0">{{ $actividad->nombre }}</p>
+						<label for="actividad_estado">Estado:</label>
+						<span class="badge badge-pill badge-info p-1">En proceso</span> total:
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col col-sm-6">
+					<div class="col col-sm-12">
+						<div class="box box-success">
+							<div class="box-header with-border">
+								<h3 class="box-title">Presupuesto</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							<div class="box-body">
+								<table class="table table-sm">
+									<thead>
+										<tr>
+											<th>Presupuesto</th>
+											<th>Gastos</th>
+											<th>Diferencia</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>{{ $actividad->presupuesto}}</td>
+											<td>{{ $actividad->metas->sum('presupuesto') }}</td>
+											<td>{{ $actividad->presupuesto-100 - $actividad->metas->sum('presupuesto')}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col col-sm-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">Resolucion</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							<div class="box-body">
+								<p class="card-title">N°: {{ $actividad->numero_resolucion}}</p>
+								<p class="card-text">Fecha: {{ $actividad->fecha_resolucion}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="col col-sm-6">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">Acta</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							<div class="box-body">
+								<p class="card-title">N°: {{ $actividad->fecha_acta }}</p>
+								<p class="card-text">{{ $actividad->descripcion_acta }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col col-sm-6">
+					<div class="box box-primary">
+						<div class="box-body">
+							Creador:
+							<ul>
+								<li>
+									{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}
+									<a href="javascript: show_info_user({{$creador->id}})"><small class="label pull-right bg-blue">Ver</small></a>
+								</li>
+							</ul>
+							Monitor:
+							<ul>
+								<li>
+									{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}
+									<a href="javascript: show_info_user({{$monitor->id}})"><small class="label pull-right bg-blue">Ver</small></a>
+								</li>
+							</ul>
+							Responsables:
+							<ul>
+								@foreach($responsables as $key=> $responsable)
+								<li>
+									{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}
+									<a href="javascript: show_info_user({{$responsable->id}})"><small class="label pull-right bg-blue">Ver</small></a>
+								</li>
+								@endforeach
+							</ul>
+						</div>
+					</div>
+					<div class="modal fade" id="modalUserInfo">
+						<div class="modal-dialog">
+							<div class="box-body no-padding">
+								<div class="box box-widget widget-user no-margin">
+									<div class="widget-user-header bg-aqua-active" style="padding-top:0; padding-right:0">
+										<div class="text-right">
+											<button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+										</div>
+										<h3 class="widget-user-username"><span id="user-fullname"></span></h3>
+										<h5 class="widget-user-desc"><span id="user-puesto"></span></h5>
+									</div>
+									<div class="widget-user-image">
+										<img class="img-circle" src="{{ url('dist/img/user1-128x128.jpg')}}" alt="User Avatar">
+									</div>
+									<div class="box-footer">
+										<div class="row">
+											<div class="col-sm-4 border-right">
+												<div class="description-block">
+													<h5 class="description-header"><span id="user-actividades"></span></h5>
+													<span class="description-text">Actividades</span>
+												</div>
+											</div>
+											<div class="col-sm-4 border-right">
+												<div class="description-block">
+													<h5 class="description-header"><span id="user-metas"></span></h5>
+                            						<span class="description-text">Metas</span>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="description-block">
+													<h5 class="description-header"><span id="user-puntaje"></span></h5>
+                            						<span class="description-text">Puntos</span>
+												</div>
+											</div>
+										</div>
+										<div class="box-body">
+											<table class="table table-sm mt-2">
+												<tbody>
+													<tr>
+														<td>Oficina:</td>
+														<td><span id="user-oficina"></span></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="tab-pane" id="responsables">
 			<div class="row">
@@ -329,8 +255,7 @@
 				<div class="col col-sm-12">
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<i class="ion ion-clipboard"></i>
-							<h3 class="box-title">Metas</h3>
+							<h3 class="box-title"><i class="fa fa-tasks"></i> Metas</h3>
 							<div class="box-tools pull-right">
 								<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-box-tool"><i class="fa fa-cog"></i></a>
 								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -339,16 +264,16 @@
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body table-responsive no-padding">
-							<table class="table table-sm table-hover table-fixed">
+							<table class="table table-sm table-hover custom_datatable" id="meta_table">
 								<thead>
 									<tr>
-										<th class="text-center" style="width:50px;">#</th>
+										<th class="text-center" style="width: 80px;">#</th>
 										<th class="text-center">Nombre</th>
 										<th class="text-center">Fecha Inicial</th>
 										<th class="text-center">Fecha Final</th>
 										<th class="text-center">Estado</th>
 										<th class="text-center">Presupuesto</th>
-										<th class="text-center"></th>
+										<th class="text-center" style="width: 120px;"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -371,34 +296,38 @@
 											<td class="text-center">
 												<a href="{{route('metas.show', [$actividad->id, $meta->id])}}" title="Ver" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>				@if ($meta->creador->id == Auth::user()->id)
 												<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>				@endif @if ($meta->creador->id == Auth::user()->id)
-												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
-												<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-													<div class="modal-dialog" role="document">
+												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta" title="Eliminar"><i class="fa fa-trash"></i></button>
+												<div class="modal fade" id="modalElimMeta" aria-hidden="true">
+													<div class="modal-dialog">
 														<div class="modal-content">
-															<div class="modal-header">
-																<h4 class="modal-title" id="modalEliminarLabel">Eliminar Meta</h4>
+															<div class="modal-header bg-danger">
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<h4 class="modal-title">Eliminar Meta</h4>
 															</div>
 															<div class="modal-body">
 																¿Realmente desea eliminar la meta "<strong>{{ $meta->nombre }}</strong>"?
 															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
-																=>['gastos.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
-																<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+															<div class="modal-footer text-right">
+																<div class="inline-flex">
+																	<button type="button" class="btn btn-sm btn-default mr-2" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
+																	=>['metas.destroy', $meta->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+																	<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 												@endif
 											</td>
-									</tr>
+										</tr>
 									@endforeach
-									<tr>
-										<th class="text-right" colspan="5">Total</th>
-										<td class="text-right">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
-										<td></td>
-									</tr>
+									<tfoot>
+										<tr>
+											<th class="text-right" colspan="5">Total</th>
+											<td class="text-right">S/. {{ number_format($actividad->metas->sum('presupuesto'), 2, '.', ',') }}</td>
+											<td></td>
+										</tr>
+									</tfoot>
 								</tbody>
 							</table>
 						</div>
@@ -411,8 +340,14 @@
 	<!-- /.tab-content -->
 </div>
 @endsection
-
+ 
 @section('script')
 <script src="{{ url('js/actividad_show.js') }}"></script>
 <script src="{{ url('js/actividad_show_responsables.js') }}"></script>
+<script src="{{ url('js/custom_datatable.js') }}"></script>
+<script>
+	$(function () { 
+		noSortableTable(0, [6]);
+	});
+</script>
 @endsection

@@ -2,7 +2,6 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
-	<link rel="stylesheet" href="{{ url('plugins/iCheck/all.css') }}">
 @endsection
 @section('content')
 <div class="row">
@@ -59,20 +58,23 @@
 							<td class="text-right pr-3">S/. {{ number_format($gasto->monto, 2, '.', ',') }}</td>
 							<td class="text-center">
 								<a class="btn btn-xs btn-flat btn-success" href="{{route('gastos.edit', [$meta->id, $gasto->id])}}"><i class="fa fa-pencil"></i></a>
-								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
-								<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimGasto" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade in" id="modalElimGasto" aria-hidden="true">
+									<div class="modal-dialog">
 										<div class="modal-content">
-											<div class="modal-header">
-												<h4 class="modal-title" id="modalEliminarLabel">Eliminar Gasto</h4>
+											<div class="modal-header bg-danger">
 												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title">Eliminar Gasto</h4>
 											</div>
 											<div class="modal-body">
 												¿Realmente desea eliminar el gasto "<strong>{{ $gasto->descripcion }}</strong>"?
 											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> {!! Form::open(['route' =>['gastos.destroy', $gasto->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
-												<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+											<div class="modal-footer text-right">
+												<div class="inline-flex">
+													<button type="button" class="btn btn-sm btn-secondary mr-2" data-dismiss="modal">Cerrar</button> {!! Form::open(['route'
+													=>['gastos.destroy', $gasto->id], 'method' => 'DELETE']) !!}
+													<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -95,15 +97,14 @@
 
 @section('script')
 <script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ url('plugins/iCheck/icheck.min.js') }}"></script>
 <script>
 	//Date picker 
-		$(function () {
-			$('.datepicker').datepicker({ 
-				format: 'dd-mm-yyyy',
-				autoclose: true 
-			});
-			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
-		})
+	$(function () {
+		$('.datepicker').datepicker({ 
+			format: 'dd-mm-yyyy',
+			autoclose: true,
+			zIndexOffset: 1030
+		});
+	})
 </script>
 @endsection
