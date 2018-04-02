@@ -25,6 +25,6 @@ class Monitoreo extends Model
 
 	public function meta()
 	{
-		return $this->belongsTo(Actividad::class);
+		return $this->belongsTo(Meta::class);
 	}
 }

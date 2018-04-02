@@ -57,20 +57,7 @@
 		</div>
 		@endif
 	</div>
-	<div class="form-group">
-		@php
-		$opciones = array()
-		@endphp
-		@foreach ($actividad->users as $user)
-		@php
-		$opciones[$user->id] = $user->nombres.' '.$user->paterno.' '.$user->materno;
-		@endphp
-		@endforeach
-		{!! Form::label('monitor_id', 'Monitor', ['class'=>'control-label control-label-sm']) !!}
-		<div class="form-group">
-			{!! Form::select('monitor_id', $opciones , null,['class'=>'form-control form-control-sm', 'placeholder'=>'Seleccione un usuario como monitor']) !!}
-		</div>
-	</div>
+	{!! Form::hidden('monitor_id', $actividad->monitor_id) !!}
 	<div class="form-group pt-4">
 		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-save"></i> Guardar</button>
 		<a class="btn btn-md btn-default" href="{{route('metas.create', $meta->actividad->id)}}"><i class="fa fa-times"></i> Cancelar</a>

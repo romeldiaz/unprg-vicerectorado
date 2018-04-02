@@ -31,15 +31,7 @@
 			{!! Form::text('fecha_fin_esperada',null, ['class'=>'datepicker form-control', 'placeholder' => 'Fecha final esperada']) !!}
 		</div>
 	</div>
-	<div class="form-group">
-		{!! Form::label('monitor_id', 'Monitor', ['class'=>'control-label control-label-sm']) !!}
-		<select name="monitor_id" id="monitor_id" class="form-control form-control-sm">
-				<option value="" selected="selected">Seleccione un usuario de monitoreo...</option>
-				@foreach ($actividad->responsables as $responsable)
-					<option value="{{$responsable->user->id}}">{{$responsable->user->nombres}} {{$responsable->user->paterno}} {{$responsable->user->materno}}</option>
-				@endforeach
-			</select>
-	</div>
+	{!! Form::hidden('monitor_id', $actividad->monitor_id) !!}
 	<div class="form-group pt-4">
 		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-plus"></i> Crear</button>
 		<a class="btn btn-md btn-default" href="{{route('metas.create', $actividad->id)}}"><i class="fa fa-times"></i> Cancelar</a>

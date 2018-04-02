@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class MonitoreoController extends Controller
 {
-	/**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -17,9 +17,9 @@ class MonitoreoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-	}
-	
-	/**
+    }
+
+    /**
      * Redirect to Actividades/index.
      *
      * @return \Illuminate\Http\Response
@@ -29,64 +29,55 @@ class MonitoreoController extends Controller
         return redirect()->route('actividades.index');
     }
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create($id)
     {
-		$meta = Meta::findOrFail($id);
-		$hoy = Carbon::now()->format('d-m-Y');
-		
+        $meta = Meta::findOrFail($id);
+        $hoy = Carbon::now()->format('d-m-Y');
+
         return view('monitoreos.index', compact('meta', 'hoy'));
     }
 
     public function store(Request $request)
     {
-		$monitoreo = Monitoreo::create($request->all());
+        $monitoreo = Monitoreo::create($request->all());
 
-        return redirect()->route('monitoreos.index', $monitoreo->meta->id);
+        return redirect()->route('monitoreo.create', $monitoreo->meta->id)
+            ->with('info', 'Registro de monitoreo creado con éxito');
     }
 
     public function show($id)
     {
-		// $monitoreo = Meta::findOrFail($id);
-		// $documentos = Tipo_documento::all();
-
-		// return view('metas.show', compact('meta', 'documentos'));
-
+        //
     }
 
-    public function edit(Request $request)
+    public function edit($meta_id, $id)
     {
-        $meta = Meta::findOrFail($request->meta_id);
-        $monitoreo = Monitoreo::findOrFail($request->monitoreo_id);
-        $monitoreos = Monitoreo::all();
-        $now = Carbon::now();
-        $hoy = $now->format('Y-m-d');
-        return view('monitoreos.index', [
-            'meta' => $meta,
-            'monitoreo' => $monitoreo,
-            'hoy' => $hoy,
-            'monitoreos' => $monitoreos,
-        ]);
+        $monitoreo = Monitoreo::findOrFail($id);
+        $meta = $monitoreo->meta;
+
+        return view('monitoreos.index', compact('monitoreo', 'meta'));
     }
 
     public function update(Request $request, $id)
     {
-        $monitoreo = Monitoreo::findOrFail($id);
-        $monitoreo->fecha = $request->fecha;
-        $monitoreo->descripcion = $request->descripcion;
-        $monitoreo->observacion = $request->observacion;
-        $monitoreo->save();
-        return redirect('monitoreos');
+        $monitoreo = Monitoreo::find($id);
+
+        $monitoreo->fill($request->all())->save();
+
+        return redirect()->route('monitoreo.create', $monitoreo->meta->id)
+            ->with('info', 'Registro de monitoreo actualizado con éxito');
+
     }
 
     public function destroy($id)
     {
-        $tarea = Monitoreo::findOrFail($id);
-        $tarea->delete();
-        return redirect('monitoreos');
+        Monitoreo::findOrFail($id)->delete();
+
+        return back()->with('info-delete', 'Eliminado correctamente');
     }
 }

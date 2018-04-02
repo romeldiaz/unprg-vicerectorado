@@ -55,9 +55,9 @@
 							<td class="text-center">{{$loop->index+1}}</td>
 							<td>{{$meta->nombre}}</td>
 							<td class="text-center">
-								@if ($meta->estado == 'E' || $meta->estado == 'F') {{ date("d/m/Y", strtotime($meta->fecha_inicio))}} @endif
+								@if ($meta->estado == 'E' || $meta->estado == 'F') {{ date("d-m-Y", strtotime($meta->fecha_inicio))}} @endif
 							<td class="text-center">
-								@if ($meta->estado == 'F') {{ date("d/m/Y", strtotime($meta->fecha_fin))}} @endif
+								@if ($meta->estado == 'F') {{ date("d-m-Y", strtotime($meta->fecha_fin))}} @endif
 							</td>
 							<td class="text-center">
 								@if ($meta->estado == 'P')
