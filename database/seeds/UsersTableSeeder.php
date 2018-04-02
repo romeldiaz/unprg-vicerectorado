@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
 			'cuenta' 			=> 'jefryts',
 			'password' 			=> Hash::make('12345'),
 			'remember_token' 	=> str_random(10),
-			'jefe' 				=> true,
+			'jefe' 				=> false,
 			'imagen' 			=> 'default.jpg',
 			'oficina_id' 		=> rand(1,10),
 		]);

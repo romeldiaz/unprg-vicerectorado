@@ -9,7 +9,7 @@
               <i class="ion ion-clipboard"></i>
               <h3 class="box-title">Requisito</h3>
               <div class="box-tools">
-                <a href="{{ url('metas/'.$meta->id) }}"><i class="fa fa-arrow-left"></i> Volver</a>
+                <a href="{{ url('actividades/'.$meta->actividad->id.'/metas/'.$meta->id) }}"><i class="fa fa-arrow-left"></i> Volver</a>
               </div>
             </div>
 

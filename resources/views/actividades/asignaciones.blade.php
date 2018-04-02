@@ -10,7 +10,6 @@
       <div class="box-header with-border">
         <div class="box-title">
           Asignaciones
-          <a href="{{ url('actividades/create') }}" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></a>
         </div>
         <div class="box-tools">
 
@@ -33,11 +32,9 @@
               <th>Fecha</th>
               <th>Presupuesto</th>
               <th>By</th>
-              <th>
-                <div class="d-flex flex-row-reverse">
-                  {{ link_to('actividades/create', 'Crear', ['class'=>'btn btn-sm btn-info']) }}
-                </div>
-              </th>
+              <th>Estado</th>
+              <th>Tiempo</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +47,49 @@
               <td>{{$actividad->fecha_inicio}}</td>
               <td>{{$actividad->presupuesto}}</td>
               <td>{{$actividad->creador_id}}</td>
+              <td>
+                <?php
+                $metas = count($actividad->metas) ;
+                $metasCumplidas = count($actividad->metas->where('estado', 'F'));
+                if($metas==0){
+                  echo '<span class="label label-warning"><i class="fa fa-clock-o"></i> Pendiente</span>';
+                }elseif($metas==$metasCumplidas){
+                  echo '<span class="label label-success"><i class="fa fa-trophy"></i> Finalizado</span>';
+                }else{
+                  echo '<span class="label label-info"><i class="fa fa-circle-o-notch"></i> En proceso</span>';
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                $a = $actividad->fecha_inicio;
+                $hoy = \Carbon\Carbon::now();
+
+                $inicio = \Carbon\Carbon::create(
+                  date("Y", strtotime($actividad->fecha_inicio)),
+                  date("m", strtotime($actividad->fecha_inicio)),
+                  date("d", strtotime($actividad->fecha_inicio))
+                );
+
+                $fin = \Carbon\Carbon::create(
+                  date("Y", strtotime($actividad->fecha_fin_esperada)),
+                  date("m", strtotime($actividad->fecha_fin_esperada)),
+                  date("d", strtotime($actividad->fecha_fin_esperada))
+                );
+
+                $estimado = $fin->diffInDays($inicio); //tiempo estimado
+                $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
+
+                $progreso = round($transcurrido/$estimado*100).'%';
+                if($progreso <= 75){
+                  echo '<span class="text-green"><i class="fa fa-circle"></i></span>';
+                }elseif($progreso < 100){
+                  echo '<span class="text-yellow"><i class="fa fa-circle"></i></span>';
+                }else{
+                  echo '<span class="text-red"><i class="fa fa-circle"></i></span>';
+                }
+                ?>
+              </td>
               <td>
                 <a href="{{ url('actividades/'.$actividad->id) }}" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>
               </td>

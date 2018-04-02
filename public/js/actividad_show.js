@@ -2,9 +2,8 @@ $(document).ready(function(){
 });
 
 
-function show_info_user(user_id){
-	var getUrl = window.location;
-	var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[0];
+function show_info_user(user_id,){
+	var baseUrl= document.getElementsByTagName('base')[0].href;
   var op = 'show_info_user';
   var data = {op, user_id};
   var url = baseUrl+'/javascript';
@@ -17,7 +16,8 @@ function show_info_user(user_id){
         var actividades = response.actividades;
         var metas = response.metas;
         var puntaje = response.puntaje;
-
+				if(user.imagen==null){user.imagen = 'default.jpg';}
+				$("#user-imagen").attr('src', baseUrl+'/images/profile/'+user.imagen);
         $("#user-fullname").html(user.nombres+" "+user.paterno+" "+user.materno);
         $("#user-puesto").html(user.jefe?'Jefe':'Usuario');
         $("#user-oficina").html(response.oficina.nombre);

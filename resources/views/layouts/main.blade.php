@@ -20,6 +20,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	@yield('css')
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -42,6 +44,11 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
+
+	<!-- Creamos una urlBase para poder utilizar en los scripts -->
+	<?php $urlBase = url(''); ?>
+	<base href="<?php echo $urlBase; ?>" />
+	
 	<div class="wrapper">
 		<!-- Main Header -->
 		<header class="main-header">

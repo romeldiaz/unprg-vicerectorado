@@ -23,7 +23,7 @@
   </div>
 
   <div class="text-right">
-    <a href="{{ url('requisitos') }} " class="btn btn-default btn-flat">Cancelar</a>
+    <a href="{{ url('metas/'.$requisito->meta->id.'/requisitos/create') }} " class="btn btn-default btn-flat">Cancelar</a>
     <button type="submit" class="btn btn-success btn-flat">Editar</button>
   </div>
 

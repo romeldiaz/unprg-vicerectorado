@@ -25,7 +25,9 @@ class ActividadController extends Controller
 
     public function asignaciones(Request $request){
       //Muestra las actividades a las que a sido asignado como responsable
-      $actividades = Actividad::search($request->get('search'))->where('responsables.user_id', Auth::user()->id)
+      $actividades = Actividad::search($request->get('search'))
+                      ->orderBy('id','desc')
+                      ->where('responsables.user_id', Auth::user()->id)
                       ->join('responsables', 'actividades.id', '=', 'responsables.actividad_id')
                       ->select('actividades.*')
                       ->paginate(5);
@@ -35,13 +37,17 @@ class ActividadController extends Controller
 
     public function creaciones(Request $request){
       //las actividades creadas por el usuario
-      $actividades = Actividad::search($request->get('search'))->where('creador_id', Auth::user()->id)->paginate(5);
+      $actividades = Actividad::search($request->get('search'))
+                      ->orderBy('id','desc')
+                      ->where('creador_id', Auth::user()->id)
+                      ->paginate(5);
       return view('actividades.creaciones', compact('actividades'));
     }
 
     public function todas(Request $request){
-      //las actividades creadas por el usuario
-      $actividades = Actividad::search($request->get('search'))->paginate(10);
+      $actividades = Actividad::search($request->get('search'))
+                      ->orderBy('id','desc')
+                      ->paginate(10);
       return view('actividades.todas', compact('actividades'));
     }
 

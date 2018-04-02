@@ -1,5 +1,8 @@
-@extends('layouts.main') 
+@extends('layouts.main')
 @section('content')
+
+<input type="hidden" id='url-base' value="{{url('/')}}">
+
 <div class="nav-tabs-custom">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#actividad" data-toggle="tab"><i class="fa fa-home"></i> Actividad</a></li>
@@ -30,7 +33,17 @@
 					<div class="callout callout-purple">
 						<p class="lead mb-0">{{ $actividad->nombre }}</p>
 						<label for="actividad_estado">Estado:</label>
-						<span class="badge badge-pill badge-info p-1">En proceso</span> total:
+						<?php
+						$metas = count($actividad->metas) ;
+						$metasCumplidas = count($actividad->metas->where('estado', 'F'));
+						if($metas==0){
+							echo '<span class="label label-warning"><i class="fa fa-clock-o"></i> Pendiente</span>';
+						}elseif($metas==$metasCumplidas){
+							echo '<span class="label label-success"><i class="fa fa-trophy"></i> Finalizado</span>';
+						}else{
+							echo '<span class="label label-info"><i class="fa fa-circle-o-notch"></i> En proceso</span>';
+						}
+						?>
 					</div>
 				</div>
 			</div>
@@ -96,29 +109,33 @@
 				<div class="col col-sm-6">
 					<div class="box box-primary">
 						<div class="box-body">
-							Creador:
-							<ul>
-								<li>
-									{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}
-									<a href="javascript: show_info_user({{$creador->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-								</li>
-							</ul>
-							Monitor:
-							<ul>
-								<li>
-									{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}
-									<a href="javascript: show_info_user({{$monitor->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-								</li>
-							</ul>
-							Responsables:
-							<ul>
-								@foreach($responsables as $key=> $responsable)
-								<li>
-									{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}
-									<a href="javascript: show_info_user({{$responsable->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-								</li>
-								@endforeach
-							</ul>
+							<table class="table table-hover">
+								<tr>
+									<th>ver</th>
+									<th>Usuario</th>
+									<th>Rol</th>
+								</tr>
+								<tbody>
+									<tr>
+										<td><a href="javascript: show_info_user({{$creador->id}})"><i class="text-red fa fa-user"></i></a></td>
+										<td>{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}</td>
+										<td><span class="label bg-red">Creador</span></td>
+									</tr>
+									<tr>
+										<td><a href="javascript: show_info_user({{$monitor->id}})"><i class="text-yellow fa fa-user"></i></a></td>
+										<td>{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}</td>
+										<td><span class="label bg-yellow">Monitor</span></td>
+									</tr>
+
+									@foreach($responsables as $key=> $responsable)
+									<tr>
+										<td><a href="javascript: show_info_user({{$responsable->id}})"><i class="text-blue fa fa-user"></i></a></td>
+										<td>{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}</td>
+										<td><span class="label bg-blue">Responsable</span></td>
+									</tr>
+									@endforeach
+								</tbody>
+							</table>
 						</div>
 					</div>
 					<div class="modal fade" id="modalUserInfo">
@@ -133,7 +150,7 @@
 										<h5 class="widget-user-desc"><span id="user-puesto"></span></h5>
 									</div>
 									<div class="widget-user-image">
-										<img class="img-circle" src="{{ url('dist/img/user1-128x128.jpg')}}" alt="User Avatar">
+										<img class="img-circle" id='user-imagen' src="{{ url('dist/img/user1-128x128.jpg')}}" alt="User Avatar">
 									</div>
 									<div class="box-footer">
 										<div class="row">
@@ -340,13 +357,13 @@
 	<!-- /.tab-content -->
 </div>
 @endsection
- 
+
 @section('script')
 <script src="{{ url('js/actividad_show.js') }}"></script>
 <script src="{{ url('js/actividad_show_responsables.js') }}"></script>
 <script src="{{ url('js/custom_datatable.js') }}"></script>
 <script>
-	$(function () { 
+	$(function () {
 		noSortableTable(0, [6]);
 	});
 </script>
