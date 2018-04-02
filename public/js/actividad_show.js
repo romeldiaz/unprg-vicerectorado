@@ -3,9 +3,11 @@ $(document).ready(function(){
 
 
 function show_info_user(user_id){
+	var getUrl = window.location;
+	var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[0];
   var op = 'show_info_user';
   var data = {op, user_id};
-  var url = '../javascript';
+  var url = baseUrl+'/javascript';
 
   myPost(url, data, function(response, state){
     if(state=='ok'){

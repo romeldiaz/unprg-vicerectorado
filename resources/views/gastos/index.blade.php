@@ -1,81 +1,109 @@
-@extends('layouts.dashPanel')
+@extends('layouts.main')
 
+@section('css')
+	<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" href="{{ url('plugins/iCheck/all.css') }}">
+@endsection
 @section('content')
-  <div class="row">
-    <div class="col col-sm-12">
+<div class="row">
+	<div class="col col-sm-12 col-md-4">
+		<div class="box box-info">
+			<div class="box-header">
+				<div class="box-title">
+					@if (isset($gasto))
+					Editar Gasto @else
+					Nuevo Gasto @endif
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="col-sm-12">
+					@include('partials.myAlertErrors') 
+					@if (isset($gasto))
+					@include('gastos.edit') @else
+					@include('gastos.create') @endif
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col col-sm-12 col-md-8">
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<div class="box-title" style="display:block;">
+					Gastos
+					@if (isset($gasto))
+					<a href="{{route('gastos.create', $meta->id)}}" class="btn btn-xs btn-info btn-flat pull-right"><i class="fa fa-plus"></i> Nuevo Gasto</a>@endif
+					<a href="{{route('metas.show', [$meta->actividad->id, $meta->id])}}" style="margin-right: .75rem;" class="btn-xs pull-right"><i class="fa fa-caret-left"></i> Volver</a>
+				</div>
+			</div>
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-sm table-hover table-fixed">
+					<thead>
+						<tr>
+							<th class="text-center" style="width: 50px">#</th>
+							<th class="text-center">Fecha</th>
+							<th class="text-center">Documento</th>
+							<th class="text-center">N°</th>
+							<th class="text-center">Detalle del gasto</th>
+							<th class="text-center">Importe</th>
+							<th style="width: 70px"></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($meta->gastos as $gasto)
+						<tr>
+							<td class="text-center">{{ $loop->index+1 }}</td>
+							<td class="text-center">{{ date("d/m/Y", strtotime($gasto->fecha)) }}</td>
+							<td class="text-center">{{ $gasto->tipo_documento->nombre }}</td>
+							<td class="text-center">{{ $gasto->numero }}</td>
+							<td>{{ $gasto->descripcion }}</td>
+							<td class="text-right pr-3">S/. {{ number_format($gasto->monto, 2, '.', ',') }}</td>
+							<td class="text-center">
+								<a class="btn btn-xs btn-flat btn-success" href="{{route('gastos.edit', [$meta->id, $gasto->id])}}"><i class="fa fa-pencil"></i></a>
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalEliminar" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="modalEliminarLabel">Eliminar Gasto</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+												¿Realmente desea eliminar el gasto "<strong>{{ $gasto->descripcion }}</strong>"?
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> {!! Form::open(['route' =>['gastos.destroy', $gasto->id], 'class' => 'new-form-inline', 'method' => 'DELETE']) !!}
+												<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> {!! Form::close() !!}
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						@endforeach
+						<tr>
+							<th class="text-right" colspan="5">Total</th>
+							<td class="text-right">S/. {{ number_format($meta->gastos->sum('monto'), 2, '.', ',') }}</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
 
-
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Actividades</a></li>
-        <li class="breadcrumb-item"><a href="#">Metas</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Gastos</li>
-      </ol>
-    </nav>
-    <div class="alert alert-dark" role="alert">
-      <h4>Actividad:: {{$meta->nombre}} <a href="#"><span class="badge badge-info">Ver</span></a></h4>
-
-    </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col col-sm-12 col-md-4">
-      @include('partials.myMessage')
-
-      @if(isset($gasto))
-        @include('gastos.edit')
-      @else
-        @include('gastos.create')
-      @endif
-    </div>
-
-    <div class="col col-sm-12 col-md-8">
-      <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <th>N</th>
-            <th>Descripcion</th>
-            <th>Monto</th>
-            <th>Numero</th>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>
-              <div class="d-flex flex-row-reverse">
-                <div class="form-inline">
-                  {{ link_to('gastos/create/'.$meta->id, 'Nuevo', ['class'=>'btn btn-sm btn-info mr-1'])}}
-                </div>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($gastos as $key => $gasto)
-            <tr>
-              <td>{{ $gasto->id }}</td>
-              <td>{{ $gasto->descripcion }}</td>
-              <td>{{ $gasto->monto }}</td>
-              <td>{{ $gasto->numero }}</td>
-              <td>{{ $gasto->fecha }}</td>
-              <td>{{ $gasto->tipo }}</td>
-              <td>
-                <div class="d-flex flex-row-reverse">
-                  <div class="form-inline">
-                    {{ link_to('gastos/edit/'.$meta->id.'/'.$gasto->id, 'Editar', ['class'=>'btn btn-sm btn-success mr-1'])}}
-
-                    {{ Form::open(['action'=>['GastoController@destroy', $gasto->id], 'method'=>'DELETE']) }}
-                      {{ Form::submit('Borrar', ['class'=>'btn btn-sm btn-secondary']) }}
-                    {{ Form::close() }}
-                  </div>
-                </div>
-
-
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-@stop
-
-@section('scripts')
-@stop
+@section('script')
+<script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url('plugins/iCheck/icheck.min.js') }}"></script>
+<script>
+	//Date picker 
+		$(function () {
+			$('.datepicker').datepicker({ 
+				format: 'dd-mm-yyyy',
+				autoclose: true 
+			});
+			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
+		})
+</script>
+@endsection

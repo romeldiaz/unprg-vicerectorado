@@ -1,9 +1,5 @@
-/* .table tbody td, .table tbody th, .table thead th {
+.table tbody tr td, .table tbody tr th, .table thead tr th {
 	vertical-align: middle;
-}
-
-tbody tr:first-child .presupuesto {
-	border-top: 0 !important;
 }
 
 .custom-select {
@@ -13,8 +9,44 @@ tbody tr:first-child .presupuesto {
 
 .table-fixed {
 	table-layout: fixed;
-} */
+}
 
 input.datepicker {
 	padding: 6px 12px;
 }
+
+.fa-circle-o-notch, .fa-cog {
+	animation:spin 3s linear infinite;
+}
+
+.fa-trophy {
+	animation:zoom 1.6s ease-in-out infinite;
+}
+
+.fa-clock-o {
+	animation: shake 1.4s cubic-bezier(.62,.21,.14,.83) infinite;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+@keyframes shake {
+	10%, 90% {
+		transform: translate3d(-.5px, 0, 0);
+	}
+	
+	20%, 80% {
+		transform: translate3d(.5px, 0, 0);
+	}
+
+	30%, 50%, 70% {
+		transform: translate3d(-1px, 0, 0);
+	}
+
+	40%, 60% {
+		transform: translate3d(1px, 0, 0);
+	}
+}
+
+@keyframes spin { 100% { transform:rotate(360deg); } }
+@keyframes zoom { 0%, 100% { transform:scale(1); } 50% { transform:scale(1.25); } }

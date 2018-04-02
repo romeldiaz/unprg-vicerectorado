@@ -30,7 +30,7 @@ class MetaStoreRequest extends FormRequest
 			'producto' 				=> 'required|max:255',
 			'presupuesto' 			=> 'required|numeric',
 			'actividad_id' 			=> 'required|integer',
-			'creador_id'			=> 'required|integer'
+			'monitor_id' 			=> 'required|integer',
         ];
     }
 }
