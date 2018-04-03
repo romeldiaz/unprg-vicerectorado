@@ -33,6 +33,22 @@ class JavascriptController extends Controller
                       ->whereNull('deleted_at')
                       ->where('nombre', 'like', '%'.$request->nombre.'%')->get();
           break;
+
+        case 'consultar_like_responsables':
+          $response = DB::table('responsables')
+                      ->where('actividad_id', $request->actividad_id)
+                      ->whereNull('responsables.deleted_at')
+                      ->join('users', 'users.id', '=', 'responsables.user_id')
+                      ->select('users.*', 'responsables.deleted_at')
+                      ->where('nombres', 'like', '%'.$request->nombre.'%')->get();
+          break;
+
+        case 'search_usuario_by_nombre':
+            $response = \App\User::search1($request->wordSearch)
+                          ->where('oficina_id', $request->oficina_id)
+                          ->get();
+          break;
+
         default:
           break;
       }

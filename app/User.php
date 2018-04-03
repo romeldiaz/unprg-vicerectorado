@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
 
 
-    public function scopeSearch($query, $search){
+  public function scopeSearch($query, $search){
 		$search = preg_replace('[\s+]','', $search);//quitar espacios
 		$search = strtolower($search);//convertir todo a minusculas
 		if($search != ""){
@@ -37,7 +37,14 @@ class User extends Authenticatable
 			->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
 		}
 	}
-
+  
+  public function scopeSearch1($query, $search){
+    $search = preg_replace('[\s+]','', $search);//quitar espacios
+    $search = strtolower($search);//convertir todo a minusculas
+    if($search != ""){
+      $query->where(\DB::raw("LOWER(CONCAT(nombres, paterno, materno))"), "LIKE", "%$search%");
+    }
+  }
 
 	// Added
 

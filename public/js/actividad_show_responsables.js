@@ -1,15 +1,16 @@
 var responsables = [];
 var resultados = [];
 var url_controller = ''
+var baseUrl= '';
 $(document).ready(function(){
-
+    baseUrl= document.getElementsByTagName('base')[0].href;
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
 
-    url_controller = 'post_js';
+    url_controller = baseUrl+'/javascript';
 
-
+    console.log(baseUrl);
     cargar_responsables(function(state){
       console.log('Responsables cargados!')
       search_usuario_by_nombre('');
@@ -56,11 +57,11 @@ function search_usuario_by_oficina(oficina_id, callback){
     });
 }
 
-function search_usuario_by_nombre(usuario_nombre){
+function search_usuario_by_nombre(wordSearch){
   var op = "search_usuario_by_nombre";
   var oficina_id = $("#search_by_oficinas").val();
-  var data = {op, oficina_id, usuario_nombre};
-
+  var data = {op, oficina_id, wordSearch};
+  console.log('cargar usuarios de oficina');
   myPost(url_controller, data, function(response, state){
     if(state=='ok'){
       resultados = response;
@@ -165,14 +166,12 @@ function quitar_de_responsables(usuario_id){
 }
 
 function cargar_responsables(callback){
+  var nombre = '';
   var actividad_id = $('input[name=actividad_id]').val();
-  var op = 'consultar_responsables';
-  var data = {op, actividad_id};
-  var url = 'actividad_js';
-
+  var op = 'consultar_like_responsables';
+  var data = {op, actividad_id, nombre};
   myPost(url_controller, data, function(response, state){
     if(state=='ok'){
-      console.log(response);
       responsables = response;
       ver_seleccionados();
       callback(state);
