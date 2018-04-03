@@ -22,7 +22,9 @@ class CreateUsersTable extends Migration
 			$table->string('password');
 			$table->rememberToken();
 			$table->boolean('jefe')->nullable();
-			$table->string('imagen', 255)->nullable();
+			$table->string('imagen', 255)->default('default.jpg');
+      $table->string('correo', 255)->nullable();
+      $table->string('telefono', 9)->nullable();
       $table->string('tipo', 25)->nullable();
 			$table->unsignedInteger('oficina_id');
 

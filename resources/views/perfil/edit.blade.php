@@ -44,6 +44,21 @@
             {{ Form::text('materno', null, ['class'=>'form-control', 'placeholder'=>'Apellido materno']) }}
           </div>
         </div>
+
+        <div class="form-group">
+          {{ Form::label('correo', 'Correo', ['class'=>'col-sm-3 control-label']) }}
+          <div class="col-sm-9">
+            {{ Form::text('correo', null, ['class'=>'form-control', 'placeholder'=>'Correo']) }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          {{ Form::label('telefono', 'Telefono', ['class'=>'col-sm-3 control-label']) }}
+          <div class="col-sm-9">
+            {{ Form::text('telefono', null, ['class'=>'form-control', 'placeholder'=>'Telefono']) }}
+          </div>
+        </div>
+
         <div class="form-group">
           {{ Form::label('password', 'Clave Actual', ['class'=>'col-sm-3 control-label']) }}
           <div class="col-sm-9">
@@ -51,7 +66,7 @@
           </div>
         </div>
         <div class="text-right">
-          <button type="submit" class="btn btn-sm btn-success">Guardar Cambios</button>
+          <button type="submit" class="btn btn-sm btn-success btn-flat">Guardar Cambios</button>
         </div>
         {{ Form::close() }}
       </div>

@@ -14,6 +14,7 @@ class UserController extends Controller
 {
     public function __construct(){
       $this->middleware('auth');
+      $this->middleware('is_admin');
     }
 
     public function index()
@@ -23,7 +24,7 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-      $users = User::search($request->get('search'))->orderBy('id', 'asc')->paginate(10);
+      $users = User::search($request->get('search'))->orderBy('id', 'desc')->paginate(10);
       $oficinas = Oficina::all();
 
       return view('users.index', compact('users', 'oficinas'));
@@ -32,17 +33,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
       $this->validate($request, $this->rules, $this->messages);
-      /*
-      $user = new User;
-      $user->nombres = $request->nombres;
-      $user->materno = $request->materno;
-      $user->paterno = $request->paterno;
-      $user->cuenta = $request->cuenta;
-      $user->password = Hash::make($request->password);
-      $user->jefe = is_null($request->jefe)?false:true;
-      $user->oficina_id = $request->oficina_id;
-      $user->save();
-      */
       $datos = $request->all();
       $datos['password'] = Hash::make($request->password);
       User::create($datos);
@@ -58,7 +48,7 @@ class UserController extends Controller
     {
       $user = User::findOrFail($id);//datos del usuarios update
       $oficinas = Oficina::all();
-      $users = User::search($request->get('search'))->orderBy('id', 'asc')->paginate(10);
+      $users = User::search($request->get('search'))->orderBy('id', 'desc')->paginate(10);
       return view('users.index', [
         'user'=> $user,
         'users'=>$users,
@@ -72,7 +62,10 @@ class UserController extends Controller
       $this->validate($request, $this->rules, $this->messages);
 
       $user = User::find($request->id);
-      $user->create($request->all());
+      $datos = $request->all();
+      $datos['password'] = Hash::make($request->password);
+      $user->update($datos);
+
       return redirect('users');
     }
 
@@ -109,7 +102,7 @@ class UserController extends Controller
       'cuenta.required' => 'Cuenta requerida',
       'cuenta.unique' => 'La cuenta no esta disponible',
       'password.required' => 'Contraseña requrida',
-      'oficina_id.required' => 'Seleccione una oficina'
+      'oficina_id.required' => 'Seleccione una oficina',
     ];
 
 }

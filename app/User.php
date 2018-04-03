@@ -19,7 +19,7 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id',
+        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id', 'correo', 'telefono',
     ];
 
     //protected $guarded = ['id'];
@@ -37,7 +37,7 @@ class User extends Authenticatable
 			->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
 		}
 	}
-	
+
 
 	// Added
 

@@ -42,6 +42,9 @@
           </span>
       </a>
         <ul class="treeview-menu">
+          @if(Auth::user()->tipo=='admin')
+          <li class="@yield('sidebar-page-actividades-todas', '')"><a href="{{ url('actividades/todas') }}"><i class="fa fa-circle-o"></i> <span>Todas</span></a></li>
+          @endif
           <li class="@yield('sidebar-page-actividades-asignaciones', '')"><a href="{{ url('actividades/asignaciones') }}"><i class="fa fa-circle-o"></i> <span>Asignaciones</span></a></li>
           <li class="@yield('sidebar-page-actividades-creaciones', '')"><a href="{{ url('actividades/creaciones') }}"><i class="fa fa-circle-o"></i> <span>Creaciones</span></a></li>
           <li class="@yield('sidebar-page-actividades-monitoreos', '')"><a href="{{ url('actividades/monitoreos')}}"><i class="fa fa-circle-o"></i> <span>Monitoreos</span></a></li>

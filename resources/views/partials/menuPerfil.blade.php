@@ -14,7 +14,7 @@
             @endif
 
 
-            <ul class="list-group list-group-unbordered">
+            <!-- <ul class="list-group list-group-unbordered">
               <li class="list-group-item">
                 <b>Followers</b> <a class="pull-right">1,322</a>
               </li>
@@ -24,7 +24,7 @@
               <li class="list-group-item">
                 <b>Friends</b> <a class="pull-right">13,287</a>
               </li>
-            </ul>
+            </ul> -->
             <a href="{{ url('perfil') }}" class="btn btn-primary btn-block"><b>Home</b></a>
             <a href="{{ url('perfil/edit') }}" class="btn btn-primary btn-block"><b>Editar</b></a>
             <a href="{{ url('perfil/imagen') }}" class="btn btn-primary btn-block"><b>Imagen</b></a>

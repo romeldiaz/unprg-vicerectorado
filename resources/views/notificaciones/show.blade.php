@@ -60,7 +60,7 @@
 
     </div>
     <div class="col col-sm-7">
-      detalle
+      {{ $notificacion->tipo }}
     </div>
   </div>
 

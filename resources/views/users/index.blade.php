@@ -6,12 +6,21 @@
 
 <div class="row">
   <div class="col col-sm-12 col-md-4">
-    @include('partials.myAlertErrors')
-    @if(isset($user))
-      @include('users.edit')
-    @else
-      @include('users.create')
-    @endif
+    <div class="box">
+      <div class="box-header with-border">
+        <i class="fa fa-user"></i>
+        <h3 class="box-title">Usuario</h3>
+      </div>
+      <div class="box-body">
+        @include('partials.myAlertErrors')
+        @if(isset($user))
+          @include('users.edit')
+        @else
+          @include('users.create')
+        @endif
+      </div>
+    </div>
+
   </div>
   <div class="col col-sm-12 col-md-8">
     <div class="box">
@@ -42,15 +51,13 @@
           <thead>
             <tr>
               <th>N°</th>
-              <th>Nombres</th>
-              <th>Paterno</th>
-              <th>Materno</th>
+              <th>Fullname</th>
               <th>Cuenta</th>
               <th>Jefe</th>
+              <th>Correo</th>
+              <th>Telefono</th>
               <th>Oficina ID</th>
-              <th>
-
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -59,9 +66,7 @@
             <?php $num++; ?>
             <tr>
               <td>{{$user->id}}</td>
-              <td>{{$user->nombres}}</td>
-              <td>{{$user->paterno}}</td>
-              <td>{{$user->materno}}</td>
+              <td>{{$user->nombres.' '.$user->paterno.' '.$user->materno}}</td>
               <td>{{$user->cuenta}}</td>
               <td>
                 @if($user->jefe)
@@ -70,13 +75,17 @@
                   <i class="text-info glyphicon glyphicon-pawn"></i>
                 @endif
               </td>
-              <td>{{$user->oficina_id}}</td>
+              <td>{{$user->correo}}</td>
+              <td>{{$user->telefono}}</td>
+              <td>{{$user->oficina->nombre}}</td>
+
               <td>
                 {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}
                   <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
                   <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>
                 {{ Form::close()}}
               </td>
+
             </tr>
             @endforeach
           </tbody>

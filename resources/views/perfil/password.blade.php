@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="text-right">
-        <button type="submit" class="btn btn-sm btn-success">Guardar Cambios</button>
+        <button type="submit" class="btn btn-sm btn-success btn-flat">Guardar Cambios</button>
       </div>
     </div>
     {{ Form::close() }}
