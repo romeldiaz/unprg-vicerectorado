@@ -19,7 +19,7 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id', 'correo', 'telefono',
+        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id', 'correo', 'telefono','cargo'
     ];
 
     //protected $guarded = ['id'];
@@ -54,5 +54,10 @@ class User extends Authenticatable
 	public function oficina()
 	{
 		return $this->belongsTo(Oficina::class);
+	}
+
+	public function completo()
+	{
+		return $this->paterno.' '.$this->materno.' '.$this->nombres;
 	}
 }

@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-      $users = User::search($request->get('search'))->orderBy('id', 'desc')->paginate(10);
+      $users = User::search($request->get('search'))->orderBy('paterno', 'asc')->orderBy('materno', 'asc')->orderBy('nombres', 'asc')->paginate(10);
       $oficinas = Oficina::all();
 
       return view('users.index', compact('users', 'oficinas'));
@@ -48,7 +48,7 @@ class UserController extends Controller
     {
       $user = User::findOrFail($id);//datos del usuarios update
       $oficinas = Oficina::all();
-      $users = User::search($request->get('search'))->orderBy('id', 'desc')->paginate(10);
+      $users = User::search($request->get('search'))->orderBy('paterno', 'asc')->orderBy('materno', 'asc')->orderBy('nombres', 'asc')->paginate(10);
       return view('users.index', [
         'user'=> $user,
         'users'=>$users,
@@ -59,7 +59,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
       $this->rules['cuenta'] = ['required', Rule::unique('users')->ignore($id)];
-      $this->validate($request, $this->rules, $this->messages);
+      $this->validate($request, $this->rules2, $this->messages);
 
       $user = User::find($request->id);
       $datos = $request->all();
@@ -92,6 +92,13 @@ class UserController extends Controller
         'materno'=>'required',
         'cuenta' => 'required|string|max:50|unique:users',
         'password'=>'required',
+        'oficina_id' => 'required',
+    ];
+
+    public $rules2 = [
+        'nombres'=>'required',
+        'paterno'=>'required',
+        'materno'=>'required',
         'oficina_id' => 'required',
     ];
 

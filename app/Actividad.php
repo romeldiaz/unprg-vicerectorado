@@ -51,4 +51,23 @@ class Actividad extends Model
 			$query->where(\DB::raw("REPLACE(LOWER(nombre),' ', '')"), "LIKE", "%$search%");
 		}
 	}
+
+	public function porcentaje(){
+		$inicio = strtotime($this->fecha_inicio);
+	      $fin = strtotime($this->fecha_fin_esperada);
+	      $total = $fin-$inicio;
+	      $diastotal = ((($total/60)/60)/24);
+	      
+	      $hoy = date('Y-m-d');
+	      $dia = strtotime($hoy);
+	      $pasado = $dia-$inicio;
+	      $diaspasados = ((($pasado/60)/60)/24);
+
+	      $porcentaje = ($diaspasados/$diastotal)*100;
+	      $porcentaje = round($porcentaje);
+	      if($porcentaje>100){
+	        $porcentaje = 100;
+	      }
+	      return $porcentaje;
+	}
 }

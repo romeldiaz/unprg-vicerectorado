@@ -5,30 +5,16 @@
 @section('content')
 
 <div class="row">
-  <div class="col col-sm-12 col-md-4">
+  
+  <div class="col col-sm-12">
     <div class="box">
-      <div class="box-header with-border">
-        <i class="fa fa-user"></i>
-        <h3 class="box-title">Usuario</h3>
-      </div>
-      <div class="box-body">
-        @include('partials.myAlertErrors')
-        @if(isset($user))
-          @include('users.edit')
-        @else
-          @include('users.create')
-        @endif
-      </div>
-    </div>
-
-  </div>
-  <div class="col col-sm-12 col-md-8">
-    <div class="box">
-
       <div class="box-header with-border">
         <div class="box-title">
           Usuarios
           <a href="#" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i></a>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
         </div>
         <div class="box-tools">
 
@@ -51,12 +37,12 @@
           <thead>
             <tr>
               <th>N°</th>
-              <th>Fullname</th>
+              <th>Nombre</th>
               <th>Cuenta</th>
               <th>Jefe</th>
               <th>Correo</th>
               <th>Telefono</th>
-              <th>Oficina ID</th>
+              <th>Oficina</th>
               <th></th>
             </tr>
           </thead>
@@ -66,13 +52,13 @@
             <?php $num++; ?>
             <tr>
               <td>{{$user->id}}</td>
-              <td>{{$user->nombres.' '.$user->paterno.' '.$user->materno}}</td>
+              <td>{{$user->paterno.' '.$user->materno.' '.$user->nombres}}</td>
               <td>{{$user->cuenta}}</td>
               <td>
                 @if($user->jefe)
-                  <i class="text-success glyphicon glyphicon-king"></i>
+                  Sí
                 @else
-                  <i class="text-info glyphicon glyphicon-pawn"></i>
+                  No
                 @endif
               </td>
               <td>{{$user->correo}}</td>
@@ -103,6 +89,27 @@
         </div>
       </div>
 
+    </div>
+
+  </div>
+
+  <div class="col col-sm-12">
+    <div class="box">
+      <div class="box-header with-border">
+        <i class="fa fa-user"></i>
+        <h3 class="box-title">Usuario</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        @include('partials.myAlertErrors')
+        @if(isset($user))
+          @include('users.edit')
+        @else
+          @include('users.create')
+        @endif
+      </div>
     </div>
 
   </div>

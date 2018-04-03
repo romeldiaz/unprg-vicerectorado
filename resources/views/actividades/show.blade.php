@@ -15,11 +15,10 @@
 			<!--Para capturara la actividad desde el script -->
 			<div class="row">
 				<div class="col col-sm-12">
-					<div class="progress" style="margin:0">
-						<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-						 aria-valuemax="100">75%</div>
-					</div>
-				</div>
+                    <div class="progress" style="margin:0">
+                      <div class="progress-bar progress-bar-striped @if($actividad->porcentaje()<70) avance-green @elseif($actividad->porcentaje()<100) avance-yellow @else avance-red @endif" role="progressbar" style="width:{{$actividad->porcentaje()}}%" aria-valuenow="{{$actividad->porcentaje()}}" aria-valuemin="0" aria-valuemax="100">{{$actividad->porcentaje()}}%</div>
+                    </div>
+                  </div>
 				<div class="col col-sm-12">
 					@if(empty($plazo))
 					<p class="text-right text-primary">Esta actividad no tiene una fecha limite definida</p>

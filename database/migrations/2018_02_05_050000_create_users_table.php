@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
       $table->string('correo', 255)->nullable();
       $table->string('telefono', 9)->nullable();
       $table->string('tipo', 25)->nullable();
+      $table->string('cargo', 25)->nullable();
 			$table->unsignedInteger('oficina_id');
 
 			// SoftDelete

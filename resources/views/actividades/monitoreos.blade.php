@@ -31,7 +31,8 @@
               <th>Nombre</th>
               <th>Fecha</th>
               <th>Presupuesto</th>
-              <th>By</th>
+              <th>Creador</th>
+              <th>Tiempo</th>
               <th></th>
             </tr>
           </thead>
@@ -44,7 +45,14 @@
               <td>{{$actividad->nombre}}</td>
               <td>{{$actividad->fecha_inicio}}</td>
               <td>{{$actividad->presupuesto}}</td>
-              <td>{{$actividad->creador_id}}</td>
+              <td>{{$actividad->creador->completo()}}</td>
+              <td>
+                <div class="col col-sm-12">
+                    <div class="progress" style="margin:0">
+                      <div class="progress-bar progress-bar-striped @if($actividad->porcentaje()<70) avance-green @elseif($actividad->porcentaje()<100) avance-yellow @else avance-red @endif" role="progressbar" style="width:{{$actividad->porcentaje()}}%" aria-valuenow="{{$actividad->porcentaje()}}" aria-valuemin="0" aria-valuemax="100">{{$actividad->porcentaje()}}%</div>
+                    </div>
+                  </div>
+              </td>
               <td>
                 <a href="{{ url('actividades/'.$actividad->id) }}" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>
               </td>

@@ -31,7 +31,7 @@
   <div class="form-group">
     <div class="input-group">
       <label class="input-group-addon" for="correo"><div style="width:16px">@</div></label>
-      {{ Form::text('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo']) }}
+      {{ Form::email('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo']) }}
     </div>
   </div>
 
@@ -61,13 +61,20 @@
      {{ Form::select('oficina_id',$opciones,null,['class'=>'form-control form-control-sm', 'placeholder'=>'Seleccione una oficina']) }}
    </div>
   </div>
-
+  <div class="form-group">
+    <div class="input-group">
+      <label class="input-group-addon" for="cargo"><i style="width:16px"class="fa fa-user"></i></label>
+      {{ Form::text('cargo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Cargo']) }}
+    </div>
+  </div>
   <div class="form-group">
     <div class="form-check">
       {!!Form::checkbox('jefe', null ,false, ['class'=>'form-check-input form-check-input-sm', 'id'=>'jefe', 'disabled'])!!}
-      <label for="jefe" class="form-check-label">Establecer usuario como jefe de esta oficina</label>
+      <label for="jefe" class="form-check-label">Jefe de oficina</label>
     </div>
   </div>
+
+  
 
   <div class="text-right">
     {{ link_to('users','Cancelar',['class'=>'btn btn-sm btn-flat btn-default']) }}

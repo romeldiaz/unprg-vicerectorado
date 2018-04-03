@@ -91,3 +91,15 @@
 .inline-flex{
 	display: inline-flex;
 }
+
+.avance-green{
+	background-color: #28a745;
+}
+
+.avance-yellow{
+	background-color: #ffc107;
+}
+
+.avance-red{
+	background-color: #dc3545;
+}

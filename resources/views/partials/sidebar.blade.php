@@ -53,7 +53,6 @@
       @if(Auth::user()->tipo=='admin')
       <li class="@yield('sidebar_page_usuarios', '')"><a href="{{ url('users') }}"><i class="fa fa-user"></i> <span>Usuarios</span></a></li>
       <li class="@yield('sidebar_page_oficina', '')"><a href="{{ url('oficinas') }}" }}><i class="fa fa-institution"></i> <span>Oficinas</span></a></li>
-      <li class="@yield('sidebar_page_config', '')"><a href="#" }}><i class="fa fa-link"></i> <span>Config</span></a></li>
       @endif
       </ul>
     <!-- /.sidebar-menu -->
