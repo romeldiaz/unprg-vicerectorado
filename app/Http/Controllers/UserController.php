@@ -17,17 +17,16 @@ class UserController extends Controller
       $this->middleware('is_admin');
     }
 
-    public function index()
-    {
-      return redirect('users/create');
-    }
-
-    public function create(Request $request)
+    public function index(Request $request)
     {
       $users = User::search($request->get('search'))->orderBy('paterno', 'asc')->orderBy('materno', 'asc')->orderBy('nombres', 'asc')->paginate(10);
-      $oficinas = Oficina::all();
+      return view('users.index', compact('users'));
+    }
 
-      return view('users.index', compact('users', 'oficinas'));
+    public function create()
+    {
+      $oficinas = Oficina::all();
+      return view('users.create', compact('oficinas'));
     }
 
     public function store(Request $request)
@@ -48,12 +47,7 @@ class UserController extends Controller
     {
       $user = User::findOrFail($id);//datos del usuarios update
       $oficinas = Oficina::all();
-      $users = User::search($request->get('search'))->orderBy('paterno', 'asc')->orderBy('materno', 'asc')->orderBy('nombres', 'asc')->paginate(10);
-      return view('users.index', [
-        'user'=> $user,
-        'users'=>$users,
-        'oficinas'=>$oficinas,
-      ]);
+      return view('users.edit', compact('user','oficinas'));
     }
 
     public function update(Request $request, $id)
@@ -108,7 +102,7 @@ class UserController extends Controller
       'materno.required' => 'Apellido materno requerido',
       'cuenta.required' => 'Cuenta requerida',
       'cuenta.unique' => 'La cuenta no esta disponible',
-      'password.required' => 'Contraseña requrida',
+      'password.required' => 'Contraseña requerida',
       'oficina_id.required' => 'Seleccione una oficina',
     ];
 

@@ -47,7 +47,13 @@ class JavascriptController extends Controller
             $response = \App\User::search1($request->wordSearch)
                           ->where('oficina_id', $request->oficina_id)
                           ->get();
-          break;
+            break;
+        /*--------------------------jS:users-------------------------------------*/
+        case 'oficina_disponible':
+            $response = \App\User::where('oficina_id', '=', $request->oficina_id)
+            ->where('jefe',1)
+            ->get();
+            break;
 
         default:
           break;

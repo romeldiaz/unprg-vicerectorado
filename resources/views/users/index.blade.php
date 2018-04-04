@@ -5,24 +5,19 @@
 @section('content')
 
 <div class="row">
-  
+
+
   <div class="col col-sm-12">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header with-border">
         <div class="box-title">
+          <i class="fa fa-users"></i>
           Usuarios
-          <a href="#" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i></a>
           <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
         </div>
         <div class="box-tools">
-
-          @if(isset($user))
-            {{ Form::open(['action'=>['UserController@edit', $user->id], 'method'=>'GET'])}}
-          @else
-            {{ Form::open(['action'=>'UserController@create', 'method'=>'GET'])}}
-          @endif
+          {{ Form::open(['action'=>'UserController@index', 'method'=>'GET'])}}
           <div class="input-group input-group-sm" style="width: 150px;">
             {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
             <div class="input-group-btn">
@@ -36,22 +31,22 @@
         <table class="table table-hover table-sm">
           <thead>
             <tr>
-              <th>N°</th>
+              <th>#</th>
               <th>Nombre</th>
               <th>Cuenta</th>
               <th>Jefe</th>
               <th>Correo</th>
               <th>Telefono</th>
               <th>Oficina</th>
-              <th></th>
+              <th><a href="{{ url('users/create') }}" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i>Nuevo</a></th>
             </tr>
           </thead>
           <tbody>
-            <?php $num=0; ?>
+            <?php $num= $users->firstItem()?>
             @foreach($users as $key => $user)
-            <?php $num++; ?>
+
             <tr>
-              <td>{{$user->id}}</td>
+              <td>{{$num}}</td>
               <td>{{$user->paterno.' '.$user->materno.' '.$user->nombres}}</td>
               <td>{{$user->cuenta}}</td>
               <td>
@@ -73,6 +68,7 @@
               </td>
 
             </tr>
+            <?php $num++; ?>
             @endforeach
           </tbody>
         </table>
@@ -93,31 +89,11 @@
 
   </div>
 
-  <div class="col col-sm-12">
-    <div class="box">
-      <div class="box-header with-border">
-        <i class="fa fa-user"></i>
-        <h3 class="box-title">Usuario</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-        </div>
-      </div>
-      <div class="box-body">
-        @include('partials.myAlertErrors')
-        @if(isset($user))
-          @include('users.edit')
-        @else
-          @include('users.create')
-        @endif
-      </div>
-    </div>
 
-  </div>
 </div>
 
 @endsection
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
-  <script src="{{ url('js/user.js') }}"></script>
 @endsection

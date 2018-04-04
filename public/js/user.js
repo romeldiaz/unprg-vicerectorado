@@ -1,11 +1,9 @@
-var url_controller = 'post_js'
-var dominio = 'http://localhost/unprg5/public/users/';
-var token = '';
+var url_base = '';
 $(document).ready(function(){
-
+  url_base = document.getElementsByTagName('base')[0].href;
 
   if($("#id").val()!=0){//modo edicion
-    url_controller = '../'+url_controller;
+    url_controller = url_base+'/javascript';
     oficina_disponible($('select[name=oficina_id]').val());
   }
 
