@@ -14,23 +14,20 @@
 		</div>
 	</div>
 	<div class="form-group">
-		{!! Form::label('fecha_inicio_esperada', 'Fecha de inicio esperada', ['class'=>'control-label control-label-sm']) !!}
-		<div class="input-group date">
-			<div class="input-group-addon">
-				<i class="fa fa-calendar"></i>
-			</div>
-			{!! Form::text('fecha_inicio_esperada',null, ['class'=>'datepicker form-control pull-right', 'placeholder' => 'Fecha de inicio esperada']) !!}
-		</div>
-	</div>
-	<div class="form-group">
-		{!! Form::label('fecha_fin_esperada', 'Fecha final esperada', ['class'=>'control-label control-label-sm']) !!}
-		<div class="input-group date">
-			<div class="input-group-addon">
-				<i class="fa fa-calendar"></i>
-			</div>
-			{!! Form::text('fecha_fin_esperada',null, ['class'=>'datepicker form-control', 'placeholder' => 'Fecha final esperada']) !!}
-		</div>
-	</div>
+        {{ Form::label('fecha_inicio_esperada', 'Fecha de inicio esperada') }}
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          {{ Form::date('fecha_inicio_esperada', null, ['class'=>'form-control form-control-sm']) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        {{ Form::label('fecha_fin_esperada', 'Fecha final esperada') }}
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          {{ Form::date('fecha_fin_esperada', null, ['class'=>'form-control form-control-sm']) }}
+        </div>
+      </div>
 	{!! Form::hidden('monitor_id', $actividad->monitor_id) !!}
 	<div class="form-group pt-4">
 		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-plus"></i> Crear</button>

@@ -39,22 +39,22 @@
 	</div>
 	<div class="form-group">
 		@if ($meta->estado == 'P')
-		{!! Form::label('fecha_inicio', 'Fecha de Inicio', ['class'=>'control-label control-label-sm']) !!}
-		<div class="input-group date">
-			<div class="input-group-addon">
-				<i class="fa fa-calendar"></i>
-			</div>
-			{!! Form::text('fecha_inicio',null, ['class'=>'datepicker form-control', 'placeholder' => 'Fecha de Inicio']) !!}
-		</div>
+		<div class="form-group">
+	        {{ Form::label('fecha_inicio', 'Fecha de inicio') }}
+	        <div class="input-group">
+	          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	          {{ Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm']) }}
+	        </div>
+	      </div>
 		@endif
 		@if ($meta->estado == 'E')
-		{!! Form::label('fecha_fin', 'Fecha de Fin', ['class'=>'control-label control-label-sm']) !!}
-		<div class="input-group date">
-			<div class="input-group-addon">
-				<i class="fa fa-calendar"></i>
-			</div>
-			{!! Form::text('fecha_fin',null, ['class'=>'datepicker form-control', 'placeholder' => 'Fecha de Fin']) !!}
-		</div>
+		<div class="form-group">
+	        {{ Form::label('fecha_fin', 'Fecha de fin') }}
+	        <div class="input-group">
+	          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	          {{ Form::date('fecha_fin', null, ['class'=>'form-control form-control-sm']) }}
+	        </div>
+	      </div>
 		@endif
 	</div>
 	{!! Form::hidden('monitor_id', $actividad->monitor_id) !!}

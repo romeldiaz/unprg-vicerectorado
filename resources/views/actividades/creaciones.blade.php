@@ -16,7 +16,7 @@
 
           {{ Form::open(['action'=>'ActividadController@creaciones', 'method'=>'GET'])}}
             <div class="input-group input-group-sm" style="width: 150px;">
-              {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'search']) }}
+              {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'buscar']) }}
               <div class="input-group-btn">
                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
               </div>

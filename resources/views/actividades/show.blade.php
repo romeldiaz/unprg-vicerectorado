@@ -273,7 +273,7 @@
 						<div class="box-header with-border">
 							<h3 class="box-title"><i class="fa fa-tasks"></i> Metas</h3>
 							<div class="box-tools pull-right">
-								<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-box-tool"><i class="fa fa-cog"></i></a>
+								<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></a>
 								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 							</div>
 							<!-- /.box-tools -->

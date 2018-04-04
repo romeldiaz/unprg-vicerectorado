@@ -72,8 +72,8 @@
 								<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
 								@endif
 								@if ($meta->creador->id == Auth::user()->id)
-								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta" title="Eliminar"><i class="fa fa-trash"></i></button>
-								<div class="modal fade" id="modalElimMeta" aria-hidden="true">
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta{{$meta->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade" id="modalElimMeta{{$meta->id}}" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header bg-danger">
