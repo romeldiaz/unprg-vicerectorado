@@ -25,12 +25,11 @@ class MetaStoreRequest extends FormRequest
     {
         return [
 			'nombre' 				=> 'required|max:255',
-			'fecha_inicio_esperada' => 'required|date',
-			'fecha_fin_esperada' 	=> 'required|date',
+			'fecha_inicio_esperada' => 'required|date_format:Y-m-d|before_or_equal:today',
+			'fecha_fin_esperada' 	=> 'required|date_format:Y-m-d|after_or_equal:fecha_inicio_esperada',
 			'producto' 				=> 'required|max:255',
-			'presupuesto' 			=> 'required|numeric',
-			'actividad_id' 			=> 'required|integer',
-			'monitor_id' 			=> 'required|integer',
+			'presupuesto' 			=> 'required|numeric|min:0',
+			'actividad_id' 			=> 'required|integer|exists:actividades,id',
         ];
     }
 }

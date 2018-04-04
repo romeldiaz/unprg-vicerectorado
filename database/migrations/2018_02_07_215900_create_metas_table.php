@@ -31,16 +31,12 @@ class CreateMetasTable extends Migration
 
 			$table->unsignedInteger('actividad_id');
 			$table->unsignedInteger('creador_id');
-			$table->unsignedInteger('monitor_id');
 
 			// Relation
 			$table->foreign('actividad_id')->references('id')->on('actividades')
 				->onDelete('cascade')
 				->onUpdate('cascade');
 			$table->foreign('creador_id')->references('id')->on('users')
-				->onDelete('cascade')
-				->onUpdate('cascade');
-			$table->foreign('monitor_id')->references('id')->on('users')
 				->onDelete('cascade')
 				->onUpdate('cascade');
         });

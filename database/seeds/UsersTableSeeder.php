@@ -12,6 +12,19 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+		App\User::create([
+			'nombres' => 'Admin',
+			'paterno' => 'P.Admin',
+			'materno' => 'M.Admin',
+			'cuenta' => 'admin',
+			'password' => Hash::make('admin'),
+			'remember_token' => str_random(10),
+			'jefe' => true,
+			'imagen' => 'default.jpg',
+			'tipo' => 'admin',
+			'oficina_id' => rand(1,10),
+    	]);
+	
 		factory(App\User::class, 25)->create();
 
 		App\User::create([
@@ -33,22 +46,9 @@ class UsersTableSeeder extends Seeder
 			'cuenta' 			=> 'jefryts',
 			'password' 			=> Hash::make('12345'),
 			'remember_token' 	=> str_random(10),
-			'jefe' 				=> false,
+			'jefe' 				=> true,
 			'imagen' 			=> 'default.jpg',
 			'oficina_id' 		=> rand(1,10),
 		]);
-
-    App\User::create([
-      'nombres' => 'Admin',
-      'paterno' => 'P.Admin',
-      'materno' => 'M.Admin',
-      'cuenta' => 'admin',
-      'password' => Hash::make('admin'),
-      'remember_token' => str_random(10),
-      'jefe' => true,
-      'imagen' => 'default.jpg',
-      'tipo' => 'admin',
-      'oficina_id' => rand(1,10),
-    ]);
-    }
+	}
 }

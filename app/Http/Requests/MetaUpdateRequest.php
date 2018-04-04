@@ -25,13 +25,11 @@ class MetaUpdateRequest extends FormRequest
     {
         return [
 			'nombre' 				=> 'required|max:255',
-			'fecha_inicio' 			=> 'nullable|date',
-			'fecha_fin' 			=> 'nullable|date',
+			'fecha_inicio' 			=> 'sometimes|required|date_format:Y-m-d|before_or_equal:today',
+			'fecha_fin' 			=> 'sometimes|required|date_format:Y-m-d|after_or_equal:fecha_inicio',
 			'producto' 				=> 'required|max:255',
-			'presupuesto' 			=> 'required|numeric',
-			'estado' 				=> 'required|in:E,F',
-			'monitor_id' 			=> 'required|integer',
-			// 'responsables'			=> 'required|array'
+			'presupuesto' 			=> 'required|numeric|min:0',
+			'estado' 				=> 'required|in:P,E,F',
         ];
     }
 }

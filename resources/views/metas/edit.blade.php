@@ -17,47 +17,46 @@
 			{!!Form::text('presupuesto', null, ['class'=>'form-control', 'placeholder'=>'Presupuesto'])!!}
 		</div>
 	</div>
+	@if ($meta->estado != 'F')
 	<div class="form-group">
 		{!! Form::label('estado', 'Estado', ['class'=>'control-label control-label-sm']) !!}
 		<br>
 		@if ($meta->estado == 'P')
 		<label style="font-weight:400;">
-			Pendiente {{ Form::radio('estado', 'P') }}
+			Pendiente {!! Form::radio('estado', 'P') !!}
 		</label>
 		<label style="font-weight:400;">
-			{{ Form::radio('estado', 'E' )}} En Proceso
+			{!! Form::radio('estado', 'E' )!!} En Proceso
 		</label>	
 		@endif
 		@if ($meta->estado == 'E')
 		<label style="font-weight:400;">
-			En Proceso {{ Form::radio('estado', 'E') }}
+			En Proceso {!! Form::radio('estado', 'E') !!}
 		</label>
 		<label style="font-weight:400;">
-			{{ Form::radio('estado', 'F' )}} Finalizado
+			{!! Form::radio('estado', 'F' )!!} Finalizado
 		</label>
 		@endif
 	</div>
+	@endif
+	@if ($meta->estado != 'F')
 	<div class="form-group">
 		@if ($meta->estado == 'P')
-		<div class="form-group">
-	        {{ Form::label('fecha_inicio', 'Fecha de inicio') }}
-	        <div class="input-group">
-	          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-	          {{ Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm']) }}
-	        </div>
-	      </div>
+		{!! Form::label('fecha_inicio', 'Fecha de Inicio', ['class'=>'control-label control-label-sm']) !!}
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			{!! Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm']) !!}
+		</div>
 		@endif
 		@if ($meta->estado == 'E')
-		<div class="form-group">
-	        {{ Form::label('fecha_fin', 'Fecha de fin') }}
-	        <div class="input-group">
-	          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-	          {{ Form::date('fecha_fin', null, ['class'=>'form-control form-control-sm']) }}
-	        </div>
-	      </div>
+		{!! Form::label('fecha_fin', 'Fecha de Fin', ['class'=>'control-label control-label-sm']) !!}
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			{!! Form::date('fecha_fin', null, ['class'=>'form-control form-control-sm']) !!}
+		</div>
 		@endif
 	</div>
-	{!! Form::hidden('monitor_id', $actividad->monitor_id) !!}
+	@endif
 	<div class="form-group pt-4">
 		<button class="btn btn-md btn-info" type="submit"><i class="fa fa-save"></i> Guardar</button>
 		<a class="btn btn-md btn-default" href="{{route('metas.create', $meta->actividad->id)}}"><i class="fa fa-times"></i> Cancelar</a>

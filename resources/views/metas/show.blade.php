@@ -112,29 +112,32 @@
 						<div class="col col-sm-6">
 							<div class="box box-primary">
 								<div class="box-body">
-									Creador:
-									<ul>
-										<li>
-											{{ $meta->creador->nombres.' '.$meta->creador->paterno.' '.$meta->creador->materno }}
-											<a href="javascript: show_info_user({{$meta->creador->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-										</li>
-									</ul>
-									Monitor:
-									<ul>
-										<li>
-											{{ $meta->monitor->nombres.' '.$meta->monitor->paterno.' '.$meta->monitor->materno }}
-											<a href="javascript: show_info_user({{$meta->monitor->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-										</li>
-									</ul>
-									Responsables:
-									<ul>
-										@foreach($meta->responsables as $responsable)
-										<li>
-											{{ $responsable->user->nombres.' '.$responsable->user->paterno.' '.$responsable->user->materno }}
-											<a href="javascript: show_info_user({{$responsable->user->id}})"><small class="label pull-right bg-blue">Ver</small></a>
-										</li>
-										@endforeach
-									</ul>
+									<table class="table table-hover">
+										<tr>
+											<th>ver</th>
+											<th>Usuario</th>
+											<th>Rol</th>
+										</tr>
+										<tbody>
+											<tr>
+												<td><a href="javascript: show_info_user({{$meta->creador->id}})"><i class="text-red fa fa-user"></i></a></td>
+												<td>{{ $meta->creador->nombres.' '.$meta->creador->paterno.' '.$meta->creador->materno }}</td>
+												<td><span class="label bg-red">Creador</span></td>
+											</tr>
+											<tr>
+												<td><a href="javascript: show_info_user({{$meta->actividad->monitor->id}})"><i class="text-yellow fa fa-user"></i></a></td>
+												<td>{{ $meta->actividad->monitor->nombres.' '.$meta->actividad->monitor->paterno.' '.$meta->actividad->monitor->materno }}</td>
+												<td><span class="label bg-yellow">Monitor</span></td>
+											</tr>
+											@foreach($meta->responsables as $responsable)
+											<tr>
+												<td><a href="javascript: show_info_user({{$responsable->user->id}})"><i class="text-blue fa fa-user"></i></a></td>
+												<td>{{ $responsable->user->nombres.' '.$responsable->user->paterno.' '.$responsable->user->materno }}</td>
+												<td><span class="label bg-blue">Responsable</span></td>
+											</tr>
+											@endforeach
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -221,8 +224,8 @@
 												<td class="text-right">S/. {{ number_format($gasto->monto, 2, '.', ',') }}</td>
 												<td class="text-center">
 													<a class="btn btn-xs btn-flat btn-success" href="{{route('gastos.edit', [$meta->id, $gasto->id])}}"><i class="fa fa-pencil"></i></a>
-													<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimGasto" title="Eliminar"><i class="fa fa-trash"></i></button>
-													<div class="modal fade in" id="modalElimGasto" aria-hidden="true">
+													<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimGasto{{$gasto->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+													<div class="modal fade in" id="modalElimGasto{{$gasto->id}}" aria-hidden="true">
 														<div class="modal-dialog">
 															<div class="modal-content">
 																<div class="modal-header bg-danger">
@@ -268,7 +271,7 @@
 								<div class="box-header with-border">
 									<h3 class="box-title"><i class="fa fa-calendar-check-o"></i> Monitoreo</h3>
 									<div class="box-tools pull-right">
-										@if ($meta->monitor_id == Auth::user()->id)
+										@if ($meta->actividad->monitor_id == Auth::user()->id)
 										<a href="{{ route('monitoreo.create', $meta->id) }}" class="btn btn-xs btn-info"><i class="fa fa-plus"></i></a>
 										@endif
 										<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -296,30 +299,32 @@
 												<td>{{ $monitoreo->observacion }}</td>
 												<th>
 													<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $requisito->id])}}"><i class="fa fa-pencil"></i></a>
-													<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo" title="Eliminar"><i class="fa fa-trash"></i></button>
-													<div class="modal fade in" id="modalElimMonitoreo" aria-hidden="true">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header bg-danger">
-																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																		<span aria-hidden="true">&times;</span>
-																	</button>
-																	<h4 class="modal-title">Eliminar Registro de Monitoreo</h4>
-																</div>
-																<div class="modal-body">
-																	¿Realmente desea eliminar el registro "<strong>{{ $monitoreo->descripcion }}</strong>"?
-																</div>
-																<div class="modal-footer text-right">
-																	<div class="inline-flex">
-																		<button type="button" class="btn btn-sm btn-secondary mr-2" data-dismiss="modal">Cerrar</button> 
-																		{!! Form::open(['route' =>['monitoreo.destroy', $monitoreo->id], 'method' => 'DELETE']) !!}
-																		<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> 
-																		{!! Form::close() !!}
+													@if ($meta->actividad->monitor_id == Auth::user()->id)
+													<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo{{$monitoreo->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+													<div class="modal fade in" id="modalElimMonitoreo{{$monitoreo->id}}" aria-hidden="true">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header bg-danger">
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																			<span aria-hidden="true">&times;</span>
+																		</button>
+																		<h4 class="modal-title">Eliminar Registro de Monitoreo</h4>
+																	</div>
+																	<div class="modal-body">
+																		¿Realmente desea eliminar el registro "<strong>{{ $monitoreo->descripcion }}</strong>"?
+																	</div>
+																	<div class="modal-footer text-right">
+																		<div class="inline-flex">
+																			<button type="button" class="btn btn-sm btn-secondary mr-2" data-dismiss="modal">Cerrar</button> 
+																			{!! Form::open(['route' =>['monitoreo.destroy', $monitoreo->id], 'method' => 'DELETE']) !!}
+																			<button type="submit" class="btn btn-sm btn-danger">Eliminar</button> 
+																			{!! Form::close() !!}
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
+													@endif
 												</th>
 											</tr>
 											@endforeach

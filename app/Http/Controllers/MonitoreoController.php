@@ -6,6 +6,7 @@ use App\Meta;
 use App\Monitoreo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Requests\MonitoreoRequest;
 
 class MonitoreoController extends Controller
 {
@@ -36,14 +37,21 @@ class MonitoreoController extends Controller
      */
     public function create($id)
     {
-        $meta = Meta::findOrFail($id);
-        $hoy = Carbon::now()->format('d-m-Y');
-
-        return view('monitoreos.index', compact('meta', 'hoy'));
+		$meta = Meta::findOrFail($id);
+		
+		if($meta->actividad->monitor_id == Auth::user()->id)
+		{
+			$hoy = Carbon::now()->format('d-m-Y');
+			return view('monitoreos.index', compact('meta', 'hoy'));
+		}
+		
+		return redirect()->route('actividades.index');
     }
 
-    public function store(Request $request)
+    public function store(MonitoreoRequest $request)
     {
+		$request->fecha = date("Y-m-d", strtotime($request->fecha));
+		
         $monitoreo = Monitoreo::create($request->all());
 
         return redirect()->route('monitoreo.create', $monitoreo->meta->id)
@@ -57,16 +65,28 @@ class MonitoreoController extends Controller
 
     public function edit($meta_id, $id)
     {
+		$meta = Meta::findOrFail($meta_id);
         $monitoreo = Monitoreo::findOrFail($id);
-        $meta = $monitoreo->meta;
 
-        return view('monitoreos.index', compact('monitoreo', 'meta'));
+		if ($monitoreo->meta->id != $meta->id) 
+		{
+			return redirect()->route('metas.show', $meta->id);
+		}
+		
+		if($meta->actividad->monitor_id == Auth::user()->id)
+		{
+			return view('monitoreos.index', compact('monitoreo', 'meta'));
+		}
+		
+		return redirect()->route('actividades.index');
     }
 
-    public function update(Request $request, $id)
+    public function update(MonitoreoRequest $request, $id)
     {
-        $monitoreo = Monitoreo::find($id);
-
+		$monitoreo = Monitoreo::find($id);
+		
+		$request->fecha = date("Y-m-d", strtotime($request->fecha));
+		
         $monitoreo->fill($request->all())->save();
 
         return redirect()->route('monitoreo.create', $monitoreo->meta->id)
@@ -76,8 +96,15 @@ class MonitoreoController extends Controller
 
     public function destroy($id)
     {
-        Monitoreo::findOrFail($id)->delete();
+		
+		$registro = Monitoreo::findOrFail($id);
+		
+		if($registro->meta->actividad->monitor_id == Auth::user()->id)
+		{
+			$registro->delete();
+			return back()->with('info-delete', 'Eliminado correctamente');
+		}
 
-        return back()->with('info-delete', 'Eliminado correctamente');
+		return redirect()->route('actividades.index');
     }
 }

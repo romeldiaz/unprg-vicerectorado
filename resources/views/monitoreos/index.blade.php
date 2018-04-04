@@ -1,6 +1,5 @@
 @extends('layouts.main') 
 @section('css')
-<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ url('plugins/iCheck/all.css') }}">
 @endsection
  
@@ -52,8 +51,8 @@
 							<td>{{ $monitoreo->observacion }}</td>
 							<th>
 								<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $monitoreo->id])}}"><i class="fa fa-pencil"></i></a>
-								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo" title="Eliminar"><i class="fa fa-trash"></i></button>
-								<div class="modal fade in" id="modalElimMonitoreo" aria-hidden="true">
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo{{$monitoreo->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade in" id="modalElimMonitoreo{{$monitoreo->id}}" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header bg-danger">
@@ -86,17 +85,10 @@
 @endsection
  
 @section('script')
-<script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('plugins/iCheck/icheck.min.js') }}"></script>
 <script>
-	//Date picker 
-		$(function () {
-			$('.datepicker').datepicker({ 
-				format: 'dd-mm-yyyy',
-				autoclose: true, 
-				zIndexOffset: 1030
-			})
-			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
-		})
+	$(function () {
+		$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
+	});
 </script>
 @endsection

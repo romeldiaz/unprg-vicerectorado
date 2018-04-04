@@ -17,11 +17,9 @@ Gasto:
 	</div>
 </div>
 <div class="form-group">
-	<div class="input-group date">
-		<div class="input-group-addon">
-			&nbsp;<i class="fa fa-calendar"></i>
-		</div>
-		{!! Form::text('fecha',null, ['class'=>'datepicker form-control pull-right', 'placeholder'=>'Fecha']) !!}
+	<div class="input-group">
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}
 	</div>
 </div>
 Documento:

@@ -16,7 +16,7 @@ class Meta extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin', 'producto', 'presupuesto', 'estado', 'actividad_id', 'creador_id', 'monitor_id'
+        'nombre', 'fecha_inicio_esperada', 'fecha_inicio', 'fecha_fin_esperada', 'fecha_fin', 'producto', 'presupuesto', 'estado', 'actividad_id', 'creador_id'
 	];
 
 	protected $table = 'metas';
@@ -51,10 +51,5 @@ class Meta extends Model
 	public function creador()
 	{
 		return $this->belongsTo(User::class, 'creador_id');
-	}
-
-	public function monitor()
-	{
-		return $this->belongsTo(User::class, 'monitor_id');
 	}
 }

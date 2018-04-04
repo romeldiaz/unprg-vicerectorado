@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Actividad;
+use App\Http\Requests\MetaResponsablesRequest;
 use App\Http\Requests\MetaStoreRequest;
 use App\Http\Requests\MetaUpdateRequest;
-use App\Http\Requests\MetaResponsablesRequest;
-
 use App\Meta;
-use App\Actividad;
 use App\Responsable;
-use App\Tipo_documento;
 use App\User;
 use Auth;
+use Illuminate\Http\Request;
 
 class MetaController extends Controller
 {
-	/**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -24,17 +22,17 @@ class MetaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-	}
+    }
 
-	/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-		return redirect()->route('actividades.index');
-	}
+        return redirect()->route('actividades.index');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -43,9 +41,15 @@ class MetaController extends Controller
      */
     public function create($id)
     {
-		$actividad = Actividad::findOrFail($id);
+        $actividad = Actividad::findOrFail($id);
 
-        return view('metas.index', compact('actividad'));
+        foreach ($actividad->responsables as $responsable) {
+            $usuario = $responsable->user;
+            if ($usuario->id == Auth::user()->id) {
+                return view('metas.index', compact('actividad'));
+            }
+        }
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -56,14 +60,13 @@ class MetaController extends Controller
      */
     public function store(MetaStoreRequest $request)
     {
+        $datos = $request->all();
 
-		$datos = $request->all();
+        $datos['creador_id'] = Auth::user()->id;
 
-		$datos['creador_id'] = Auth::user()->id;
+        $meta = Meta::create($datos);
 
-		$meta = Meta::create($datos);
-
-		return redirect()->route('metas.create', $meta->actividad->id);
+        return redirect()->route('metas.create', $meta->actividad->id);
     }
 
     /**
@@ -74,10 +77,21 @@ class MetaController extends Controller
      */
     public function show($actividad_id, $id)
     {
-		$meta = Meta::findOrFail($id);
-		$actividad = $meta->actividad;
+        $actividad = Actividad::findOrFail($actividad_id);
+        $meta = Meta::findOrFail($id);
 
-		return view('metas.show', compact('meta', 'actividad'));
+        if ($meta->actividad->id != $actividad->id) {
+            return redirect()->route('actividades.show', $actividad->id);
+        }
+
+        foreach ($actividad->responsables as $responsable) {
+            $usuario = $responsable->user;
+            if ($usuario->id == Auth::user()->id) {
+                return view('metas.show', compact('meta', 'actividad'));
+            }
+        }
+
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -88,10 +102,22 @@ class MetaController extends Controller
      */
     public function edit($actividad_id, $id)
     {
-		$meta = Meta::findOrFail($id);
-		$actividad = $meta->actividad;
+        $actividad = Actividad::findOrFail($actividad_id);
+        $meta = Meta::findOrFail($id);
 
-		return view ('metas.index', compact('meta', 'actividad'));
+        if ($meta->actividad->id != $actividad->id) {
+            return redirect()->route('actividades.show', $actividad->id);
+        }
+
+        foreach ($actividad->responsables as $responsable) {
+            $usuario = $responsable->user;
+            if ($usuario->id == Auth::user()->id) {
+                $actividad = $meta->actividad;
+                return view('metas.index', compact('meta', 'actividad'));
+            }
+        }
+
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -103,44 +129,42 @@ class MetaController extends Controller
      */
     public function update(MetaUpdateRequest $request, $id)
     {
-		if($request->estado == 'P'){
-			$request->fecha_fin = null;
-			$request->fecha_inicio = null;
-		}
-		if($request->estado == 'E'){
-			$request->fecha_fin = null;
-			// $request->fecha_inicio = null;
-		}
+        if ($request->estado == 'P') {
+            $request->fecha_fin = null;
+            $request->fecha_inicio = null;
+        }
+        if ($request->estado == 'E') {
+            $request->fecha_fin = null;
+        }
+
         $meta = Meta::find($id);
 
-		$meta->fill($request->all())->save();
+        $meta->fill($request->all())->save();
 
-		return redirect()->route('metas.edit', [$meta->actividad->id, $meta->id])
-						->with('info', 'Meta actualizada con éxito');
-	}
+        return redirect()->route('metas.edit', [$meta->actividad->id, $meta->id])
+            ->with('info', 'Meta actualizada con éxito');
+    }
 
-	/**
+    /**
      * Crear o Actualizar los responsables de cada meta.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-	public function regResp(MetaResponsablesRequest $request, $id)
-	{
-		$meta = Meta::find($id);
-		if($meta->responsables()->get()->count() == 0){
-			$meta->responsables()->attach($request->get('responsables'));
-		}
-		else
-		{
-			$meta->responsables()->sync($request->get('responsables'));
-		}
+    public function regResp(MetaResponsablesRequest $request, $id)
+    {
+        $meta = Meta::find($id);
+        if ($meta->responsables()->get()->count() == 0) {
+            $meta->responsables()->attach($request->get('responsables'));
+        } else {
+            $meta->responsables()->sync($request->get('responsables'));
+        }
 
-		return redirect()->route('metas.show', [$meta->actividad->id, $meta->id])
-    					->with('info', 'Responsables de la meta actualizados con éxito');
+        return redirect()->route('metas.show', [$meta->actividad->id, $meta->id])
+            ->with('info', 'Responsables de la meta actualizados con éxito');
 
-	}
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -150,8 +174,14 @@ class MetaController extends Controller
      */
     public function destroy($id)
     {
-        Meta::find($id)->delete();
+        $meta = Meta::findOrFail($id);
 
-		return back()->with('info-delete', 'Eliminado correctamente');
-	}
+        if ($meta->actividad->creador_id == Auth::user()->id) {
+            $meta->delete();
+            return back()->with('info-delete', 'Eliminado correctamente');
+        }
+
+        return redirect()->route('actividades.index');
+
+    }
 }

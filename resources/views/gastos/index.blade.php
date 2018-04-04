@@ -58,8 +58,8 @@
 							<td class="text-right pr-3">S/. {{ number_format($gasto->monto, 2, '.', ',') }}</td>
 							<td class="text-center">
 								<a class="btn btn-xs btn-flat btn-success" href="{{route('gastos.edit', [$meta->id, $gasto->id])}}"><i class="fa fa-pencil"></i></a>
-								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimGasto" title="Eliminar"><i class="fa fa-trash"></i></button>
-								<div class="modal fade in" id="modalElimGasto" aria-hidden="true">
+								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimGasto{{$gasto->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+								<div class="modal fade in" id="modalElimGasto{{$gasto->id}}" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header bg-danger">
@@ -93,18 +93,4 @@
 		</div>
 	</div>
 </div>
-@endsection
-
-@section('script')
-<script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-<script>
-	//Date picker 
-	$(function () {
-		$('.datepicker').datepicker({ 
-			format: 'dd-mm-yyyy',
-			autoclose: true,
-			zIndexOffset: 1030
-		});
-	})
-</script>
 @endsection

@@ -1,11 +1,8 @@
 Gasto: 
 {!! Form::open(['route' => 'gastos.store']) !!} 
 {!! Form::hidden('meta_id', $meta->id) !!}
-<input name="page" type="hidden" value="create">
-<!--Para controlar el script usuario js-->
 <div class="form-group">
-	{!! Form::select('tipo', ['B' => 'Bien', 'S' => 'Servicio'], null, ['class'=>'form-control form-control-sm', 'placeholder'
-	=> 'Elige un tipo de gasto...']) !!}
+	{!! Form::select('tipo', ['B' => 'Bien', 'S' => 'Servicio'], null, ['class'=>'form-control form-control-sm', 'placeholder'	=> 'Elige un tipo de gasto...']) !!}
 </div>
 <div class="form-group">
 	{!! Form::text('descripcion', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Detalle'])!!}
@@ -17,21 +14,14 @@ Gasto:
 	</div>
 </div>
 <div class="form-group">
-	<div class="input-group date">
-		<div class="input-group-addon">
-			&nbsp;<i class="fa fa-calendar"></i>
-		</div>
-		{!! Form::text('fecha',null, ['class'=>'datepicker form-control pull-right', 'placeholder'=>'Fecha']) !!}
+	<div class="input-group">
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}
 	</div>
 </div>
 Documento:
 <div class="form-group">
-	<select class="form-control form-control-sm" name="tipo_documento_id" id="tipo_documento_id">
-		<option selected="selected" value="">Seleccione un tipo de documento...</option>
-		@foreach ($documentos as $doc)
-		<option value="{{$doc->id}}">{{$doc->nombre}}</option>
-		@endforeach
-	</select>
+	{!! Form::select('tipo_documento_id', $documentos, null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Elige un tipo de documento...']) !!}
 </div>
 <div class="form-group">
 	<div class="input-group">

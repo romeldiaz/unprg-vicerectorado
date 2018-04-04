@@ -28,7 +28,7 @@ class GastoController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -39,9 +39,18 @@ class GastoController extends Controller
     public function create($id)
     {
 		$meta = Meta::findOrFail($id);
-		$documentos = Tipo_documento::all();
+		$documentos = Tipo_documento::orderBy('id', 'ASC')->pluck('nombre', 'id');
 
-		return view('gastos.index', compact('meta', 'documentos'));
+		foreach ($meta->responsables as $responsable) {
+			$usuario = $responsable->user;
+			if($usuario->id == Auth::user()->id)
+			{
+				return view('gastos.index', compact('meta', 'documentos'));
+			}
+		}
+		
+		return redirect()->route('actividades.index');
+
     }
 
     /**
@@ -52,6 +61,8 @@ class GastoController extends Controller
      */
     public function store(GastoRequest $request)
     {
+		$request->fecha = date("Y-m-d", strtotime($request->fecha));
+
 		$gasto = Gasto::create($request->all());
 
 		return redirect()->route('gastos.create', $gasto->meta->id)
@@ -77,11 +88,23 @@ class GastoController extends Controller
      */
     public function edit($meta_id, $id)
     {
+		$meta = Meta::findOrFail($meta_id);
         $gasto = Gasto::findOrFail($id);
-		$meta = $gasto->meta;
 		$documentos = Tipo_documento::orderBy('id', 'ASC')->pluck('nombre', 'id');
 
-		return view ('gastos.index', compact('gasto', 'meta', 'documentos'));
+		if ($gasto->meta->id != $meta->id) {
+			return redirect()->route('metas.show', $meta->id);
+		}
+
+		foreach ($meta->responsables as $responsable) {
+			$usuario = $responsable->user;
+			if($usuario->id == Auth::user()->id)
+			{
+				return view('gastos.index', compact('gasto', 'meta', 'documentos'));
+			}
+		}
+
+		return redirect()->route('actividades.index');
     }
 
     /**
@@ -94,6 +117,8 @@ class GastoController extends Controller
     public function update(Request $request, $id)
     {
 		$gasto = Gasto::find($id);
+
+		$request->fecha = date("Y-m-d", strtotime($request->fecha));
 
 		$gasto->fill($request->all())->save();
 
@@ -109,8 +134,17 @@ class GastoController extends Controller
      */
     public function destroy($id)
     {
-        Gasto::findOrFail($id)->delete();
+		$gasto = Gasto::findOrFail($id);
 		
-		return back()->with('info-delete', 'Eliminado correctamente');
+		foreach ($gasto->meta->responsables as $responsable) {
+			$usuario = $responsable->user;
+			if($usuario->id == Auth::user()->id)
+			{
+				$gasto->delete();
+				return back()->with('info-delete', 'Eliminado correctamente');
+			}
+		}
+
+		return redirect()->route('actividades.index');
     }
 }

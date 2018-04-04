@@ -43,6 +43,11 @@ class Actividad extends Model
 		return $this->belongsTo(User::class, 'creador_id');
 	}
 
+	public function monitor()
+	{
+		return $this->belongsTo(User::class, 'monitor_id');
+	}
+
   	public function scopeSearch($query, $search){
 		$search = preg_replace('[\s+]','', $search);//quitar espacios
 		$search = strtolower($search);//convertir todo a minusculas

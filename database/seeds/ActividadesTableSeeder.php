@@ -13,7 +13,7 @@ class ActividadesTableSeeder extends Seeder
     {
         factory(App\Actividad::class, 30)->create()->each(function(App\Actividad $actividad){
 			$usr = App\User::find($actividad->creador_id);
-			$usuarios = App\Oficina::find($usr->oficina->id)->users()->get();
+			$usuarios = App\Oficina::find($usr->oficina->id)->users()->where('cuenta', '<>', 'admin')->get();
 			$ids = [];
 			$loop_limit = rand(1, $usuarios->count());
 			for ($i=0; $i < $loop_limit; $i++) {

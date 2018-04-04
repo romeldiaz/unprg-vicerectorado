@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GastoRequest extends FormRequest
+class MonitoreoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,10 @@ class GastoRequest extends FormRequest
     public function rules()
     {
         return [
-            'descripcion' 			=> 'required|max:150',
-			'monto' 				=> 'required|numeric|min:0',
-			'numero' 				=> 'required|max:20',
+			'descripcion' 			=> 'required|max:150',
 			'fecha' 				=> 'required|date_format:Y-m-d|before_or_equal:today',
-			'tipo' 					=> 'required|in:B,S',
-			'meta_id' 				=> 'required|integer|exists:metas,id',
-			'tipo_documento_id'		=> 'required|integer|exists:tipo_documentos,id',
+			'observacion' 			=> 'required|max:300',
+			'meta_id' 				=> 'required|integer|exists:meta,id',
         ];
     }
 }

@@ -310,10 +310,11 @@
 											</td>
 											<td class="text-right">{{number_format($meta->presupuesto, 2, '.', ',')}}</td>
 											<td class="text-center">
-												<a href="{{route('metas.show', [$actividad->id, $meta->id])}}" title="Ver" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>				@if ($meta->creador->id == Auth::user()->id)
-												<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>				@endif @if ($meta->creador->id == Auth::user()->id)
-												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta" title="Eliminar"><i class="fa fa-trash"></i></button>
-												<div class="modal fade" id="modalElimMeta" aria-hidden="true">
+												<a href="{{route('metas.show', [$actividad->id, $meta->id])}}" title="Ver" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>
+												<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
+												@if ($meta->creador->id == Auth::user()->id)
+												<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta{{$meta->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
+												<div class="modal fade" id="modalElimMeta{{$meta->id}}" aria-hidden="true">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header bg-danger">

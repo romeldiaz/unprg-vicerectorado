@@ -1,6 +1,5 @@
 @extends('layouts.main')
 @section('css')
-<link rel="stylesheet" href="{{ url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ url('plugins/iCheck/all.css') }}">
 @endsection
 
@@ -33,7 +32,7 @@
 					@if (isset($meta))
 					<a href="{{route('metas.create', $actividad->id)}}" class="btn btn-xs btn-info btn-flat pull-right"><i class="fa fa-plus"></i> Nueva Meta</a>
 					@endif
-					<a href="{{route('actividades.show', $actividad->id)}}" style="margin-right: .75rem;" class="btn-xs pull-right"><i class="fa fa-caret-left"></i> Volver</a>
+					<a href="{{route('actividades.show', $actividad->id)}}" class="btn-xs pull-right mr-3"><i class="fa fa-caret-left"></i> Volver</a>
 				</div>
 			</div>
 			<div class="box-body table-responsive no-padding">
@@ -71,7 +70,7 @@
 								@if ($meta->creador->id == Auth::user()->id)
 								<a href="{{route('metas.edit', [$actividad->id, $meta->id])}}" title="Editar" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
 								@endif
-								@if ($meta->creador->id == Auth::user()->id)
+								@if ($meta->creador->id == Auth::user()->id && $meta->estado != 'F')
 								<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMeta{{$meta->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
 								<div class="modal fade" id="modalElimMeta{{$meta->id}}" aria-hidden="true">
 									<div class="modal-dialog">
@@ -111,17 +110,10 @@
 @endsection
 
 @section('script')
-<script src="{{ url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('plugins/iCheck/icheck.min.js') }}"></script>
 <script>
-	//Date picker 
-		$(function () {
-			$('.datepicker').datepicker({ 
-				format: 'dd-mm-yyyy',
-				autoclose: true,
-				zIndexOffset: 1030
-			})
-			$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
-		})
+	$(function () {
+		$('input[type="radio"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
+	});
 </script>
 @endsection

@@ -24,7 +24,7 @@ class MetaResponsablesRequest extends FormRequest
     public function rules()
     {
         return [
-            'responsables' => 'required|array'
+			'responsables' => 'required|array|min:1'
         ];
     }
 }

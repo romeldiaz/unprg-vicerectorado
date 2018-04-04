@@ -50,7 +50,6 @@ Route::post('javascript', 'JavascriptController@funciones');
 
 
 Route::resource('metas', 		'MetaController', ['except' => [
-	'index',
 	'create',
 	'edit',
 	'show'
@@ -61,19 +60,17 @@ Route::get('actividades/{actividad}/metas/{meta}', 		'MetaController@show')		->n
 Route::put('metas/{meta}/responsables',					'MetaController@regResp')	->name('metas.regResp');
 
 Route::resource('gastos', 								'GastoController', ['except' => [
-	'index',
 	'create',
 	'edit',
-	// 'show'
+	'show'
 ]]);
 Route::get('metas/{meta}/gastos/create', 		'GastoController@create')	->name('gastos.create');
 Route::get('metas/{meta}/gastos/{gasto}/edit', 	'GastoController@edit')		->name('gastos.edit');
 
 Route::resource('monitoreo', 						'MonitoreoController', ['except' => [
-	'index',
 	'create',
 	'edit',
-	// 'show'
+	'show'
 ]]);
 Route::get('metas/{meta}/monitoreo/create', 			'MonitoreoController@create')	->name('monitoreo.create');
 Route::get('metas/{meta}/monitoreo/{monitoreo}/edit', 	'MonitoreoController@edit')		->name('monitoreo.edit');
