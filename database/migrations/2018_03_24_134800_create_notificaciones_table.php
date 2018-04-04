@@ -15,14 +15,20 @@ class CreateNotificacionesTable extends Migration
     {
         Schema::create('notificaciones', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha');
-            $table->string('tipo', 255);
-            $table->string('enlace', 255);
-            $table->boolean('read');
+            $table->date('date');
+            $table->string('type', 255);
+            $table->string('title', 255);
+            $table->unsignedInteger('from');
+            $table->unsignedInteger('to');
+            $table->boolean('checked');
+            $table->string('detail');
             //$table->timestamps();
             $table->softDeletes();
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')
+
+            $table->foreign('to')->references('id')->on('users')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            $table->foreign('from')->references('id')->on('users')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
         });

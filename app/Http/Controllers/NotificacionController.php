@@ -14,9 +14,12 @@ class NotificacionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $notificaciones = Notificacion::where('user_id',Auth::user()->id)->paginate(5);
+        $notificaciones = Notificacion::search($request->get('search'))
+                          ->where('to',Auth::user()->id)
+                          ->orderBy('date', 'desc')
+                          ->paginate(10);
         return view('notificaciones.index', compact('notificaciones'));
     }
 
@@ -30,12 +33,15 @@ class NotificacionController extends Controller
 
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-      $notificaciones = Notificacion::where('user_id',Auth::user()->id)->paginate(5);
-      $notificacion = Notificacion::findOrFail($id);
-      //dd($notificacion->tipo);
-      return view('notificaciones.show', compact('notificaciones', 'notificacion'));
+      $notificaciones = Notificacion::where('to',Auth::user()->id)
+                        ->orderBy('date', 'desc')
+                        ->paginate(10);
+      $noti = Notificacion::findOrFail($id);
+      $noti->checked = true;
+      $noti->save();
+      return view('notificaciones.index', compact('notificaciones', 'noti'));
     }
 
     public function edit($id)

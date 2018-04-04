@@ -2,7 +2,7 @@
   <!-- Menu toggle button -->
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <?php
-    $notificaciones = \App\Notificacion::where('user_id', Auth::user()->id)->where('read', 0)->get();
+    $notificaciones = \App\Notificacion::where('to', Auth::user()->id)->where('checked', 0)->get();
   ?>
       <i class="fa fa-bell-o"></i>
       <span class="label label-warning">{{ count($notificaciones) }}</span>
@@ -16,12 +16,14 @@
         <li>
           <!-- start notification -->
           <a href="{{ url('notificaciones/'.$notificacion->id) }}">
-            @if($notificacion->tipo == 'Actividad')
-              <i class="fa fa-sitemap text-aqua"></i> Nueva actividad creada
-            @elseif($notificacion->tipo == 'Meta')
-              <i class="fa fa-flag text-red"></i> Nueva meta creada
-            @elseif($notificacion->tipo == 'Monitoreo')
-              <i class="fa fa-eye text-yellow"></i> Monitoreo asignado
+            @if($notificacion->type == 'Actividad')
+              <i class="fa fa-sitemap text-blue"></i> {{ $notificacion->title }}
+            @elseif($notificacion->type == 'Meta')
+              <i class="fa fa-flag text-red"></i> {{ $notificacion->title }}
+            @elseif($notificacion->type == 'Monitoreo')
+              <i class="fa fa-binoculars text-yellow"></i> {{ $notificacion->title }}
+              @elseif($notificacion->type == 'Responsable')
+                <i class="fa fa-user-plus text-green"></i> {{ $notificacion->title }}
             @endif
           </a>
         </li>

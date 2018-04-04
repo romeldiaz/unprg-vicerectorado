@@ -15,6 +15,7 @@
           <div class="form-group">
             {!!Form::text('presupuesto', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Presupuesto'])!!}
           </div>
+          {{ Form::hidden('fecha_creacion', null)}}
           <div class="form-group">
             {!!Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Fecha incio'])!!}
           </div>

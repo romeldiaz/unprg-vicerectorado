@@ -15,7 +15,7 @@ class Actividad extends Model
 
 
     protected $fillable = [
-        'nombre', 'estado', 'presupuesto', 'fecha_inicio', 'fecha_fin_esperada',
+        'nombre', 'estado', 'presupuesto', 'fecha_creacion', 'fecha_inicio', 'fecha_fin_esperada',
         'fecha_fin', 'numero_resolucion', 'fecha_resolucion', 'fecha_acta', 'descripcion_acta', 'creador_id', 'monitor_id'
     ];
 	protected $guarded = ['id'];
@@ -57,7 +57,7 @@ class Actividad extends Model
 	      $fin = strtotime($this->fecha_fin_esperada);
 	      $total = $fin-$inicio;
 	      $diastotal = ((($total/60)/60)/24);
-	      
+
 	      $hoy = date('Y-m-d');
 	      $dia = strtotime($hoy);
 	      $pasado = $dia-$inicio;
