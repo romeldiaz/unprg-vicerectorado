@@ -15,9 +15,9 @@ class CreateActividadesTable extends Migration
     {
         Schema::create('actividades', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('nombre', 150);
+			$table->text('nombre');
 			$table->string('estado', 20)->nullable();
-      		$table->date('fecha_creacion')->nullable();
+  		$table->date('fecha_creacion')->nullable();
 			$table->decimal('presupuesto', 10, 2)->nullable();
 			$table->date('fecha_inicio')->nullable();
 			$table->date('fecha_fin_esperada')->nullable();
@@ -26,7 +26,7 @@ class CreateActividadesTable extends Migration
 			$table->date('fecha_resolucion')->nullable();
 			// $table->string('numero_acta', 30)->nullable();
 			$table->date('fecha_acta')->nullable();
-			$table->string('descripcion_acta', 255)->nullable();
+			$table->text('descripcion_acta')->nullable();
 			$table->unsignedInteger('creador_id');
 			$table->unsignedInteger('monitor_id');
 

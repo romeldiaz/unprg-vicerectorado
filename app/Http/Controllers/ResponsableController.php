@@ -23,7 +23,9 @@ class ResponsableController extends Controller
         $olds = Responsable::where('actividad_id', $request->actividad_id)->get();
         foreach ($olds as $key => $responsable) {
           $responsable->delete();
+
         }
+
         if(isset($request->usuarios)){
           foreach ($request->usuarios as $user_id) {
             $tmp = Responsable::where('actividad_id', $request->actividad_id)
@@ -35,11 +37,28 @@ class ResponsableController extends Controller
               $new->user_id = $user_id;
               $new->actividad_id = $request->actividad_id;
               $new->save();
+              //notificacion al usuario de que a sido agregado
             }else{
               $tmp->restore();
+              //notificaion al usuario de que a sido restaurado
             }
           }
         }
+
+
+
+        foreach ($olds as $key => $old) {
+          echo 'holas <br>';
+          $r = Responsable::where('actividad_id', $request->actividad_id)
+                            ->where('user_id', $old->user_id)->get()->last();
+          dd($r);
+          if(empty($r)){
+            //return 'user_id '.$r->user_id.' a sido eliminado';
+          }
+        }
+        return '<br>FIN';
+
+
       return back();
     }
 
