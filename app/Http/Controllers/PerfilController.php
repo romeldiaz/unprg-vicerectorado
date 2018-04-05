@@ -77,7 +77,7 @@ class PerfilController extends Controller
       $user = User::findOrFail(Auth::user()->id);
       $user->password = Hash::make($request->password_new);
       $user->save();
-      Auth::logout();
+      //Auth::logout();
       return redirect('login');
     }
 

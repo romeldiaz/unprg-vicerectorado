@@ -18,13 +18,13 @@ class UsersTableSeeder extends Seeder
 			'materno' => 'M.Admin',
 			'cuenta' => 'admin',
 			'password' => Hash::make('admin'),
-			'remember_token' => str_random(10),
+			'remember_token' => str_random(60),
 			'jefe' => true,
 			'imagen' => 'default.jpg',
 			'tipo' => 'admin',
 			'oficina_id' => rand(1,10),
     	]);
-	
+
 		factory(App\User::class, 25)->create();
 
 		App\User::create([
