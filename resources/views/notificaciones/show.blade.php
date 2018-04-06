@@ -68,4 +68,6 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
+  <script src="{{ url('bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+  <script src="{{ url('js/dashboard.js') }}"></script>
 @endsection

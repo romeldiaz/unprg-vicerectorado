@@ -4,6 +4,6 @@
 actividad: index
 @stop
 
-@section('scripts')
+@section('script')
 
 @stop

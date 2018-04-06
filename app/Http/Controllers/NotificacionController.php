@@ -35,12 +35,12 @@ class NotificacionController extends Controller
 
     public function show(Request $request, $id)
     {
+      $noti = Notificacion::findOrFail($id);
+      $noti->checked = true;
+      $noti->update();
       $notificaciones = Notificacion::where('to',Auth::user()->id)
                         ->orderBy('date', 'desc')
                         ->paginate(10);
-      $noti = Notificacion::findOrFail($id);
-      $noti->checked = true;
-      $noti->save();
       return view('notificaciones.index', compact('notificaciones', 'noti'));
     }
 

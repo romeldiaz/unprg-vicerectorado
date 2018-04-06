@@ -61,22 +61,21 @@ class ActividadController extends Controller
     {
         //usuarios de la misma oficina quien crea la actividad
         $monitores = User::where('oficina_id', Auth::user()->oficina_id)->get();
-
-
-
         return view('actividades.create', compact('monitores'));
     }
 
     public function store(ActividadRequest $request)
     {
+        // return ($request->presupuesto=='')?'0':$request->presupuesto;
         $datos = $request->all();
         $datos['creador_id']= Auth::user()->id;
         $datos['estado'] = 'creada';
         $datos['fecha_creacion'] = Carbon::now();
         Actividad::create($datos);
 
-        //crear notificacion para el adminstrador
-        \App\Notificacion::NotifyToAdminActivityCreated(Auth::user()->id);
+        //crear notificacion para el informar al admin(s)
+        $miActividad = Actividad::all()->last();
+        \App\Notificacion::toAdmin(Auth::user()->id, 0, 'actividad', $miActividad->id, 'crear');
 
         return redirect('actividades/creaciones');
     }

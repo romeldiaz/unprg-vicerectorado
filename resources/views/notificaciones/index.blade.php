@@ -33,14 +33,27 @@
                 ?>
                 <li  style="border-left: 3px solid {{$color_leido}};">
                   <!-- drag handle -->
-                  @if($notificacion->type=='Actividad')
-                  <i class="fa fa-sitemap"></i>
-                  @elseif($notificacion->type=='Meta')
+                  @if($notificacion->type=='actividad')
+                    <i class="fa fa-sitemap"></i>
+                    @if($notificacion->action=='crear')
+                      Se a creado una nueva actividad
+                    @elseif($notificacion->action=='eliminar')
+                      Se elimino una actividad en la que eras esponsable
+                    @endif
+                  @elseif($notificacion->type=='responsable')
+                    <i class="fa fa-user-plus"></i>
+                    @if($notificacion->action=='asignar')
+                      Tienes una asignacion como responsable de una actividad
+                    @elseif($notificacion->action=='reasignar')
+                      Has sido reasignado como responsable a una actividad
+                    @elseif($notificacion->action=='eliminar')
+                      Has sido eliminado como responsable de una actividad
+                    @endif
+
+                  @elseif($notificacion->type=='meta')
                   <i class="fa fa-flag"></i>
-                  @elseif($notificacion->type=='Monitoreo')
+                  @elseif($notificacion->type=='monitoreo')
                   <i class="fa fa-binoculars"></i>
-                  @elseif($notificacion->type=='Responsable')
-                  <i class="fa fa-user-plus"></i>
                   @endif
 
                   <!-- todo text -->

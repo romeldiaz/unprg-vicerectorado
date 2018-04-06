@@ -76,4 +76,44 @@ class Notificacion extends Model
     }
 
   }
+  // ------------------------------DICCIONARIO------------------------------
+  //(opcional): indica acividad o meta
+  //NOTIFICACIONES->TIPOS:ACCION
+  // actividad(1): crear(1), eliminar(2)
+  // monitor(2):
+  // responsable(3): asignar(1), reasignar(2), eliminar(2)
+  // meta(4):
+  // -----------------------------------------------------------------------
+
+  public static function toUser($from_id, $to_id, $type, $type_id, $action){
+    \DB::table('notificaciones')->insert([
+      'date'=>Carbon::now(),
+      'type'=> $type,
+      'type_id'=> $type_id,
+      'action'=>$action,
+      'from' => $from_id,
+      'to' =>  $to_id,
+      'checked' => false,
+      'detail' => 'detalle de notificacion',
+    ]);
+  }
+
+  public static function toAdmin($from_id, $null, $type, $type_id, $action){
+    $admins = User::where('tipo','admin')->get();
+    foreach ($admins as $key => $to) {
+      \DB::table('notificaciones')->insert([
+        'date'=>Carbon::now(),
+        'type'=> $type,
+        'type_id'=> $type_id,
+        'action'=>$action,
+        'from' => $from_id,
+        'to' =>  $to->id,
+        'checked' => false,
+        'detail' => 'detalle de notificacion',
+      ]);
+    }
+
+  }
+
+
 }

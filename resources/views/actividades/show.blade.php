@@ -14,11 +14,24 @@
 			{{ Form::hidden('actividad_id', $actividad->id) }}
 			<!--Para capturara la actividad desde el script -->
 			<div class="row">
+
 				<div class="col col-sm-12">
-                    <div class="progress" style="margin:0">
-                      <div class="progress-bar progress-bar-striped @if($actividad->porcentaje()<70) avance-green @elseif($actividad->porcentaje()<100) avance-yellow @else avance-red @endif" role="progressbar" style="width:{{$actividad->porcentaje()}}%" aria-valuenow="{{$actividad->porcentaje()}}" aria-valuemin="0" aria-valuemax="100">{{$actividad->porcentaje()}}%</div>
-                    </div>
-                  </div>
+					<div class="row">
+						<?php
+						// date_format(date_create($actividad->fecha_inicio), 'd/m/Y')
+						// date("d/m/Y", strtotime($actividad->fecha_inicio));
+						?>
+						<div class="col col-sm-6">
+							<div class="text-left">{{ date("d/m/Y", strtotime($actividad->fecha_inicio)) }}</div>
+						</div>
+						<div class="col col-sm-6">
+							<div class="text-right">{{ date("d/m/Y", strtotime($actividad->fecha_fin_esperada)) }}</div>
+						</div>
+					</div>
+          <div class="progress" style="margin:0">
+            <div class="progress-bar progress-bar-striped @if($actividad->porcentaje()<70) avance-green @elseif($actividad->porcentaje()<100) avance-yellow @else avance-red @endif" role="progressbar" style="width:{{$actividad->porcentaje()}}%" aria-valuenow="{{$actividad->porcentaje()}}" aria-valuemin="0" aria-valuemax="100">{{$actividad->porcentaje()}}%</div>
+          </div>
+        </div>
 				<div class="col col-sm-12">
 					@if(empty($plazo))
 					<p class="text-right text-primary">Esta actividad no tiene una fecha limite definida</p>
@@ -204,7 +217,7 @@
 							<div class="col col-sm-12">
 								<div class="box box-primary">
 									<div class="box-header with-border">
-										<div class="row" style="padding-bottom: 10px;">
+										<div class="row">
 											<div class="col col-sm-7">
 												<div class="input-group input-group-sm">
 													{{ Form::select('search_by_oficinas',$oficinas_options, Auth::user()->oficina_id, ['class'=>'form-control', 'id'=>'search_by_oficinas',
@@ -223,17 +236,17 @@
 												</div>
 											</div>
 										</div>
-										<div class="box-body table-responsive no-padding">
-											<table class="table table-sm table-hover">
-												<tr>
-													<th>N°</th>
-													<th>Resultados</th>
-													<th class="text-right"><a href="javascript: seleccionar_varios(0)"><span id="span_0" class="fa fa-square-o"></span></a></th>
-												</tr>
-												<tbody id="search_results">
-												</tbody>
-											</table>
-										</div>
+									</div>
+									<div class="box-body table-responsive no-padding chat" id="chat-box1">
+										<table class="table table-sm table-hover">
+											<tr>
+												<th>N°</th>
+												<th>Resultados</th>
+												<th class="text-right"><a href="javascript: seleccionar_varios(0)"><span id="span_0" class="fa fa-square-o"></span></a></th>
+											</tr>
+											<tbody id="search_results">
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
@@ -244,19 +257,22 @@
 					{{ Form::open(['action'=>['ResponsableController@store'], 'method'=>'POST']) }} {{ Form::hidden('actividad_id', $actividad->id)}}
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<div class="box-body table-responsive no-padding">
-								<table class="table table-sm table-hover">
-									<tr>
-										<th>N</th>
-										<th>Responsables</th>
-										<th class="text-right">
-											{{ Form::submit('Guardar lista', ['class'=>'btn btn-sm btn-primary']) }}
-										</th>
-									</tr>
-									<tbody id="responsables_selected">
-									</tbody>
-								</table>
-							</div>
+							<i class="fa fa-users"></i>
+							<h3 class="box-title">Responsables</h3>
+							<div class="box-tools pull-right">
+              	{{ Form::submit('Guardar lista', ['class'=>'btn btn-sm btn-primary']) }}
+              </div>
+						</div>
+						<div class="box-body table-responsive no-padding">
+							<table class="table table-sm table-hover">
+								<tr>
+									<th>N</th>
+									<th>Usuario</th>
+									<th></th>
+								</tr>
+								<tbody id="responsables_selected">
+								</tbody>
+							</table>
 						</div>
 					</div>
 					{{ Form::close() }}
@@ -362,6 +378,8 @@
 <script src="{{ url('js/actividad_show.js') }}"></script>
 <script src="{{ url('js/actividad_show_responsables.js') }}"></script>
 <script src="{{ url('js/custom_datatable.js') }}"></script>
+<script src="{{ url('bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ url('js/dashboard.js') }}"></script>
 <script>
 	$(function () {
 		noSortableTable(0, [6]);

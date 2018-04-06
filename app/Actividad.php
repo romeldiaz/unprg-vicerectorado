@@ -58,21 +58,43 @@ class Actividad extends Model
 	}
 
 	public function porcentaje(){
-		$inicio = strtotime($this->fecha_inicio);
-	      $fin = strtotime($this->fecha_fin_esperada);
-	      $total = $fin-$inicio;
-	      $diastotal = ((($total/60)/60)/24);
+    $hoy = \Carbon\Carbon::now();
 
-	      $hoy = date('Y-m-d');
-	      $dia = strtotime($hoy);
-	      $pasado = $dia-$inicio;
-	      $diaspasados = ((($pasado/60)/60)/24);
+    $inicio = \Carbon\Carbon::create(
+      date("Y", strtotime($this->fecha_inicio)),
+      date("m", strtotime($this->fecha_inicio)),
+      date("d", strtotime($this->fecha_inicio))
+    );
 
-	      $porcentaje = ($diaspasados/$diastotal)*100;
-	      $porcentaje = round($porcentaje);
-	      if($porcentaje>100){
-	        $porcentaje = 100;
-	      }
-	      return $porcentaje;
+    $fin = \Carbon\Carbon::create(
+      date("Y", strtotime($this->fecha_fin_esperada)),
+      date("m", strtotime($this->fecha_fin_esperada)),
+      date("d", strtotime($this->fecha_fin_esperada))
+    );
+
+    $estimado = $fin->diffInDays($inicio); //tiempo estimado
+    $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
+
+    $progreso = round($transcurrido/$estimado*100);
+    // echo $transcurrido.'/'.$estimado;
+    // return 'fin';
+    return $progreso;
+
+    // $inicio = strtotime($this->fecha_inicio);
+    // $fin = strtotime($this->fecha_fin_esperada);
+    // $total = $fin-$inicio;
+    // $diastotal = ((($total/60)/60)/24);
+    //
+    // $hoy = date('Y-m-d');
+    // $dia = strtotime($hoy);
+    // $pasado = $dia-$inicio;
+    // $diaspasados = ((($pasado/60)/60)/24);
+    //
+    // $porcentaje = ($diaspasados/$diastotal)*100;
+    // $porcentaje = round($porcentaje);
+    // if($porcentaje>100){
+    //   $porcentaje = 100;
+    // }
+    // return $porcentaje;
 	}
 }

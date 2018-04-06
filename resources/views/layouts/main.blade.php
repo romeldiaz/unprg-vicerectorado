@@ -20,7 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	@yield('css')
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
+	@yield('head_extras')
 
 </head>
 <!--

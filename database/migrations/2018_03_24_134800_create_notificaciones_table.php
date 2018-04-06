@@ -17,8 +17,9 @@ class CreateNotificacionesTable extends Migration
             $table->increments('id');
             $table->date('date');
             $table->string('type', 255);
-            $table->string('title', 255);
-            $table->unsignedInteger('from');
+            $table->integer('type_id');
+            $table->string('action', 255);
+            $table->integer('from');
             $table->unsignedInteger('to');
             $table->boolean('checked');
             $table->string('detail');
@@ -28,9 +29,9 @@ class CreateNotificacionesTable extends Migration
             $table->foreign('to')->references('id')->on('users')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
-            $table->foreign('from')->references('id')->on('users')
-                    ->onDelete('cascade')
-                    ->onUpdate('cascade');
+            // $table->foreign('from')->references('id')->on('users')
+            //         ->onDelete('cascade')
+            //         ->onUpdate('cascade');
         });
     }
 

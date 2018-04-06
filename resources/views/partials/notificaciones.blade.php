@@ -16,14 +16,42 @@
         <li>
           <!-- start notification -->
           <a href="{{ url('notificaciones/'.$notificacion->id) }}">
-            @if($notificacion->type == 'Actividad')
-              <i class="fa fa-sitemap text-blue"></i> {{ $notificacion->title }}
-            @elseif($notificacion->type == 'Meta')
-              <i class="fa fa-flag text-red"></i> {{ $notificacion->title }}
+            @if($notificacion->type == 'actividad')
+              @if($notificacion->action == 'crear')
+                <p class="text-blue">
+                  <i class="fa fa-sitemap"></i>
+                   Actividad Creada
+                </p>
+              @elseif($notificacion->action == 'eliminar')
+                <p class="text-red">
+                  <i class="fa fa-sitemap text-red"></i>
+                   Actividad Eliminada
+                </p>
+              @endif
+
+            @elseif($notificacion->type == 'responsable')
+              @if($notificacion->action == 'asignar')
+                <p class="text-blue">
+                  <i class="fa fa-user-plus"></i>
+                  Asignado como responsable
+                </p>
+              @elseif($notificacion->action == 'reasignar')
+                <p class="text-green">
+                  <i class="fa fa-user-plus"></i>
+                  Reasignado como responsable
+                </p>
+              @elseif($notificacion->action == 'eliminar')
+                <p class="text-red">
+                  <i class="fa fa-user-plus text-red"></i>
+                  Eliminado como responsable
+                </p>
+              @endif
+              
+            @elseif($notificacion->type == 'meta')
+              <!-- <i class="fa fa-flag text-red"></i> -->
+
             @elseif($notificacion->type == 'Monitoreo')
-              <i class="fa fa-binoculars text-yellow"></i> {{ $notificacion->title }}
-              @elseif($notificacion->type == 'Responsable')
-                <i class="fa fa-user-plus text-green"></i> {{ $notificacion->title }}
+              <!-- <i class="fa fa-binoculars text-yellow"></i> -->
             @endif
           </a>
         </li>

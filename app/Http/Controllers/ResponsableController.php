@@ -20,10 +20,9 @@ class ResponsableController extends Controller
     public function store(Request $request)
     {
         //desactivar responsable
-        $olds = Responsable::where('actividad_id', $request->actividad_id)->get();
+        $olds = \App\Actividad::findOrFail($request->actividad_id)->responsables;
         foreach ($olds as $key => $responsable) {
           $responsable->delete();
-
         }
 
         if(isset($request->usuarios)){
@@ -38,27 +37,23 @@ class ResponsableController extends Controller
               $new->actividad_id = $request->actividad_id;
               $new->save();
               //notificacion al usuario de que a sido agregado
+              \App\Notificacion::toUser(\Auth::user()->id, $new->user_id, 'responsable', $request->actividad_id, 'asignar');
             }else{
               $tmp->restore();
               //notificaion al usuario de que a sido restaurado
+              \App\Notificacion::toUser(\Auth::user()->id, $tmp->user_id, 'responsable', $request->actividad_id, 'reasignar');
             }
           }
         }
 
 
-
         foreach ($olds as $key => $old) {
-          echo 'holas <br>';
-          $r = Responsable::where('actividad_id', $request->actividad_id)
-                            ->where('user_id', $old->user_id)->get()->last();
-          dd($r);
-          if(empty($r)){
-            //return 'user_id '.$r->user_id.' a sido eliminado';
+          $r = \App\Actividad::findOrFail($request->actividad_id)->responsables->where('user_id',$old->user_id);
+          if(sizeof($r)==0){
+            \App\Notificacion::toUser(\Auth::user()->id, $old->user_id, 'responsable', $request->actividad_id, 'eliminar');
           }
         }
-        return '<br>FIN';
-
-
+        // return 'fin';
       return back();
     }
 

@@ -25,12 +25,22 @@ class ActividadRequest extends FormRequest
     {
         return [
             'nombre' => 'required',
-            'monitor_id' => 'required'
+            'presupuesto' => 'nullable|numeric|min:0',
+            'fecha_inicio' => 'required|date|',
+            'fecha_fin_esperada'=>'required|date|after:fecha_inicio',
+            'monitor_id' => 'required',
         ];
     }
 
     public function messages(){
       return [
+        'nombre.required'=>'Nombre requerido',
+        'presupuesto.numeric' => 'El campo presupuesto solo adminte cantidades numericas',
+        'presupuesto.min'=>'El campo presupuesto no adminte cantidades negativas',
+        'fecha_inicio.required'=>'Fecha inicial requerida',
+        'fecha_fin_esperada.required'=>'Fecha final esperada requerida',
+        'fecha_fin_esperada.after'=>'La fecha final esperada debe ser posterior a la fecha de inicio',
+        'monitor_id' => 'Selecione un monitor',
       ];
     }
 }
