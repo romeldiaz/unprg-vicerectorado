@@ -25,7 +25,7 @@ class MetaUpdateRequest extends FormRequest
     {
         return [
 			'nombre' 				=> 'required|max:255',
-			'fecha_inicio' 			=> 'sometimes|required|date_format:Y-m-d|before_or_equal:today',
+			'fecha_inicio' 			=> 'sometimes|required|date_format:Y-m-d',
 			'fecha_fin' 			=> 'sometimes|required|date_format:Y-m-d|after_or_equal:fecha_inicio',
 			'producto' 				=> 'required|max:255',
 			'presupuesto' 			=> 'required|numeric|min:0',
