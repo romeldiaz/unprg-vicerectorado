@@ -60,6 +60,8 @@ class MetaController extends Controller
      */
     public function store(MetaStoreRequest $request)
     {
+		$request->fecha_inicio_esperada = date("Y-m-d", strtotime($request->fecha_inicio_esperada));
+		$request->fecha_fin_esperada = date("Y-m-d", strtotime($request->fecha_fin_esperada));
         $datos = $request->all();
 
         $datos['creador_id'] = Auth::user()->id;
@@ -129,19 +131,25 @@ class MetaController extends Controller
      */
     public function update(MetaUpdateRequest $request, $id)
     {
-        if ($request->estado == 'P') {
-            $request->fecha_fin = null;
+		if ($request->estado == 'P') {
+			$request->fecha_fin = null;
             $request->fecha_inicio = null;
         }
         if ($request->estado == 'E') {
-            $request->fecha_fin = null;
-        }
-
-        $meta = Meta::find($id);
+			$request->fecha_fin = null;
+			$request->fecha_inicio = date("Y-m-d", strtotime($request->fecha_inicio));
+		}
+		
+		$meta = Meta::find($id);
+		if(isset($request->fecha_fin)) 
+		{
+			$request->fecha_inicio = $meta->fecha_inicio;
+			$request->fecha_fin = date("Y-m-d", strtotime($request->fecha_fin));
+		}
 
         $meta->fill($request->all())->save();
 
-        return redirect()->route('metas.edit', [$meta->actividad->id, $meta->id])
+        return redirect()->route('metas.create', [$meta->actividad->id])
             ->with('info', 'Meta actualizada con éxito');
     }
 
