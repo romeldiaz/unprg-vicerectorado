@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+@section('sidebar-page-actividades', 'active treeview')
+@section('sidebar-page-actividades-creaciones', 'active')
+
 @section('content')
 
 {{ Form::model($actividad, ['action'=>['ActividadController@update', $actividad->id], 'method'=>'PUT']) }}

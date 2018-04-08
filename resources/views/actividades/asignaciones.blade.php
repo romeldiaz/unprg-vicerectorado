@@ -11,20 +11,10 @@
         <div class="box-title">
           Asignaciones
         </div>
-        <div class="box-tools">
-
-          {{ Form::open(['action'=>'ActividadController@asignaciones', 'method'=>'GET'])}}
-            <div class="input-group input-group-sm" style="width: 150px;">
-              {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'buscar']) }}
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          {{ Form::close() }}
-        </div>
+        <div class="box-tools"></div>
       </div>
-      <div class="box-body table-responsive no-padding">
-        <table class="table table-hover">
+      <div class="box-body table-responsive">
+        <table class="table custom_datatable table-hover">
           <thead>
             <tr>
               <th>N°</th>
@@ -38,59 +28,30 @@
             </tr>
           </thead>
           <tbody>
-            <?php $num=0; ?>
             @foreach($actividades as $key => $actividad)
-            <?php $num++; ?>
-            <tr>
+              <?php
+                  $meta_success=false;//para pintar fila si la meta esta cumplida
+                  $metas = count($actividad->metas) ;
+                  $metasCumplidas = count($actividad->metas->where('estado', 'F'));
+                  $imprimirfila = "";
+                  $estilofila = "x";
+                  if($metas==0){
+                    $imprimirfila = '<span class="label label-warning"><i class="fa fa-clock-o"></i> Pendiente</span>';
+                  }elseif($metas==$metasCumplidas){
+                    $meta_success=true;
+                    $imprimirfila = '<span class="label label-success"><i class="fa fa-trophy"></i> Finalizado</span>';
+                  }else{
+                    $imprimirfila = '<span class="label label-info"><i class="fa fa-circle-o-notch"></i> En proceso</span>';
+                  }
+              ?>
+            <tr class="{{ $meta_success?'success':''}}">
               <td>{{$actividad->id}}</td>
               <td>{{$actividad->nombre}}</td>
               <td>{{$actividad->fecha_inicio}}</td>
               <td>{{$actividad->presupuesto}}</td>
               <td>{{$actividad->creador->completo()}}</td>
+              <td>{!! $imprimirfila !!}</td>
               <td>
-                <?php
-                $metas = count($actividad->metas) ;
-                $metasCumplidas = count($actividad->metas->where('estado', 'F'));
-                if($metas==0){
-                  echo '<span class="label label-warning"><i class="fa fa-clock-o"></i> Pendiente</span>';
-                }elseif($metas==$metasCumplidas){
-                  echo '<span class="label label-success"><i class="fa fa-trophy"></i> Finalizado</span>';
-                }else{
-                  echo '<span class="label label-info"><i class="fa fa-circle-o-notch"></i> En proceso</span>';
-                }
-                ?>
-              </td>
-              <td>
-                <?php
-                // $a = $actividad->fecha_inicio;
-                // $hoy = \Carbon\Carbon::now();
-
-                // $inicio = \Carbon\Carbon::create(
-                //   date("Y", strtotime($actividad->fecha_inicio)),
-                //   date("m", strtotime($actividad->fecha_inicio)),
-                //   date("d", strtotime($actividad->fecha_inicio))
-                // );
-
-                // $fin = \Carbon\Carbon::create(
-                //   date("Y", strtotime($actividad->fecha_fin_esperada)),
-                //   date("m", strtotime($actividad->fecha_fin_esperada)),
-                //   date("d", strtotime($actividad->fecha_fin_esperada))
-                // );
-
-                // $estimado = $fin->diffInDays($inicio); //tiempo estimado
-                // $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
-
-                // $progreso = round($transcurrido/$estimado*100).'%';
-                // if($progreso <= 75){
-                //   echo '<span class="text-green"><i class="fa fa-circle"></i></span>';
-                // }elseif($progreso < 100){
-                //   echo '<span class="text-yellow"><i class="fa fa-circle"></i></span>';
-                // }else{
-                //   echo '<span class="text-red"><i class="fa fa-circle"></i></span>';
-                // }
-
-                  
-                ?>
                   <div class="col col-sm-12">
                     <div class="progress" style="margin:0">
                       <div class="progress-bar progress-bar-striped @if($actividad->porcentaje()<70) avance-green @elseif($actividad->porcentaje()<100) avance-yellow @else avance-red @endif" role="progressbar" style="width:{{$actividad->porcentaje()}}%" aria-valuenow="{{$actividad->porcentaje()}}" aria-valuemin="0" aria-valuemax="100">{{$actividad->porcentaje()}}%</div>
@@ -105,16 +66,7 @@
           </tbody>
         </table>
       </div>
-      <div class="box-footer clearfix">
-        <div id="mypag" hidden>
-          @if($actividades->total()!=0)
-            {{ 'Mostrando del '.$actividades->firstItem().' al  '.$actividades->lastItem().' de '.$actividades->total().' registros'}}
-            {{ $actividades->links() }}
-          @else
-            No hay registros
-          @endif
-        </div>
-      </div>
+
     </div>
 
   </div>
@@ -123,4 +75,8 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
+  <script src="{{ url('js/custom_datatable.js') }}"></script>
+  <script>
+    noSortableTable(0, [7]);
+  </script>
 @endsection

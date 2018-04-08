@@ -11,20 +11,10 @@
         <div class="box-title">
           Todas las Actividades
         </div>
-        <div class="box-tools">
-
-          {{ Form::open(['action'=>'ActividadController@todas', 'method'=>'GET'])}}
-            <div class="input-group input-group-sm" style="width: 150px;">
-              {{ Form::text('search', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'buscar']) }}
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          {{ Form::close() }}
-        </div>
+        <div class="box-tools"></div>
       </div>
-      <div class="box-body table-responsive no-padding">
-        <table class="table table-hover">
+      <div class="box-body table-responsive">
+        <table class="table custom_datatable table-hover">
           <thead>
             <tr>
               <th>N°</th>
@@ -45,6 +35,7 @@
             @foreach($actividades as $key => $actividad)
             <?php $num++; ?>
             <?php
+                $meta_success=false;//para pintar fila si la meta esta cumplida
                 $metas = count($actividad->metas) ;
                 $metasCumplidas = count($actividad->metas->where('estado', 'F'));
                 $imprimirfila = "";
@@ -52,13 +43,13 @@
                 if($metas==0){
                   $imprimirfila = '<span class="label label-warning"><i class="fa fa-clock-o"></i> Pendiente</span>';
                 }elseif($metas==$metasCumplidas){
+                  $meta_success=true;
                   $imprimirfila = '<span class="label label-success"><i class="fa fa-trophy"></i> Finalizado</span>';
-                  $estilofila = 'style="background-color:#9E9E9E;color:white;"';
                 }else{
                   $imprimirfila = '<span class="label label-info"><i class="fa fa-circle-o-notch"></i> En proceso</span>';
                 }
             ?>
-            <tr <?php echo $estilofila;?>>
+            <tr class="{{ $meta_success?'success':''}}">
               <td>{{$actividad->id}}</td>
               <td>{{$actividad->nombre}}</td>
               <td>{{date("d-m-Y", strtotime($actividad->fecha_inicio))}}</td>
@@ -67,7 +58,7 @@
               <td>{{$actividad->creador->oficina->nombre}}</td>
               <td>
               <?php
-                echo $imprimirfila;
+                 echo $imprimirfila;
               ?>
               </td>
 
@@ -86,16 +77,6 @@
           </tbody>
         </table>
       </div>
-      <div class="box-footer clearfix">
-        <div id="mypag" hidden>
-          @if($actividades->total()!=0)
-            {{ 'Mostrando del '.$actividades->firstItem().' al  '.$actividades->lastItem().' de '.$actividades->total().' registros'}}
-            {{ $actividades->links() }}
-          @else
-            No hay registros
-          @endif
-        </div>
-      </div>
     </div>
 
   </div>
@@ -104,4 +85,8 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
+  <script src="{{ url('js/custom_datatable.js') }}"></script>
+  <script>
+    noSortableTable(0, [6]);
+  </script>
 @endsection

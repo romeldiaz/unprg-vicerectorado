@@ -25,35 +25,31 @@ class ActividadController extends Controller
 
     public function asignaciones(Request $request){
       //Muestra las actividades a las que a sido asignado como responsable
-      $actividades = Actividad::search($request->get('search'))
+      $actividades = Actividad::where('responsables.user_id', Auth::user()->id)
                       ->orderBy('id','desc')
-                      ->where('responsables.user_id', Auth::user()->id)
                       ->join('responsables', 'actividades.id', '=', 'responsables.actividad_id')
                       ->select('actividades.*')
-                      ->paginate(5);
+                      ->get();
 
       return view('actividades.asignaciones', compact('actividades'));
     }
 
     public function creaciones(Request $request){
       //las actividades creadas por el usuario
-      $actividades = Actividad::search($request->get('search'))
+      $actividades = Actividad::where('creador_id', Auth::user()->id)
                       ->orderBy('id','desc')
-                      ->where('creador_id', Auth::user()->id)
-                      ->paginate(5);
+                      ->get();
       return view('actividades.creaciones', compact('actividades'));
     }
 
     public function todas(Request $request){
-      $actividades = Actividad::search($request->get('search'))
-                      ->orderBy('id','desc')
-                      ->paginate(10);
+      $actividades = Actividad::all();
       return view('actividades.todas', compact('actividades'));
     }
 
     public function monitoreos(Request $request){
       //las actividades creadas por el usuario
-      $actividades = Actividad::search($request->get('search'))->where('monitor_id', Auth::user()->id)->paginate(5);
+      $actividades = Actividad::where('monitor_id', Auth::user()->id)->get();
       return view('actividades.monitoreos', compact('actividades'));
     }
 

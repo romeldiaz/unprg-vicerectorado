@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('sidebar-page-actividades', 'active treeview')
+@section('sidebar-page-actividades-creaciones', 'active')
 
 
 @section('content')
