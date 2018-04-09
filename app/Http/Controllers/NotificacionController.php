@@ -23,6 +23,10 @@ class NotificacionController extends Controller
         return view('notificaciones.index', compact('notificaciones'));
     }
 
+    public function mycron(){
+      Notificacion::mycron();
+    }
+
     public function create()
     {
         //
@@ -36,8 +40,12 @@ class NotificacionController extends Controller
     public function show(Request $request, $id)
     {
       $noti = Notificacion::findOrFail($id);
-      $noti->checked = true;
-      $noti->update();
+      if(!$noti->checked){
+        $noti->checked = true;
+        $noti->checked_date = \Carbon\Carbon::now();
+        $noti->update();
+      }
+
       $notificaciones = Notificacion::where('to',Auth::user()->id)
                         ->orderBy('date', 'desc')
                         ->paginate(10);

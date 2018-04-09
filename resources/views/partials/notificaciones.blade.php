@@ -2,7 +2,9 @@
   <!-- Menu toggle button -->
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <?php
-    $notificaciones = \App\Notificacion::where('to', Auth::user()->id)->where('checked', 0)->get();
+    $notificaciones = \App\Notificacion::where('to', Auth::user()->id)
+    ->orderBy('date', 'desc')
+    ->where('checked', 0)->get();
   ?>
       <i class="fa fa-bell-o"></i>
       <span class="label label-warning">{{ count($notificaciones) }}</span>
@@ -27,6 +29,11 @@
                   <i class="fa fa-sitemap text-red"></i>
                    Actividad Eliminada
                 </p>
+              @elseif($notificacion->action == 'progreso')
+                <p class="text-red">
+                  <i class="fa fa-hourglass-end text-red"></i>
+                   Progreso de actividad
+                </p>
               @endif
 
             @elseif($notificacion->type == 'responsable')
@@ -46,7 +53,7 @@
                   Eliminado como responsable
                 </p>
               @endif
-              
+
             @elseif($notificacion->type == 'meta')
               <!-- <i class="fa fa-flag text-red"></i> -->
 

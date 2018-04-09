@@ -9,8 +9,8 @@ $factory->define(App\Actividad::class, function (Faker $faker) {
 		'nombre' => $faker->sentence(2),
 		'estado' => $faker->randomElement(['I', 'E', 'C', 'F']),
 		'presupuesto' => $faker->randomFloat(2, 1000, 10000),
-		'fecha_creacion'=>\Carbon\Carbon::now()->subDays(rand(20,40)), //+rand(0,45)
-		'fecha_inicio' => \Carbon\Carbon::now()->subDays(rand(0,20)),
+		'fecha_creacion'=>\Carbon\Carbon::now()->subDays(rand(30,40)), //+rand(0,45)
+		'fecha_inicio' => \Carbon\Carbon::now()->subDays(rand(1,30)),
 		'fecha_fin_esperada' => \Carbon\Carbon::now()->addDays(rand(0,45)),
 		'fecha_fin' => \Carbon\Carbon::now()->addDays(rand(0,45)),
 		'numero_resolucion' => $faker->numerify('###-2018-VRINV'),

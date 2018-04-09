@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\User;
 use Carbon\Carbon;
-
+use Auth;
 
 class Notificacion extends Model
 {
@@ -28,6 +28,17 @@ class Notificacion extends Model
 		}
   }
 
+
+
+
+  public function type_icon(){
+    if($this->type=='actividad'){
+      return '<i class="fa fa-sitemap"></i>';
+    }elseif($this->type=='responsable'){
+      return '<i class="fa fa-user"></i>';
+    }
+  }
+
   public function creadoHace(){
     $hoy = Carbon::now();
     $inicio = Carbon::create(
@@ -36,6 +47,8 @@ class Notificacion extends Model
       date("d", strtotime($this->date))
     );
 
+    // return 'hola';
+
     $tiempo = $hoy->diffInDays($inicio);
     if($tiempo>7){
         $tiempo = $hoy->diffInWeeks($inicio);
@@ -43,39 +56,142 @@ class Notificacion extends Model
           $tiempo = $hoy->diffInMonths($inicio);
           if($tiempo>12){//mas de 12 meses
             $tiempo = $hoy->diffInYears($inicio);
-            return $tiempo.' años';
+            $tiempo.' años';
           }else{
-            return $tiempo.'meses';
+            $tiempo.'meses';
           }
         }else{
-          return $tiempo.'semanas';
+          $tiempo.'semanas';
         }
     }elseif($tiempo==0){
-      return 'Hoy';
+      return '<span class="label label-default"><i class="fa fa fa-clock-o"></i> Hoy</span>';
     }
-    return $tiempo.'dias';
+
+    return '<small class="label label-default"><i class="fa fa-clock-o"></i>'.$tiempo.' dias</small>';
   }
 
-  public static function NotifyToAdminActivityCreated($from_id){
-    $actividad = Actividad::all()->last();
-    $user = User::findOrfail($from_id);
-    $msn = 'El usuario '.$user->nombres.' ha creado una nueva actividad, ingresa al siguente
-    elace para darle un vistaso > '.url('/actividad/'.$actividad->id);
+  public static function mycron(){
+    $actividades = Actividad::all();
+
+    foreach ($actividades as $key => $actividad) {
+
+      $hoy = \Carbon\Carbon::now();
+
+      $inicio = \Carbon\Carbon::create(
+        date("Y", strtotime($actividad->fecha_inicio)),
+        date("m", strtotime($actividad->fecha_inicio)),
+        date("d", strtotime($actividad->fecha_inicio))
+      );
+
+      $fin = \Carbon\Carbon::create(
+        date("Y", strtotime($actividad->fecha_fin_esperada)),
+        date("m", strtotime($actividad->fecha_fin_esperada)),
+        date("d", strtotime($actividad->fecha_fin_esperada))
+      );
+
+      $estimado = $fin->diffInDays($inicio); //tiempo estimado
+      $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
+      $progreso = round($transcurrido/$estimado*100);
+
+
+      if($progreso>=81){
+        // echo $actividad->id.'<br>';
+        $responsables = $actividad->responsables;
+        $msn = 'El progreso de la actividad <strong>"'.\App\Actividad::find($actividad->id)->nombre.'"</strong>
+        segun el tiempo establecido a pasado el 80%
+        <a target="_blank" href="'.url('/actividades/'.$actividad->id).'"><span class="label label-info" style="padding-bottom:0; padding-top:0">ver actividad</span></a>';
+        foreach ($responsables as $key => $responsable) {
+          $notify = \DB::table('notificaciones')->insert([
+            'date'=>Carbon::now(),
+            'type'=>'actividad',
+            'action'=>'progreso',
+            'title' => 'Progreso de la actividad',
+            'from' => $responsable->user_id,//si from=to la notificacion sera de parte del sistema
+            'to' =>  $responsable->user_id,
+            'checked'=>false,
+            'detail'=>$msn,
+          ]);
+        }
+        // echo count($users);
+      }
+    }
+
+    echo 'El Cron Diario se Realizo con Exito!!';
+  }
+
+// ------------------------------Static-----------------------------
+  public static function toAdminActivityCreated(){
+    $actividad = Actividad::all()->last();//actividad recien creada
+    $from = User::find(Auth::user()->id);
+    $msn = 'El usuario '.$from->nombres.' de la oficina '.$from->oficina->nombre.', ha creado
+    una nueva actividad con nombre <strong>"'.$actividad->nombre.'" </strong>, has click
+    <a target="_blank" href="'.url('/actividades/'.$actividad->id).'"><span class="label label-info" style="padding-bottom:0; padding-top:0">aqui</span></a>
+     para darle un vistazo.';
 
     $admins = User::where('tipo','admin')->get();
-    foreach ($admins as $key => $admin) {
+    foreach ($admins as $key => $to) {
       $notify = \DB::table('notificaciones')->insert([
         'date'=>Carbon::now(),
-        'type'=>'Actividad',
-        'title' => 'Nueva actividad creada',
-        'from' => $from_id,
-        'to' =>  $admin->id,
+        'type'=>'actividad',
+        'action'=>'create',
+        'title' => 'Nueva actividad',
+        'from' => $from->id,
+        'to' =>  $to->id,
         'checked'=>false,
         'detail'=>$msn,
       ]);
     }
-
   }
+
+  public static function toUserLikeResponsableDeleted($actividad_id, $user_deleted_id){
+    $msn = 'El usuario '.Auth::user()->nombres.' te ha eliminado como responsable de la
+    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong> gracias por tu ayuda <i class="fa fa-thumbs-o-up"></i>';
+    $notify = \DB::table('notificaciones')->insert([
+      'date'=>Carbon::now(),
+      'type'=>'responsable',
+      'action'=>'eliminar',
+      'title' => 'Has sido eliminado como responsable de una actividad',
+      'from' => Auth::user()->id,
+      'to' =>  $user_deleted_id,
+      'checked'=>false,
+      'detail'=>$msn,
+    ]);
+  }
+
+  public static function toUserLikeResponsableAsignar($actividad_id, $user_asignado_id){
+    $msn = 'El usuario '.Auth::user()->nombres.' te agregó como responsable de la
+    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong> puedes empezar a trabajar en ella, creando
+    metas y cumpliendolas detro de las fechas y presupuestos establecidos.
+    <a target="_blank" href="'.url('/actividades/'.$actividad_id).'"><span class="label label-info" style="padding-bottom:0; padding-top:0">ver actividad</span></a>';
+    $notify = \DB::table('notificaciones')->insert([
+      'date'=>Carbon::now(),
+      'type'=>'responsable',
+      'action'=>'asignar',
+      'title' => 'Has sido agregado como responsable de una actividad',
+      'from' => Auth::user()->id,
+      'to' =>  $user_asignado_id,
+      'checked'=>false,
+      'detail'=>$msn,
+    ]);
+  }
+
+  public static function toUserLikeResponsableReasignar($actividad_id, $user_asignado_id){
+    $msn = 'El usuario '.Auth::user()->nombres.' te ha agrego como responsable de la
+    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong> en la cual ya te encontrabas participando anteriormente.
+    <a target="_blank" href="'.url('/actividades/'.$actividad_id).'"><span class="label label-info" style="padding-bottom:0; padding-top:0">ver actividad</span></a>';
+    $notify = \DB::table('notificaciones')->insert([
+      'date'=>Carbon::now(),
+      'type'=>'responsable',
+      'action'=>'reasignar',
+      'title' => 'Has vuelto a participar como responsable de una actividad',
+      'from' => Auth::user()->id,
+      'to' =>  $user_asignado_id,
+      'checked'=>false,
+      'detail'=>$msn,
+    ]);
+  }
+
+
   // ------------------------------DICCIONARIO------------------------------
   //(opcional): indica acividad o meta
   //NOTIFICACIONES->TIPOS:ACCION
@@ -84,36 +200,5 @@ class Notificacion extends Model
   // responsable(3): asignar(1), reasignar(2), eliminar(2)
   // meta(4):
   // -----------------------------------------------------------------------
-
-  public static function toUser($from_id, $to_id, $type, $type_id, $action){
-    \DB::table('notificaciones')->insert([
-      'date'=>Carbon::now(),
-      'type'=> $type,
-      'type_id'=> $type_id,
-      'action'=>$action,
-      'from' => $from_id,
-      'to' =>  $to_id,
-      'checked' => false,
-      'detail' => 'detalle de notificacion',
-    ]);
-  }
-
-  public static function toAdmin($from_id, $null, $type, $type_id, $action){
-    $admins = User::where('tipo','admin')->get();
-    foreach ($admins as $key => $to) {
-      \DB::table('notificaciones')->insert([
-        'date'=>Carbon::now(),
-        'type'=> $type,
-        'type_id'=> $type_id,
-        'action'=>$action,
-        'from' => $from_id,
-        'to' =>  $to->id,
-        'checked' => false,
-        'detail' => 'detalle de notificacion',
-      ]);
-    }
-
-  }
-
 
 }

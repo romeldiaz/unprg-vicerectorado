@@ -30,18 +30,17 @@ class ResponsableController extends Controller
             $tmp = Responsable::where('actividad_id', $request->actividad_id)
                                 ->withTrashed()->where('user_id', $user_id)
                                 ->get()->last();
-            //echo $tmp ."<br>";
             if(empty($tmp)){
               $new = new Responsable;
               $new->user_id = $user_id;
               $new->actividad_id = $request->actividad_id;
               $new->save();
               //notificacion al usuario de que a sido agregado
-              \App\Notificacion::toUser(\Auth::user()->id, $new->user_id, 'responsable', $request->actividad_id, 'asignar');
+              \App\Notificacion::toUserLikeResponsableAsignar($request->actividad_id, $new->user_id);
             }else{
               $tmp->restore();
               //notificaion al usuario de que a sido restaurado
-              \App\Notificacion::toUser(\Auth::user()->id, $tmp->user_id, 'responsable', $request->actividad_id, 'reasignar');
+              \App\Notificacion::toUserLikeResponsableReasignar($request->actividad_id, $tmp->user_id);
             }
           }
         }
@@ -50,7 +49,8 @@ class ResponsableController extends Controller
         foreach ($olds as $key => $old) {
           $r = \App\Actividad::findOrFail($request->actividad_id)->responsables->where('user_id',$old->user_id);
           if(sizeof($r)==0){
-            \App\Notificacion::toUser(\Auth::user()->id, $old->user_id, 'responsable', $request->actividad_id, 'eliminar');
+            \App\Notificacion::toUserLikeResponsableDeleted($request->actividad_id, $old->user_id);
+            // \App\Notificacion::toUser(\Auth::user()->id, $old->user_id, 'responsable', $request->actividad_id, 'eliminar');
           }
         }
         // return 'fin';

@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 			'jefe' => true,
 			'imagen' => 'default.jpg',
 			'tipo' => 'admin',
-			'oficina_id' => rand(1,10),
+			'oficina_id' => 1,
     	]);
 
 		factory(App\User::class, 25)->create();
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
 			'remember_token' => str_random(10),
 			'jefe' => true,
 			'imagen' => 'default.jpg',
-			'oficina_id' => rand(1,10),
+			'oficina_id' => 1,
 		]);
 
 		App\User::create([
@@ -48,7 +48,7 @@ class UsersTableSeeder extends Seeder
 			'remember_token' 	=> str_random(10),
 			'jefe' 				=> true,
 			'imagen' 			=> 'default.jpg',
-			'oficina_id' 		=> rand(1,10),
+			'oficina_id' 		=> 1,
 		]);
 	}
 }

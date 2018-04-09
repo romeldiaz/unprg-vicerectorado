@@ -38,12 +38,8 @@ class cronEmail extends Command
      */
     public function handle()
     {
-      $notify = DB::table('notificaciones')->insert([
-        'fecha'=>\Carbon\Carbon::now(),
-        'tipo'=>'Mensaje',
-        'enlace'=>'www.youtube.com',
-        'read'=>false,
-        'user_id'=>'25'
+      $notify = DB::table('oficinas')->insert([
+        'nombre'=>rand(0,100).'_My Office',
       ]);
       //$this->info('hello Romel');
     }

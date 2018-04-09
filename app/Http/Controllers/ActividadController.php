@@ -69,9 +69,7 @@ class ActividadController extends Controller
         $datos['fecha_creacion'] = Carbon::now();
         Actividad::create($datos);
 
-        //crear notificacion para el informar al admin(s)
-        $miActividad = Actividad::all()->last();
-        \App\Notificacion::toAdmin(Auth::user()->id, 0, 'actividad', $miActividad->id, 'crear');
+        \App\Notificacion::toAdminActivityCreated();
 
         return redirect('actividades/creaciones');
     }
