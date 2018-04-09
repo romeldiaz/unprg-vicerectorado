@@ -128,21 +128,25 @@
 									<th>Rol</th>
 								</tr>
 								<tbody>
+									<?php
+										$creador = $actividad->creador;
+										$monitor = $actividad->monitor;
+									?>
 									<tr>
-										<td><a href="javascript: show_info_user({{$creador->id}})"><i class="text-red fa fa-user"></i></a></td>
-										<td>{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}</td>
-										<td><span class="label bg-red">Creador</span></td>
+									  <td><a href="javascript: show_info_user({{$creador->id}})"><i class="text-red fa fa-user"></i></a></td>
+									  <td>{{ $creador->nombres.' '.$creador->paterno.' '.$creador->materno }}</td>
+									  <td><span class="label bg-red">Creador</span></td>
 									</tr>
 									<tr>
-										<td><a href="javascript: show_info_user({{$monitor->id}})"><i class="text-yellow fa fa-user"></i></a></td>
-										<td>{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}</td>
-										<td><span class="label bg-yellow">Monitor</span></td>
+									  <td><a href="javascript: show_info_user({{$monitor->id}})"><i class="text-yellow fa fa-user"></i></a></td>
+									  <td>{{ $monitor->nombres.' '.$monitor->paterno.' '.$monitor->materno }}</td>
+									  <td><span class="label bg-yellow">Monitor</span></td>
 									</tr>
 
-									@foreach($responsables as $key=> $responsable)
+									@foreach($actividad->responsables as $key=> $responsable)
 									<tr>
 										<td><a href="javascript: show_info_user({{$responsable->id}})"><i class="text-blue fa fa-user"></i></a></td>
-										<td>{{ $responsable->nombres.' '.$responsable->paterno.' '.$responsable->materno }}</td>
+										<td>{{ $responsable->user->nombres.' '.$responsable->user->paterno.' '.$responsable->user->materno }}</td>
 										<td><span class="label bg-blue">Responsable</span></td>
 									</tr>
 									@endforeach
@@ -209,6 +213,7 @@
 				<div class="col col-sm-6">
 					<div class="form-row">
 						<?php
+								$oficinas = \App\Oficina::all();
                 $oficinas_options[0] = 'Todas';
                 foreach ($oficinas as $key => $oficina) {
                   $oficinas_options[$oficina->id] = $oficina->nombre;

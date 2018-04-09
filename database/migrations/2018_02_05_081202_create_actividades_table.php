@@ -13,31 +13,37 @@ class CreateActividadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('actividades', function (Blueprint $table) {
-			$table->increments('id');
-			$table->text('nombre');
-			$table->string('estado', 20)->nullable();
-  		$table->date('fecha_creacion')->nullable();
-			$table->decimal('presupuesto', 10, 2)->nullable();
-			$table->date('fecha_inicio')->nullable();
-			$table->date('fecha_fin_esperada')->nullable();
-			$table->date('fecha_fin')->nullable();
-			$table->string('numero_resolucion', 30)->nullable();
-			$table->date('fecha_resolucion')->nullable();
-			// $table->string('numero_acta', 30)->nullable();
-			$table->date('fecha_acta')->nullable();
-			$table->text('descripcion_acta')->nullable();
-			$table->unsignedInteger('creador_id');
-			$table->unsignedInteger('monitor_id');
+      Schema::create('actividades', function (Blueprint $table) {
+  			$table->increments('id');
+  			$table->text('nombre');
+  			$table->string('estado', 20)->nullable();
+    		$table->date('fecha_creacion')->nullable();
+  			$table->decimal('presupuesto', 10, 2)->nullable();
+  			$table->date('fecha_inicio')->nullable();
+  			$table->date('fecha_fin_esperada')->nullable();
+  			$table->date('fecha_fin')->nullable();
+  			$table->string('numero_resolucion', 30)->nullable();
+  			$table->date('fecha_resolucion')->nullable();
+  			// $table->string('numero_acta', 30)->nullable();
+  			$table->date('fecha_acta')->nullable();
+  			$table->text('descripcion_acta')->nullable();
+  			$table->unsignedInteger('creador_id');
+  			$table->unsignedInteger('monitor_id');
 
-			// SoftDelete
-			$table->softDeletes();
+  			// SoftDelete
+  			$table->softDeletes();
 
-			//Relation
-			$table->foreign('creador_id')->references('id')->on('users')
-				->onDelete('cascade')
-				->onUpdate('cascade');
-        });
+  			//Relation
+  			$table->foreign('creador_id')->references('id')->on('users')
+  				->onDelete('cascade')
+  				->onUpdate('cascade');
+
+        $table->foreign('monitor_id')->references('id')->on('users')
+  				->onDelete('cascade')
+  				->onUpdate('cascade');
+      });
+
+
     }
 
     /**

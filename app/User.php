@@ -37,7 +37,7 @@ class User extends Authenticatable
 			->orWhere(\DB::raw("LOWER(cuenta)"), "LIKE", "%$search%");
 		}
 	}
-  
+
   public function scopeSearch1($query, $search){
     $search = preg_replace('[\s+]','', $search);//quitar espacios
     $search = strtolower($search);//convertir todo a minusculas
@@ -52,6 +52,14 @@ class User extends Authenticatable
 	{
 		return $this->belongsToMany(Actividad::class, 'responsables');
 	}
+
+  public function creaciones(){
+    return $this->hasMany(Actividad::class, 'creador_id');
+  }
+
+  public function monitoreos(){
+    return $this->hasMany(Actividad::class, 'monitor_id');
+  }
 
 	public function responsables()
 	{

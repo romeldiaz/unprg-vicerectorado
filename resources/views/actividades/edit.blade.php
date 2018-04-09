@@ -52,6 +52,7 @@
 
           <div class="form-group">
             <?php
+                $monitores = \App\User::where('oficina_id', Auth::user()->oficina_id)->get();
                 $opciones = array();
                 foreach($monitores as $user){
                   $opciones[$user->id] = $user->nombres.' '.$user->paterno.' '.$user->materno;
