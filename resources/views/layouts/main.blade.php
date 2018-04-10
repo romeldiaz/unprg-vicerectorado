@@ -189,32 +189,7 @@ desired effect
 	<script src="{{ url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
 
 
-	<script>
-		function initTable () {
-			return $('.custom_datatable').DataTable({
-				'retrieve': true,
-				'paging' : true,
-				'lengthChange': true,
-				'searching' : true,
-				'ordering' : true,
-				'info' : true,
-				'autoWidth' : false,
-				"language": {
-					"search": '<i class="fa fa-search"></i>',
-					"lengthMenu": "Mostrar _MENU_ registros por página",
-					"zeroRecords": "No se encontró registros.",
-					"info": "Mostrando página _PAGE_ de _PAGES_",
-					"infoEmpty": "Sin registros disponibles",
-					"infoFiltered": "(filtrado de _MAX_ registros totales)",
-					"paginate": { "previous": "Anterior", "next": "Siguiente" }
-				}
-			});
-		}
 
-		$(function () {
-			initTable();
-		});
-	</script>
 	@yield('script')
 
 </body>

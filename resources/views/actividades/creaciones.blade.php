@@ -46,7 +46,7 @@
                   }
               ?>
               <tr class="{{ $meta_success?'success':''}}">
-                <td>{{$actividad->id}}</td>
+                <td>{{$loop->index+1}}</td>
                 <td>{{$actividad->nombre}}</td>
                 <td>{{$actividad->fecha_inicio}}</td>
                 <td>{{$actividad->presupuesto}}</td>
@@ -82,8 +82,33 @@
 
 @section('script')
   <script src="{{ url('js/comun.js') }}"></script>
-  <script src="{{ url('js/custom_datatable.js') }}"></script>
+  <script src="{{ url('js/comun.js') }}"></script>
   <script>
-    noSortableTable(0, [6]);
+    function initTable () {
+      return $('.custom_datatable').DataTable({
+        "columnDefs": [{ "orderable": false, "targets": [6] }],
+        'order':[0, 'asc'],
+        'retrieve': true,
+        'paging' : true,
+        'lengthChange': true,
+        'searching' : true,
+        'ordering' : true,
+        'info' : true,
+        'autoWidth' : false,
+        "language": {
+          "search": '<i class="fa fa-search"></i>',
+          "lengthMenu": "Mostrar _MENU_ registros por página",
+          "zeroRecords": "No se encontró registros.",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Sin registros disponibles",
+          "infoFiltered": "(filtrado de _MAX_ registros totales)",
+          "paginate": { "previous": "Anterior", "next": "Siguiente" }
+        }
+      });
+    }
+
+    $(function () {
+      initTable();
+    });
   </script>
 @endsection

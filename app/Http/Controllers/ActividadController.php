@@ -25,28 +25,12 @@ class ActividadController extends Controller
 
     public function asignaciones(Request $request){
 
-      $collection = User::findOrfail(Auth::user()->id)->actividades;
-      $actividades  = $collection->sortByDesc('id');
-
-      // dd($acitividad)
-      // $sorted = $collection->sortBy('price');
-      // $sorted->values()->all();
-
-      //Muestra las actividades a las que a sido asignado como responsable
-      // $actividades = Actividad::where('responsables.user_id', Auth::user()->id)
-      //                 ->orderBy('id','desc')
-      //                 ->join('responsables', 'actividades.id', '=', 'responsables.actividad_id')
-      //                 ->select('actividades.*')
-      //                 ->get();
-
+      $actividades= User::findOrfail(Auth::user()->id)->actividades->sortByDesc('id');
       return view('actividades.asignaciones', compact('actividades'));
     }
 
     public function creaciones(Request $request){
-      $user = User::find(Auth::user()->id);
-      $actividades= $user->creaciones;
-      $actividades = $actividades->sortByDesc('id');
-      // dd($actividades);
+      $actividades = User::find(Auth::user()->id)->creaciones->sortByDesc('id');
       return view('actividades.creaciones', compact('actividades'));
     }
 
@@ -56,8 +40,7 @@ class ActividadController extends Controller
     }
 
     public function monitoreos(Request $request){
-      $user = User::find(Auth::user()->id);
-      $actividades= $user->monitoreos;
+      $actividades = User::find(Auth::user()->id)->monitoreos->sortByDesc('id');
       return view('actividades.monitoreos', compact('actividades'));
     }
 
@@ -83,13 +66,24 @@ class ActividadController extends Controller
     public function show($id)
     {
         $actividad = Actividad::findOrfail($id);
-        $responsables = $actividad->responsables;
-        foreach ($responsables as $key => $responsable) {
-          $user = $responsable->user;
-          if($user->id == Auth::user()->id){
-            return view('actividades.show', compact('actividad'));
+
+        if($actividad->creador->id == Auth::user()->id){
+          // Puede ver el creador
+          return view('actividades.show', compact('actividad'));
+        }elseif($actividad->monitor->id == Auth::user()->id){
+          // Puede ver el monitor
+          return view('actividades.show', compact('actividad'));
+        }else{
+          // Pueden ver los responsables
+          $responsables = $actividad->responsables;
+          foreach ($responsables as $key => $responsable) {
+            $user = $responsable->user;
+            if($user->id == Auth::user()->id){
+              return view('actividades.show', compact('actividad'));
+            }
           }
         }
+
         return redirect('actividades/asignaciones');
     }
 
@@ -104,30 +98,25 @@ class ActividadController extends Controller
 
     public function edit($id)
     {
+      //vista edit solo al creador
       $actividad = Actividad::findOrfail($id);
-      $responsables = $actividad->responsables;
-      foreach ($responsables as $key => $responsable) {
-        $user = $responsable->user;
-        if($user->id == Auth::user()->id){
-          return view('actividades.edit', compact('actividad'));
-        }
+      if($actividad->creador->id == Auth::user()->id){
+        return view('actividades.edit', compact('actividad'));
       }
       return redirect('actividades/creaciones');
     }
 
     public function update(ActividadRequest $request, $id)
     {
+      //modifica solo el creador
       $actividad = Actividad::findOrfail($id);
-      $responsables = $actividad->responsables;
-      foreach ($responsables as $key => $responsable) {
-        $user = $responsable->user;
-        if($user->id == Auth::user()->id){
-          $actividad = Actividad::findOrfail($id);
-          $datos = $request->all();
-          $datos['creador_id']= Auth::user()->id;
-          $datos['estado'] = 'creada';
-          $actividad->update($datos);
-        }
+      if($actividad->creador->id == Auth::user()->id){
+
+        $actividad = Actividad::findOrfail($id);
+        $datos = $request->all();
+        $datos['creador_id']= Auth::user()->id;
+        $datos['estado'] = 'creada';
+        $actividad->update($datos);
       }
       return redirect('actividades/creaciones');
     }
@@ -135,13 +124,8 @@ class ActividadController extends Controller
     public function destroy($id)
     {
       $actividad = Actividad::findOrfail($id);
-      $responsables = $actividad->responsables;
-      foreach ($responsables as $key => $responsable) {
-        $user = $responsable->user;
-        if($user->id == Auth::user()->id){
-          // Accion autorizada
-          $actividad->delete();
-        }
+      if($actividad->creador->id == Auth::user()->id){
+        $actividad->delete();
       }
       return redirect('actividades/creaciones');
     }
