@@ -26,20 +26,7 @@
       </p>
     </li>
     <!-- Menu Body -->
-    <li class="user-body">
-      <div class="row">
-        <div class="col-xs-4 text-center">
-          <a href="{{ url('actividades/asignaciones') }}">Actividades</a>
-        </div>
-        <div class="col-xs-4 text-center">
-          <a href="#">Metas</a>
-        </div>
-        <div class="col-xs-4 text-center">
-          <a href="#">Otros</a>
-        </div>
-      </div>
-      <!-- /.row -->
-    </li>
+
     <!-- Menu Footer-->
     <li class="user-footer">
       <div class="pull-left">
