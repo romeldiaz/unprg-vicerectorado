@@ -1,11 +1,11 @@
 @extends('layouts.log')
 
 @section('content')
-<p class="login-box-msg">Registrate para empesar tu sesión</p>
+<p class="login-box-msg">Iniciar Sesión</p>
 <form method="POST" action="{{ route('login') }}">
     @csrf
     <div class="form-group has-feedback">
-      <input id="cuenta" type="text" class="form-control{{ $errors->has('cuenta') ? ' is-invalid' : '' }}" name="cuenta" value="{{ old('cuenta') }}" placeholder="cuenta" required autofocus>
+      <input id="cuenta" type="text" class="form-control{{ $errors->has('cuenta') ? ' is-invalid' : '' }}" name="cuenta" value="{{ old('cuenta') }}" placeholder="Usuario" required autofocus>
       <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       @if ($errors->has('cuenta'))
           <span class="invalid-feedback">
@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group has-feedback">
-      <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="password" required>
+      <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Contraseña" required>
       <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       @if ($errors->has('password'))
           <span class="invalid-feedback">

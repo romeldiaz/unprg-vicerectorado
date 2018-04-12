@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\MonitoreoRequest;
 
+use Auth;
+
 class MonitoreoController extends Controller
 {
     /**

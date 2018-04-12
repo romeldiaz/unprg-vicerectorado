@@ -43,12 +43,19 @@ class MetaController extends Controller
     {
         $actividad = Actividad::findOrFail($id);
 
-        foreach ($actividad->responsables as $responsable) {
-            $usuario = $responsable->user;
-            if ($usuario->id == Auth::user()->id) {
-                return view('metas.index', compact('actividad'));
+
+        if(Auth::user()->tipo=='admin'){
+          // Puede ver el admin
+          return view('metas.index', compact('actividad'));
+        }else{
+            foreach ($actividad->responsables as $responsable) {
+                $usuario = $responsable->user;
+                if ($usuario->id == Auth::user()->id) {
+                    return view('metas.index', compact('actividad'));
+                }
             }
         }
+            
         return redirect()->route('actividades.index');
     }
 
@@ -86,12 +93,18 @@ class MetaController extends Controller
             return redirect()->route('actividades.show', $actividad->id);
         }
 
-        foreach ($actividad->responsables as $responsable) {
-            $usuario = $responsable->user;
-            if ($usuario->id == Auth::user()->id) {
-                return view('metas.show', compact('meta', 'actividad'));
+        if(Auth::user()->tipo=='admin'){
+          // Puede ver el admin
+          return view('metas.show', compact('meta', 'actividad'));
+        }else{
+            foreach ($actividad->responsables as $responsable) {
+                $usuario = $responsable->user;
+                if ($usuario->id == Auth::user()->id) {
+                    return view('metas.show', compact('meta', 'actividad'));
+                }
             }
         }
+            
 
         return redirect()->route('actividades.index');
     }
@@ -111,11 +124,17 @@ class MetaController extends Controller
             return redirect()->route('actividades.show', $actividad->id);
         }
 
-        foreach ($actividad->responsables as $responsable) {
-            $usuario = $responsable->user;
-            if ($usuario->id == Auth::user()->id) {
-                $actividad = $meta->actividad;
-                return view('metas.index', compact('meta', 'actividad'));
+
+        if(Auth::user()->tipo=='admin'){
+          // Puede ver el admin
+          return view('metas.index', compact('meta', 'actividad'));
+        }else{
+            foreach ($actividad->responsables as $responsable) {
+                $usuario = $responsable->user;
+                if ($usuario->id == Auth::user()->id) {
+                    $actividad = $meta->actividad;
+                    return view('metas.index', compact('meta', 'actividad'));
+                }
             }
         }
 

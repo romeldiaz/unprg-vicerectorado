@@ -14,16 +14,16 @@
         @if(Auth::user()->tipo=='admin')
         <a href="#"><i class="fa fa-circle text-success"></i>Admin</a>
         @elseif(Auth::user()->jefe)
-        <a href="#"><i class="fa fa-circle text-success"></i>Boss</a>
+        <a href="#"><i class="fa fa-circle text-success"></i>Jefe de Oficina</a>
         @else()
-        <a href="#"><i class="fa fa-circle text-success"></i>Worker</a>
+        <a href="#"><i class="fa fa-circle text-success"></i>{{Auth::user()->cargo}}</a>
         @endif
       </div>
     </div>
     <!-- search form (Optional) -->
     <form action="#" method="get" class="sidebar-form">
       <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
+        <input type="text" name="q" class="form-control" placeholder="Buscar">
         <span class="input-group-btn">
           <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
           </button>

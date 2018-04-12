@@ -65,13 +65,6 @@
           </div>
 
           <div class="form-group">
-            <div class="input-group">
-              <label class="input-group-addon" for="password"><i style="width:16px" class="fa fa-lock"></i></label>
-              {{ Form::password('password', ['class'=>'form-control form-control-sm', 'placeholder'=>'Clave']) }}
-            </div>
-          </div>
-
-          <div class="form-group">
             <?php
               $opciones = array();
               foreach($oficinas as $oficina){

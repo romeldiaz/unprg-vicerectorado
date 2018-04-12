@@ -9,6 +9,8 @@ use App\Gasto;
 use App\Meta;
 use App\Tipo_documento;
 
+use Auth;
+
 class GastoController extends Controller
 {
 	/**

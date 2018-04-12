@@ -45,7 +45,7 @@
 		{!! Form::label('fecha_inicio', 'Fecha de Inicio', ['class'=>'control-label control-label-sm']) !!}
 		<div class="input-group">
 			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-			{!! Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm', 'min'=>date('Y-m-d')]) !!}
+			{!! Form::date('fecha_inicio', null, ['class'=>'form-control form-control-sm']) !!}
 		</div>
 		@endif
 		@if ($meta->estado == 'E')
@@ -53,7 +53,7 @@
 		{!! Form::label('fecha_fin', 'Fecha de Fin', ['class'=>'control-label control-label-sm']) !!}
 		<div class="input-group">
 			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-			{!! Form::date('fecha_fin', null, ['class'=>'form-control form-control-sm', 'min'=>date('Y-m-d')]) !!}
+			{!! Form::date('fecha_fin', null, ['class'=>'form-control form-control-sm']) !!}
 		</div>
 		@endif
 	</div>

@@ -16,7 +16,7 @@ Gasto:
 <div class="form-group">
 	<div class="input-group">
 		<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha', , 'min'=>date('Y-m-d')]) !!}
+		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}
 	</div>
 </div>
 Documento:

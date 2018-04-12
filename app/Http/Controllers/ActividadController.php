@@ -73,6 +73,9 @@ class ActividadController extends Controller
         }elseif($actividad->monitor->id == Auth::user()->id){
           // Puede ver el monitor
           return view('actividades.show', compact('actividad'));
+        }elseif(Auth::user()->tipo=='admin'){
+          // Puede ver el admin
+          return view('actividades.show', compact('actividad'));
         }else{
           // Pueden ver los responsables
           $responsables = $actividad->responsables;

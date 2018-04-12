@@ -73,6 +73,6 @@
         <!-- end notification -->
       </ul>
     </li>
-    <li class="footer"><a href="{{ url('notificaciones') }}">View all</a></li>
+    <li class="footer"><a href="{{ url('notificaciones') }}">Ver todas</a></li>
   </ul>
 </li>

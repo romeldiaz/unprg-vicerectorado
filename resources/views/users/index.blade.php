@@ -38,6 +38,7 @@
               <th>Correo</th>
               <th>Telefono</th>
               <th>Oficina</th>
+              <th>Cargo</th>
               <th><a href="{{ url('users/create') }}" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i>Nuevo</a></th>
             </tr>
           </thead>
@@ -59,7 +60,7 @@
               <td>{{$user->correo}}</td>
               <td>{{$user->telefono}}</td>
               <td>{{$user->oficina->nombre}}</td>
-
+              <td>{{$user->cargo}}</td>
               <td>
                 {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}
                   <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>

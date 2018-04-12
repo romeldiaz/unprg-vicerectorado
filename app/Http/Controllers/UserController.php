@@ -57,7 +57,7 @@ class UserController extends Controller
 
       $user = User::find($request->id);
       $datos = $request->all();
-      $datos['password'] = Hash::make($request->password);
+      //$datos['password'] = Hash::make($request->password);
       $user->update($datos);
 
       return redirect('users');

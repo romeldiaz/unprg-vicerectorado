@@ -75,6 +75,9 @@ class Actividad extends Model
     $estimado = $fin->diffInDays($inicio); //tiempo estimado
     $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
     $progreso = round($transcurrido/$estimado*100);
+    if($progreso>100){
+        $progreso = 100;
+    }
     // echo $transcurrido.'/'.$estimado;
     // return 'fin';
     return $progreso;
