@@ -1,4 +1,7 @@
 @extends('layouts.main')
+
+@section('sidebar-page-actividades', 'treeview active')
+
 @section('content')
 
 <input type="hidden" id='url-base' value="{{url('/')}}">

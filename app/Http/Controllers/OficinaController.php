@@ -21,7 +21,7 @@ class OficinaController extends Controller
 
     public function create(Request $request)
     {
-        $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'asc')->paginate(5);
+        $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'desc')->paginate(5);
         return view('oficinas.index', compact('oficinas'));
     }
 
@@ -39,7 +39,7 @@ class OficinaController extends Controller
     public function edit(Request $request, $id)
     {
       $oficina = Oficina::findOrFail($id);
-      $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'asc')->paginate(5);
+      $oficinas = Oficina::search($request->get('search'))->orderBy('id', 'desc')->paginate(5);
       return view('oficinas.index', compact('oficinas', 'oficina'));
     }
 

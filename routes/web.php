@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('mycron', 'NotificacionController@mycron');
-
 Route::get('/', function () {
 	// return view('login');
 	return redirect()->route('login');

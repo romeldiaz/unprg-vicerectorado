@@ -19,8 +19,8 @@ class CreateNotificacionesTable extends Migration
             $table->string('type', 255);
             $table->string('action', 255);
             $table->text('title');
-            $table->integer('from');
-            $table->unsignedInteger('to');
+            $table->integer('from')->unsigned();
+            $table->unsignedInteger('to')->unsigned();
             $table->boolean('checked');
             $table->timestamp('checked_date')->nullable();
             $table->text('detail');

@@ -27,8 +27,8 @@ class CreateActividadesTable extends Migration
   			// $table->string('numero_acta', 30)->nullable();
   			$table->date('fecha_acta')->nullable();
   			$table->text('descripcion_acta')->nullable();
-  			$table->unsignedInteger('creador_id');
-  			$table->unsignedInteger('monitor_id');
+  			$table->unsignedInteger('creador_id')->unsigned();
+  			$table->unsignedInteger('monitor_id')->unsigned();
 
   			// SoftDelete
   			$table->softDeletes();

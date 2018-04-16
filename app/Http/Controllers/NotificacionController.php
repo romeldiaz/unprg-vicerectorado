@@ -9,11 +9,10 @@ use Auth;
 
 class NotificacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(){
+      $this->middleware('auth');
+    }
+    
     public function index(Request $request)
     {
         $notificaciones = Notificacion::search($request->get('search'))
@@ -21,10 +20,6 @@ class NotificacionController extends Controller
                           ->orderBy('date', 'desc')
                           ->paginate(10);
         return view('notificaciones.index', compact('notificaciones'));
-    }
-
-    public function mycron(){
-      Notificacion::mycron();
     }
 
     public function create()
