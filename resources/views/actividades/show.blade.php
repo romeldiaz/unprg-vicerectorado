@@ -20,15 +20,23 @@
 
 				<div class="col col-sm-12">
 					<div class="row">
-						<?php
-						// date_format(date_create($actividad->fecha_inicio), 'd/m/Y')
-						// date("d/m/Y", strtotime($actividad->fecha_inicio));
-						?>
+
 						<div class="col col-sm-6">
-							<div class="text-left">{{ date("d/m/Y", strtotime($actividad->fecha_inicio)) }}</div>
+							<div class="text-left">
+								<a href="javascript: " class="btn" data-placement="rigth" data-toggle="tooltip" title="Fecha de incio de la actividad">
+									<i class="fa fa-calendar"></i>
+									{{ date("d/m/Y", strtotime($actividad->fecha_inicio)) }}
+								</a>
+							</div>
+
 						</div>
 						<div class="col col-sm-6">
-							<div class="text-right">{{ date("d/m/Y", strtotime($actividad->fecha_fin_esperada)) }}</div>
+							<div class="text-right">
+								<a href="javascript: " class="btn" data-placement="left" data-toggle="tooltip" title="Fecha estimada para el termino de la actividad">
+									<i class="fa fa-calendar"></i>
+									{{ date("d/m/Y", strtotime($actividad->fecha_fin_esperada))  }}
+								</a>
+							</div>
 						</div>
 					</div>
           <div class="progress" style="margin:0">
@@ -36,13 +44,11 @@
           </div>
         </div>
 				<div class="col col-sm-12">
-					@if(empty($plazo))
-					<p class="text-right text-primary">Esta actividad no tiene una fecha limite definida</p>
-					@elseif($plazo>=0)
-					<p class="text-right text-primary">Faltan {{$plazo}} dias para terminar la actividad</p>
-					@else
-					<p class="text-right text-danger">La actividad lleva {{abs($plazo)}} dias retrasada</p>
-					@endif
+					<div class="text-right">
+						<p class="@if($actividad->porcentaje()<70)text-right text-green @elseIf($actividad->porcentaje()<100) text-yellow @else text-red  @endif">{{ $actividad->plazo() }}</p>
+					</div>
+
+
 				</div>
 				<div class="col col-sm-12">
 					<div class="callout callout-purple">
@@ -85,7 +91,7 @@
 										<tr>
 											<td>{{ $actividad->presupuesto}}</td>
 											<td>{{ $actividad->metas->sum('presupuesto') }}</td>
-											<td>{{ $actividad->presupuesto-100 - $actividad->metas->sum('presupuesto')}}</td>
+											<td>{{ $actividad->presupuesto - $actividad->metas->sum('presupuesto')}}</td>
 										</tr>
 									</tbody>
 								</table>

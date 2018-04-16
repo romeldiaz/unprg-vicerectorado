@@ -62,10 +62,41 @@
                   {{ Form::open(['action'=>['ActividadController@destroy', $actividad->id], 'method'=>'DELETE', 'style'=>'margin:0'])}}
                     <a href="{{ url('actividades/'.$actividad->id) }}" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-eye"></i></a>
                     <a href="{{ url('actividades/'.$actividad->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
-                    <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>
+                    <!-- <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button> -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#myModal">
+                      <i class="fa fa-trash"></i>
+                    </button>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="text-left" id="myModalLabel"> <i class="text-red fa fa-warning"></i> Confirmar Accion</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p class="text-left">
+                              Esta seguro de eliminar la actividad <strong>{{ $actividad->nombre }} ?</strong>
+                            </p>
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default btn-flat" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-sm btn-danger btn-flat">Eliminar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   {{ Form::close()}}
+
                 </td>
+
               </tr>
+
+              <!-- Modal -->
+
             @endforeach
           </tbody>
         </table>
@@ -78,9 +109,13 @@
 
 
 </div>
+
+
+
 @endsection
 
 @section('script')
+  <!-- <script src="{{ url('js/DialogDeleteActivity.js') }}"></script> -->
   <script src="{{ url('js/comun.js') }}"></script>
   <script src="{{ url('js/comun.js') }}"></script>
   <script>

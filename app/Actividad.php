@@ -57,6 +57,29 @@ class Actividad extends Model
 		}
 	}
 
+  public function plazo(){
+    $hoy = \Carbon\Carbon::now();
+
+    $fin = \Carbon\Carbon::create(
+      date("Y", strtotime($this->fecha_fin_esperada)),
+      date("m", strtotime($this->fecha_fin_esperada)),
+      date("d", strtotime($this->fecha_fin_esperada))
+    );
+
+    $plazo = $hoy->diffInDays($fin, false);
+    $msn = '';
+    if($plazo < 0){
+      $msn =  'El tiempo estimado para la ejecucion de esta actividad a concluido';
+    }elseif($plazo == 0){
+      $msn =  'Hoy termina el tiempo estimado para esta actividad';
+    }else{
+      $msn = 'Faltan '.$plazo.' dias para acabar esta actividad';
+    }
+
+    return $msn;
+
+  }
+
 	public function porcentaje(){
     $hoy = \Carbon\Carbon::now();
 
@@ -72,14 +95,22 @@ class Actividad extends Model
       date("d", strtotime($this->fecha_fin_esperada))
     );
 
-    $estimado = $fin->diffInDays($inicio); //tiempo estimado
-    $transcurrido = $hoy->diffInDays($inicio); //tiempo transcurrido hasta hoy
-    $progreso = round($transcurrido/$estimado*100);
-    if($progreso>100){
-        $progreso = 100;
+    $estimado = $inicio->diffInDays($fin, false); //tiempo estimado
+    // return $estimado;
+    $transcurrido = $inicio->diffInDays($hoy, false);
+    // return $transcurrido;
+    // $progreso = round($transcurrido/$estimado*100);
+    // return $progreso;
+    if($transcurrido>=0){
+      $progreso = round($transcurrido/$estimado*100);
+      if($progreso>100){
+          $progreso = 100;
+      }
+    }else{
+      // return 'Actividad aun no empieza';
+      $progreso = 0;
     }
-    // echo $transcurrido.'/'.$estimado;
-    // return 'fin';
+
     return $progreso;
 
     // $inicio = strtotime($this->fecha_inicio);
