@@ -1,11 +1,17 @@
 {!! Form::open(['route' => 'monitoreo.store']) !!}
 {!! Form::hidden('meta_id', $meta->id) !!}
 <div class="form-group">
-	<div class="form-group">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-			{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}
-		</div>
+	{!! Form::label('avance', 'Avance', ['class'=>'control-label control-label-sm']) !!} 
+	<div class="input-group">
+		{!! Form::text('avance', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Avance']) !!}
+		<span class="input-group-addon">%</span>
+	</div>
+</div>
+<div class="form-group">
+	{!! Form::label('fecha', 'Fecha', ['class'=>'control-label control-label-sm']) !!}
+	<div class="input-group">
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}
 	</div>
 </div>
 <div class="form-group">

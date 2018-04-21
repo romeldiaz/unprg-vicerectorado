@@ -27,7 +27,7 @@ class GastoRequest extends FormRequest
             'descripcion' 			=> 'required|max:150',
 			'monto' 				=> 'required|numeric|min:0',
 			'numero' 				=> 'required|max:20',
-			'fecha' 				=> 'required|date_format:Y-m-d|before_or_equal:today',
+			'fecha' 				=> 'required|date_format:Y-m-d',
 			'tipo' 					=> 'required|in:B,S',
 			'meta_id' 				=> 'required|integer|exists:metas,id',
 			'tipo_documento_id'		=> 'required|integer|exists:tipo_documentos,id',

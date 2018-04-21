@@ -66,10 +66,13 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td>{{ $meta->presupuesto}}</td>
-													@php $total_gasto = 0 @endphp @foreach ($meta->gastos as $gasto) @php $total_gasto = $gasto->monto @endphp @endforeach
-													<td>{{$total_gasto}}</td>
-													<td>{{ $meta->presupuesto - $total_gasto }}</td>
+													<td>S/. {{ number_format($meta->presupuesto, 2, '.', ',') }}</td>
+													@php $total_gasto = 0 @endphp 
+													@foreach ($meta->gastos as $gasto) 
+													@php $total_gasto += $gasto->monto @endphp 
+													@endforeach
+													<td>S/. {{ number_format($total_gasto, 2, '.', ',') }}</td>
+													<td>S/. {{ number_format($meta->presupuesto - $total_gasto, 2, '.', ',') }}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -156,7 +159,7 @@
 										<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 									</div>
 								</div>
-								<div class="box-body table-responsive no-padding">
+								<div class="box-body table-responsive">
 									{!! Form::model($meta, ['route' => ['metas.regResp', $meta->id], 'method' => 'PUT']) !!}
 									<table class="table table-sm table-hover">
 										<thead>
@@ -200,7 +203,7 @@
 										<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 									</div>
 								</div>
-								<div class="box-body table-responsive no-padding">
+								<div class="box-body table-responsive">
 									<table class="table table-sm table-hover custom_datatable" id="gastos_table">
 										<thead>
 											<tr>
@@ -214,7 +217,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											@foreach($meta->gastos as $gasto)
+											@foreach($meta->gastos->sortByDesc('fecha') as $gasto)
 											<tr>
 												<td class="text-center">{{ $loop->index+1 }}</td>
 												<td class="text-center">{{ date("d/m/Y", strtotime($gasto->fecha)) }}</td>
@@ -279,7 +282,7 @@
 									<!-- /.box-tools -->
 								</div>
 								<!-- /.box-header -->
-								<div class="box-body table-responsive no-padding">
+								<div class="box-body table-responsive">
 									<table class="table table-hover custom_datatable" id="monitoreo_table">
 										<thead>
 											<tr>
@@ -291,14 +294,14 @@
 											</tr>
 										</thead>
 										<tbody id="table-body-oficinas">
-											@foreach($meta->monitoreos as $monitoreo)
+											@foreach($meta->monitoreos->sortByDesc('fecha') as $monitoreo)
 											<tr>
 												<td class="text-center">{{ $loop->index+1 }}</td>
 												<td>{{ $monitoreo->descripcion }}</td>
 												<td class="text-center">{{ date("d/m/Y", strtotime($monitoreo->fecha)) }}</td>
 												<td>{{ $monitoreo->observacion }}</td>
 												<th>
-													<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $requisito->id])}}"><i class="fa fa-pencil"></i></a>
+													<a class="btn btn-xs btn-flat btn-success" href="{{route('monitoreo.edit', [$meta->id, $monitoreo->id])}}"><i class="fa fa-pencil"></i></a>
 													@if ($meta->actividad->monitor_id == Auth::user()->id)
 													<button type="button" class="btn btn-xs btn-flat btn-danger" data-toggle="modal" data-target="#modalElimMonitoreo{{$monitoreo->id}}" title="Eliminar"><i class="fa fa-trash"></i></button>
 													<div class="modal fade in" id="modalElimMonitoreo{{$monitoreo->id}}" aria-hidden="true">
@@ -394,7 +397,7 @@
 			</div>
 			<div class="modal fade" id="modalUserInfo">
 				<div class="modal-dialog">
-					<div class="box-body no-padding">
+					<div class="box-body">
 						<div class="box box-widget widget-user no-margin">
 							<div class="widget-user-header bg-aqua-active" style="padding-top:0; padding-right:0">
 								<div class="text-right">
@@ -452,13 +455,53 @@
 @section('script')
 <script src="{{ url('js/comun.js') }}"></script>
 <script src="{{ url('js/actividad_show.js') }}"></script>
-<script src="{{ url('js/custom_datatable.js') }}"></script>
 <script src="{{ url('plugins/iCheck/icheck.min.js') }}"></script>
 <script>
 	$(function () {
-		noSortableTable(0, [6]);
-		noSortableTable(1, [4]);
-		noSortableTable(2, [5]);
+		$('#gastos_table').DataTable({
+			"columnDefs": 
+				[{ "orderable": false, "searchable": false, "targets": [6] }],
+			'autoWidth' : false,
+			"language": {
+				"search": '<i class="fa fa-search"></i>',
+				"lengthMenu": "Mostrar _MENU_ registros por página",
+				"zeroRecords": "No se encontró registros.",
+				"info": "Mostrando página _PAGE_ de _PAGES_",
+				"infoEmpty": "Sin registros disponibles",
+				"infoFiltered": "(filtrado de _MAX_ registros totales)",
+				"paginate": { "previous": "Anterior", "next": "Siguiente" }
+			}
+		});
+
+		$('#monitoreo_table').DataTable({
+			"columnDefs": 
+				[{ "orderable": false, "searchable": false, "targets": [4] }],
+			'autoWidth' : false,
+			"language": {
+				"search": '<i class="fa fa-search"></i>',
+				"lengthMenu": "Mostrar _MENU_ registros por página",
+				"zeroRecords": "No se encontró registros.",
+				"info": "Mostrando página _PAGE_ de _PAGES_",
+				"infoEmpty": "Sin registros disponibles",
+				"infoFiltered": "(filtrado de _MAX_ registros totales)",
+				"paginate": { "previous": "Anterior", "next": "Siguiente" }
+			}
+		});
+
+		$('#requisitos_table').DataTable({
+			"columnDefs": 
+				[{ "orderable": false, "searchable": false, "targets": [5] }],
+			'autoWidth' : false,
+			"language": {
+				"search": '<i class="fa fa-search"></i>',
+				"lengthMenu": "Mostrar _MENU_ registros por página",
+				"zeroRecords": "No se encontró registros.",
+				"info": "Mostrando página _PAGE_ de _PAGES_",
+				"infoEmpty": "Sin registros disponibles",
+				"infoFiltered": "(filtrado de _MAX_ registros totales)",
+				"paginate": { "previous": "Anterior", "next": "Siguiente" }
+			}
+		});
 
 		$('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_flat-blue', radioClass: 'iradio_flat-blue' });
 	});	

@@ -39,6 +39,6 @@ class CreateMonitoreosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('monitoreo');
+        Schema::dropIfExists('monitoreos');
     }
 }

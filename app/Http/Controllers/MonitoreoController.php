@@ -52,9 +52,18 @@ class MonitoreoController extends Controller
 
     public function store(MonitoreoRequest $request)
     {
+		
 		$request->fecha = date("Y-m-d", strtotime($request->fecha));
 		
-        $monitoreo = Monitoreo::create($request->all());
+		$monitoreo = Monitoreo::create($request->all());
+
+		$request->request->remove('fecha');
+		$request->request->remove('descripcion');
+		$request->request->remove('meta_id');
+		$request->request->remove('observacion');
+
+		$meta = Meta::find($monitoreo->meta->id);
+		$meta->fill($request->all())->save();
 
         return redirect()->route('monitoreo.create', $monitoreo->meta->id)
             ->with('info', 'Registro de monitoreo creado con éxito');
@@ -89,7 +98,15 @@ class MonitoreoController extends Controller
 		
 		$request->fecha = date("Y-m-d", strtotime($request->fecha));
 		
-        $monitoreo->fill($request->all())->save();
+		$monitoreo->fill($request->all())->save();
+		
+		$request->request->remove('fecha');
+		$request->request->remove('descripcion');
+		$request->request->remove('meta_id');
+		$request->request->remove('observacion');
+
+		$meta = Meta::find($monitoreo->meta->id);
+		$meta->fill($request->all())->save();
 
         return redirect()->route('monitoreo.create', $monitoreo->meta->id)
             ->with('info', 'Registro de monitoreo actualizado con éxito');

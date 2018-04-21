@@ -25,9 +25,10 @@ class MonitoreoRequest extends FormRequest
     {
         return [
 			'descripcion' 			=> 'required|max:150',
-			'fecha' 				=> 'required|date_format:Y-m-d|before_or_equal:today',
+			'fecha' 				=> 'required|date_format:Y-m-d',
 			'observacion' 			=> 'required|max:300',
-			'meta_id' 				=> 'required|integer|exists:meta,id',
+			'meta_id' 				=> 'required|integer|exists:metas,id',
+			'avance'				=> 'required|numeric|min:0|max:100'
         ];
     }
 }

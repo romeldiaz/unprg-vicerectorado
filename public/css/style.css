@@ -54,18 +54,16 @@
 @keyframes spin { 100% { transform:rotate(360deg); } }
 @keyframes zoom { 0%, 100% { transform:scale(1); } 50% { transform:scale(1.25); } }
 
-.dataTables_info {
+.dataTables_info, .dataTables_length {
 	padding-left: 10px;
 }
 .pagination {
+	padding-top: 10px;
 	padding-right: 10px;
-	padding-bottom: 10px;
 }
 .dataTables_filter {
-	padding-top: 0px;
 	padding-right: 10px;
 }
-
 
 #gastos_table, #gastos_table_wrapper {
 	min-width: 770px;
