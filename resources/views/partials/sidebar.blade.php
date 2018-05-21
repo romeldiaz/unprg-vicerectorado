@@ -14,9 +14,9 @@
         @if(Auth::user()->tipo=='admin')
         <a href="#"><i class="fa fa-circle text-success"></i>Admin</a>
         @elseif(Auth::user()->jefe)
-        <a href="#"><i class="fa fa-circle text-success"></i>Boss</a>
+        <a href="#"><i class="fa fa-circle text-success"></i>Jefe</a>
         @else()
-        <a href="#"><i class="fa fa-circle text-success"></i>Worker</a>
+        <a href="#"><i class="fa fa-circle text-success"></i>Usuario</a>
         @endif
       </div>
     </div>
@@ -41,13 +41,16 @@
           @if(Auth::user()->tipo=='admin')
           <li class="@yield('sidebar-page-actividades-todas', '')"><a href="{{ url('actividades/todas') }}"><i class="fa fa-circle-o"></i> <span>Todas</span></a></li>
           @endif
+          @if(Auth::user()->jefe)
+          <li class="@yield('sidebar-page-actividades-oficina', '')"><a href="{{ url('actividades/oficina') }}"><i class="fa fa-circle-o"></i> <span>Oficina</span></a></li>
+          @endif
           <li class="@yield('sidebar-page-actividades-asignaciones', '')"><a href="{{ url('actividades/asignaciones') }}"><i class="fa  fa-share-alt"></i> <span>Asignaciones</span></a></li>
           <li class="@yield('sidebar-page-actividades-creaciones', '')"><a href="{{ url('actividades/creaciones') }}"><i class="fa fa-magic"></i> <span>Creaciones</span></a></li>
           <li class="@yield('sidebar-page-actividades-monitoreos', '')"><a href="{{ url('actividades/monitoreos')}}"><i class="fa fa-dot-circle-o"></i> <span>Monitoreos</span></a></li>
         </ul>
       </li>
-      @if(Auth::user()->tipo=='admin')
       <li class="@yield('sidebar_page_usuarios', '')"><a href="{{ url('users') }}"><i class="fa fa-user"></i> <span>Usuarios</span></a></li>
+      @if(Auth::user()->tipo=='admin')
       <li class="@yield('sidebar_page_oficina', '')"><a href="{{ url('oficinas') }}" }}><i class="fa fa-institution"></i> <span>Oficinas</span></a></li>
       @endif
       </ul>

@@ -11,6 +11,8 @@ use App\Responsable;
 use Carbon\Carbon;
 use View;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
 
 class ActividadController extends Controller
 {
@@ -35,8 +37,13 @@ class ActividadController extends Controller
     }
 
     public function todas(Request $request){
-      $actividades = Actividad::all();
+      $actividades = Actividad::orderBy("fecha_creacion","desc")->get();
       return view('actividades.todas', compact('actividades'));
+    }
+
+    public function oficina(Request $request){
+      $actividades = Actividad::select("actividades.*")->join("users","actividades.creador_id","=","users.id")->where("users.oficina_id",Auth::user()->oficina_id)->orderBy("fecha_creacion","desc")->get();
+      return view('actividades.oficina', compact('actividades'));
     }
 
     public function monitoreos(Request $request){
@@ -146,11 +153,12 @@ class ActividadController extends Controller
 
         case 'search_usuario_by_nombre':
             if($request->oficina_id==0){
-              $usuarios = User::where('nombres', 'like', '%'.$request->usuario_nombre.'%')->get();
+              $users = User::search($request->wordSearch)
+                ->orderBy('paterno')->orderBy('materno')->orderBy('nombres')->get();
             }else{
-              $users = User::search($request->usuario_nombre)
+              $users = User::search($request->wordSearch)
                 ->where('oficina_id', $request->oficina_id)
-                ->orderBy('id', 'asc')->get();
+                ->orderBy('paterno')->orderBy('materno')->orderBy('nombres')->get();
             }
             return $users;
             break;
@@ -168,4 +176,37 @@ class ActividadController extends Controller
       }
     }
 
+
+    public function informacion($id)
+    {
+        $actividad = Actividad::findOrFail($id);
+
+
+        if(Auth::user()->tipo=='admin'){
+          // Puede ver el admin
+          return view('actividades.informacion', compact('actividad'));
+        }else{
+            foreach ($actividad->responsables as $responsable) {
+                $usuario = $responsable->user;
+                if ($usuario->id == Auth::user()->id) {
+                    return view('actividades.informacion', compact('actividad'));
+                }
+            }
+        }
+            
+        return redirect()->route('actividades.index');
+    }
+
+    public function informacioneditar(Request $request)
+    {
+        $informacion = $request->informacion;
+
+        $actividad = Actividad::findOrfail($request->id);
+
+        
+        $actividad->informacion = $informacion;
+        $actividad->save();
+      
+        return redirect('actividades/creaciones');
+    }
 }

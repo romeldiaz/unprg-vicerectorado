@@ -9,12 +9,14 @@ use App\Http\Requests\UsuarioRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistroUsuario;
 
 class UserController extends Controller
 {
     public function __construct(){
       $this->middleware('auth');
-      $this->middleware('is_admin');
+      //$this->middleware('is_admin');
     }
 
     public function index(Request $request)
@@ -34,7 +36,15 @@ class UserController extends Controller
       $this->validate($request, $this->rules, $this->messages);
       $datos = $request->all();
       $datos['password'] = Hash::make($request->password);
-      User::create($datos);
+      $user = User::create($datos);
+
+      if($datos['correo']!=null){
+        Mail::to($datos['correo'])->send(new RegistroUsuario($datos['cuenta']));
+      }
+      if($datos['correo2']!=null){
+      Mail::to($datos['correo2'])->send(new RegistroUsuario($datos['cuenta']));
+      }
+
       return redirect('users');
     }
 

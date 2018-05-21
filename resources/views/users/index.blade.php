@@ -39,7 +39,9 @@
               <th>Telefono</th>
               <th>Oficina</th>
               <th>Cargo</th>
+              @if(Auth::user()->tipo=='admin')
               <th><a href="{{ url('users/create') }}" class="btn btn-xs btn-info"><i class="fa fa-user-plus"></i>Nuevo</a></th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -57,17 +59,18 @@
                   No
                 @endif
               </td>
-              <td>{{$user->correo}}</td>
+              <td>{{$user->correo2}} / {{$user->correo}}</td>
               <td>{{$user->telefono}}</td>
               <td>{{$user->oficina->nombre}}</td>
               <td>{{$user->cargo}}</td>
+              @if(Auth::user()->tipo=='admin')
               <td>
                 {{ Form::open(['action'=>['UserController@destroy', $user->id], 'method'=>'DELETE'])}}
                   <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-xs btn-flat btn-success"><i class="fa fa-pencil"></i></a>
                   <button type="submit" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-trash"></i></button>
                 {{ Form::close()}}
               </td>
-
+              @endif
             </tr>
             <?php $num++; ?>
             @endforeach

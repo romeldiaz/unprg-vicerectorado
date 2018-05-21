@@ -11,6 +11,7 @@
 		<li class="active"><a href="#actividad" data-toggle="tab"><i class="fa fa-home"></i> Actividad</a></li>
 		<li><a href="#responsables" data-toggle="tab"><i class="fa fa-group"></i> Responsables</a></li>
 		<li><a href="#metas" data-toggle="tab"><i class="fa fa-tasks"></i> Metas</a></li>
+		<li><a href="#informacion" data-toggle="tab"><i class="fa fa-tasks"></i> Información</a></li>
 	</ul>
 	<div class="tab-content">
 		<div class="active tab-pane" id="actividad">
@@ -234,8 +235,7 @@
 										<div class="row">
 											<div class="col col-sm-7">
 												<div class="input-group input-group-sm">
-													{{ Form::select('search_by_oficinas',$oficinas_options, Auth::user()->oficina_id, ['class'=>'form-control', 'id'=>'search_by_oficinas',
-													'disabled'])}}
+													{{ Form::select('search_by_oficinas',$oficinas_options, Auth::user()->oficina_id, ['class'=>'form-control', 'id'=>'search_by_oficinas'])}}
 													<div class="input-group-btn">
 														<span class="btn btn-default"><i class="fa fa-institution"></i></span>
 													</div>
@@ -378,6 +378,25 @@
 								</tbody>
 							</table>
 						</div>
+						<!-- /.box-body -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="informacion">
+			<div class="row">
+				<div class="col col-sm-12">
+					<div class="box box-primary">
+						<div class="box-header with-border">
+							<h3 class="box-title"><i class="fa fa-tasks"></i> Información</h3>
+							<div class="box-tools pull-right">
+								<a href="{{route('actividad.informacion', $actividad->id)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+							</div>
+							<!-- /.box-tools -->
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">{!!$actividad->informacion!!}</div>
 						<!-- /.box-body -->
 					</div>
 				</div>

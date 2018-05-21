@@ -15,7 +15,7 @@ class CreateOficinasTable extends Migration
     {
         Schema::create('oficinas', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('nombre', 100);
+			$table->text('nombre');
 
 			// SoftDelete
 			$table->softDeletes();

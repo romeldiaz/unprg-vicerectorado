@@ -19,7 +19,7 @@
           <!-- start notification -->
           <a href="{{ url('notificaciones/'.$notificacion->id) }}">
             @if($notificacion->type == 'actividad')
-              @if($notificacion->action == 'crear')
+              @if($notificacion->action == 'create' || $notificacion->action == 'crear')
                 <p class="text-blue">
                   <i class="fa fa-sitemap"></i>
                    Actividad Creada
@@ -55,10 +55,10 @@
               @endif
 
             @elseif($notificacion->type == 'meta')
-              <!-- <i class="fa fa-flag text-red"></i> -->
+              <i class="fa fa-flag text-red"></i>
 
             @elseif($notificacion->type == 'Monitoreo')
-              <!-- <i class="fa fa-binoculars text-yellow"></i> -->
+              <i class="fa fa-binoculars text-yellow"></i>
             @endif
           </a>
         </li>

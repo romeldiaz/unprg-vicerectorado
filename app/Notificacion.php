@@ -145,7 +145,7 @@ class Notificacion extends Model
 
   public static function toUserLikeResponsableDeleted($actividad_id, $user_deleted_id){
     $msn = 'El usuario '.Auth::user()->nombres.' te ha eliminado como responsable de la
-    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong> gracias por tu ayuda <i class="fa fa-thumbs-o-up"></i>';
+    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong>. Gracias por tu ayuda <i class="fa fa-thumbs-o-up"></i>';
     $notify = \DB::table('notificaciones')->insert([
       'date'=>Carbon::now(),
       'type'=>'responsable',
@@ -160,7 +160,7 @@ class Notificacion extends Model
 
   public static function toUserLikeResponsableAsignar($actividad_id, $user_asignado_id){
     $msn = 'El usuario '.Auth::user()->nombres.' te agregó como responsable de la
-    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong> puedes empezar a trabajar en ella, creando
+    actividad <strong>"'.Actividad::find($actividad_id)->nombre.'" </strong>. Puedes empezar a trabajar en ella, creando
     metas y cumpliendolas detro de las fechas y presupuestos establecidos.
     <a target="_blank" href="'.url('/actividades/'.$actividad_id).'"><span class="label label-info" style="padding-bottom:0; padding-top:0">ver actividad</span></a>';
     $notify = \DB::table('notificaciones')->insert([

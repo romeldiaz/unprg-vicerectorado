@@ -16,7 +16,7 @@ class Actividad extends Model
 
     protected $fillable = [
         'nombre', 'estado', 'presupuesto', 'fecha_creacion', 'fecha_inicio', 'fecha_fin_esperada',
-        'fecha_fin', 'numero_resolucion', 'fecha_resolucion', 'fecha_acta', 'descripcion_acta', 'creador_id', 'monitor_id'
+        'fecha_fin', 'numero_resolucion', 'fecha_resolucion', 'fecha_acta', 'descripcion_acta', 'creador_id', 'monitor_id','informacion'
     ];
 	protected $guarded = ['id'];
 

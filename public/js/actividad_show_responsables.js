@@ -12,7 +12,7 @@ $(document).ready(function(){
 
     console.log(baseUrl);
     cargar_responsables(function(state){
-      console.log('Responsables cargados!')
+      console.log('Responsables cargados!');
       search_usuario_by_nombre('');
     });
 
@@ -20,44 +20,18 @@ $(document).ready(function(){
 
 
     $("#search_by_oficinas").change(function(){
-      $("#search_word").val('');
-      search_usuario_by_oficina($(this).val(), function(){});
+      search_usuario_by_nombre();
     });
 
     $('#search_word').keyup(function(){
-      search_usuario_by_nombre($(this).val());
+      search_usuario_by_nombre();
     });
 
 });
 
 
-function search_usuario_by_oficina(oficina_id, callback){
-    var op = 'select_usuario_by_oficina';
-    var page = $("input[name=page]").val();
-    var data = {oficina_id, op};
-    var url = 'actividad_js';
-
-
-    myPost(url_controller, data, function(response, state){
-      if(state=='ok'){
-
-        resultados = response;
-        var html = '';
-        for(var i in resultados){
-          html += '<tr>';
-            html += '<td>'+resultados[i].id+'</td>';
-            html += '<td>'+resultados[i].nombres+'</td>';
-            html += '<td><a href="javascript: seleccionar_uno('+resultados[i].id+')" class="btn btn-sm btn-secondary"><span id="span_'+resultados[i].id+'" class="'+marcar_responsable(resultados[i])+'"></td>';
-          html += '</tr>';
-        }
-        $("#search_results").html(html);
-        callback(state);
-      }
-
-    });
-}
-
-function search_usuario_by_nombre(wordSearch){
+function search_usuario_by_nombre(){
+  var wordSearch = $("#search_word").val();
   var op = "search_usuario_by_nombre";
   var oficina_id = $("#search_by_oficinas").val();
   var data = {op, oficina_id, wordSearch};
@@ -66,9 +40,11 @@ function search_usuario_by_nombre(wordSearch){
     if(state=='ok'){
       resultados = response;
       var html = '';
+      var x=0;
       for(var i in resultados){
+        x = x+1;
         html += '<tr>';
-          html += '<td>'+resultados[i].id+'</td>';
+          html += '<td>'+x+'</td>';
           html += '<td>'+resultados[i].nombres+' '+resultados[i].paterno+' '+resultados[i].materno+'</td>';
           html += '<td class="text-right"><a href="javascript: seleccionar_uno('+resultados[i].id+')" "><span id="span_'+resultados[i].id+'" class="'+marcar_responsable(resultados[i])+'"></td>';
         html += '</tr>';

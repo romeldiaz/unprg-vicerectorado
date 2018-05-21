@@ -41,6 +41,7 @@ Route::get('actividades/asignaciones', 'ActividadController@asignaciones');
 Route::get('actividades/creaciones', 'ActividadController@creaciones');
 Route::get('actividades/monitoreos', 'ActividadController@monitoreos');
 Route::get('actividades/todas', 'ActividadController@todas');
+Route::get('actividades/oficina', 'ActividadController@oficina');
 Route::resource('actividades', 	'ActividadController');
 Route::resource('responsables', 'ResponsableController');
 
@@ -58,6 +59,9 @@ Route::get('actividades/{actividad}/metas/create', 		'MetaController@create')	->
 Route::get('actividades/{actividad}/metas/edit/{meta}', 'MetaController@edit')		->name('metas.edit');
 Route::get('actividades/{actividad}/metas/{meta}', 		'MetaController@show')		->name('metas.show');
 Route::put('metas/{meta}/responsables',					'MetaController@regResp')	->name('metas.regResp');
+
+Route::get('actividades/{actividad}/informacion/create', 		'ActividadController@informacion')	->name('actividad.informacion');
+Route::put('actividades/{actividad}/informacion/informarcioneditar', 		'ActividadController@informacioneditar')	->name('actividad.informacioneditar');
 
 Route::resource('gastos', 								'GastoController', ['except' => [
 	'create',

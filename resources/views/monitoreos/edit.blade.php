@@ -1,14 +1,6 @@
 {!! Form::model($monitoreo, ['route' => ['monitoreo.update', $monitoreo->id], 'method' => 'PUT']) !!}
 {!! Form::hidden('meta_id', $monitoreo->meta->id) !!}
 <div class="form-group">
-	{!! Form::label('avance', 'Avance', ['class'=>'control-label control-label-sm']) !!} 
-	<div class="input-group">
-		{!! Form::text('avance', $monitoreo->meta->avance, ['class'=>'form-control form-control-sm', 'placeholder'=>'Avance']) !!}
-		<span class="input-group-addon">%</span> 
-	</div>
-</div>
-<div class="form-group">
-	{!! Form::label('fecha', 'Fecha', ['class'=>'control-label control-label-sm']) !!}
 	<div class="input-group">
 		<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
 		{!! Form::date('fecha', null, ['class'=>'form-control form-control-sm', 'placeholder' => 'Fecha']) !!}

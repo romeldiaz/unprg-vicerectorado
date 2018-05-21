@@ -44,9 +44,16 @@ class JavascriptController extends Controller
           break;
 
         case 'search_usuario_by_nombre':
-            $response = \App\User::search1($request->wordSearch)
-                          ->where('oficina_id', $request->oficina_id)
-                          ->get();
+            if($request->oficina_id>0){
+              $response = \App\User::search1($request->wordSearch)
+                            ->where('oficina_id', $request->oficina_id)
+                            ->orderBy('paterno')->orderBy('materno')->orderBy('nombres')
+                            ->get();
+            }else{
+              $response = \App\User::search1($request->wordSearch)
+                            ->orderBy('paterno')->orderBy('materno')->orderBy('nombres')
+                            ->get();
+            }
             break;
         /*--------------------------jS:users-------------------------------------*/
         case 'oficina_disponible':

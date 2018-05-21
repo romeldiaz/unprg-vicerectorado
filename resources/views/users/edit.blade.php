@@ -43,8 +43,15 @@
 
           <div class="form-group">
             <div class="input-group">
+              <label class="input-group-addon" for="correo2"><div style="width:16px">@</div></label>
+              {{ Form::email('correo2', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo Institucional']) }}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-group">
               <label class="input-group-addon" for="correo"><div style="width:16px">@</div></label>
-              {{ Form::text('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo']) }}
+              {{ Form::text('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo Personal']) }}
             </div>
           </div>
 
@@ -86,7 +93,7 @@
 
           <div class="form-group">
             <div class="form-check">
-              {!!Form::checkbox('jefe', null ,false, ['class'=>'form-check-input form-check-input-sm', 'id'=>'jefe', 'disabled'])!!}
+              {{Form::checkbox('jefe', null , ['class'=>'form-check-input form-check-input-sm', 'id'=>'jefe'])}}
               <label for="jefe" class="form-check-label">Jefe de oficina</label>
             </div>
           </div>

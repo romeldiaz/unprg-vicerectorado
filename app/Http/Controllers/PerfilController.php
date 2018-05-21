@@ -115,6 +115,8 @@ class PerfilController extends Controller
       $user->cuenta = $request->cuenta;
       $user->correo = $request->correo;
       $user->telefono = $request->telefono;
+      $user->correo2 = $request->correo2;
+      $user->cargo = $request->cargo;
       $user->save();
       return redirect('perfil');
     }

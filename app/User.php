@@ -19,7 +19,7 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id', 'correo', 'telefono','cargo'
+        'nombres', 'paterno', 'materno', 'cuenta', 'password', 'jefe', 'oficina_id', 'correo', 'telefono','cargo','correo2'
     ];
 
     //protected $guarded = ['id'];

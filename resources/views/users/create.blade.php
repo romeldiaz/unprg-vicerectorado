@@ -41,8 +41,15 @@
 
           <div class="form-group">
             <div class="input-group">
+              <label class="input-group-addon" for="correo2"><div style="width:16px">@</div></label>
+              {{ Form::email('correo2', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo Institucional']) }}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-group">
               <label class="input-group-addon" for="correo"><div style="width:16px">@</div></label>
-              {{ Form::email('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo']) }}
+              {{ Form::email('correo', null, ['class'=>'form-control form-control-sm', 'placeholder'=>'Correo Personal']) }}
             </div>
           </div>
 

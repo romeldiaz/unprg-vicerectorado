@@ -14,11 +14,8 @@
               <div class="text-center">
                   <div class="small-box bg-green">
                     <div class="inner">
-                      Sube una foto de perfil, esto servira para que puedas reconocer y seleccionar
-                      mejor a tus compañeros para trabajar juntos en las actividades :-)
-                    </div>
-                    <div class="small-box-footer">
-                      Recomendacion <i class="fa fa-arrow-circle-right"></i>
+                      Sube una foto de perfil, esto servirá para que puedas reconocer y seleccionar
+                      mejor a tus compañeros para trabajar juntos en las actividades.
                     </div>
                   </div>
               </div>
